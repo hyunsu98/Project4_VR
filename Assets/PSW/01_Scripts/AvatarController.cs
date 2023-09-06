@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class MapTransforms : MonoBehaviour
+public class MapTransforms
 {
     public Transform vrTarget;
     public Transform ikTarget;
@@ -25,11 +23,14 @@ public class AvatarController : MonoBehaviour
     [SerializeField] private MapTransforms rightHand;
 
     [SerializeField] private float turnSmoothness;
-    //[SerializeField] Transform ikHead;
-    //[SerializeField] Vector3 headBodyOffset;
+    [SerializeField] Transform ikHead;
+    [SerializeField] Vector3 headBodyOffset;
 
     private void LateUpdate()
     {
+        transform.position = ikHead.position + headBodyOffset;
+        transform.forward = Vector3.Lerp(ikHead.forward, Vector3.ProjectOnPlane(ikHead.forward, Vector3.up).normalized, Time.deltaTime * turnSmoothness);
+
         leftHand.VRMapping();
         rightHand.VRMapping();
     }
