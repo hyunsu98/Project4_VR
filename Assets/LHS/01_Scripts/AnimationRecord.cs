@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationRecord : MonoBehaviour
+//매개변수를 저장해야함 float / bool / int / trigger (AnimatorControllerParameter)
+public class AnimationRecord
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //애니메이션 이름
+    string name;
 
-    // Update is called once per frame
-    void Update()
+    float Deger_float;
+    int Deger_int;
+    bool bool_deger;
+
+    //애니메이션 저장
+    public AnimationRecord(string n , float deger, AnimatorControllerParameterType type)
     {
-        
+        Deger_float = deger;
+        name = n;
     }
 }
