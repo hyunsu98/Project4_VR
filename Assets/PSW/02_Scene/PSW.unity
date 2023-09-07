@@ -242,6 +242,63 @@ Transform:
   m_Father: {fileID: 587467267}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &471929547
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_Name
+      value: XR Device Simulator
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
 --- !u!1001 &514723675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1096,7 +1153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1489404346}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: VRRIg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3723,7 +3780,77 @@ MonoBehaviour:
   tripodSize: 1
   boneColor: {r: 0, g: 0, b: 1, a: 0.5}
   m_Transforms:
-  - {fileID: 783012056310948828}
+  - {fileID: 5465940246055811184}
+  - {fileID: 5465940246055811184}
+  - {fileID: 5465940246055811184}
+  - {fileID: 2559285842444927244}
+  - {fileID: 7151331952113048018}
+  - {fileID: 2348787448467136830}
+  - {fileID: 6452705233692053409}
+  - {fileID: 4042427857891625591}
+  - {fileID: 8169382870491156303}
+  - {fileID: 5477181765732790741}
+  - {fileID: 608321760994744691}
+  - {fileID: 2916570861939648935}
+  - {fileID: 8044669280417646853}
+  - {fileID: 5742672707101690851}
+  - {fileID: 1202371030794706699}
+  - {fileID: 366175169392521056}
+  - {fileID: 2420202490296303611}
+  - {fileID: 5790970486057643063}
+  - {fileID: 7410462539575443958}
+  - {fileID: 6502182840237255372}
+  - {fileID: 1330755671184225507}
+  - {fileID: 7666680085424739143}
+  - {fileID: 7358631409008222516}
+  - {fileID: 889744325069167505}
+  - {fileID: 8255111157771585767}
+  - {fileID: 6833846121062573349}
+  - {fileID: 3183749883960252690}
+  - {fileID: 7934756006369067057}
+  - {fileID: 4747904710947994250}
+  - {fileID: 6655383507717963960}
+  - {fileID: 1155344851719934531}
+  - {fileID: 497831376060065093}
+  - {fileID: 6629111071999962960}
+  - {fileID: 1564860334144037180}
+  - {fileID: 3558328719683103156}
+  - {fileID: 8251234210351866125}
+  - {fileID: 5048025442088711001}
+  - {fileID: 2365583845539356373}
+  - {fileID: 1031632035675071161}
+  - {fileID: 2925517128764968724}
+  - {fileID: 6515712192041526045}
+  - {fileID: 5901452233444264551}
+  - {fileID: 8700783698082696841}
+  - {fileID: 7078722786822899346}
+  - {fileID: 6000407480229175306}
+  - {fileID: 2563496968227228327}
+  - {fileID: 1852576805948620999}
+  - {fileID: 8153021304548112809}
+  - {fileID: 3742394134699263748}
+  - {fileID: 5097370188915143757}
+  - {fileID: 7930214443532525266}
+  - {fileID: 3667946888026320100}
+  - {fileID: 6341119540664672259}
+  - {fileID: 3199222091941004821}
+  - {fileID: 822416212440309542}
+  - {fileID: 1189529852652517223}
+  - {fileID: 5372056942430715987}
+  - {fileID: 2455146754610876775}
+  - {fileID: 6069836247023268063}
+  - {fileID: 9118793901613176835}
+  - {fileID: 6323950000954826635}
+  - {fileID: 1092408309200450650}
+  - {fileID: 2325615478583957949}
+  - {fileID: 8447082967536757745}
+  - {fileID: 8352548717388924818}
+  - {fileID: 2003599735450258965}
+  - {fileID: 234480623917112391}
+  - {fileID: 2108357696652513472}
+  - {fileID: 7146029673954056119}
+  - {fileID: 4524465148780737497}
+  - {fileID: 4253364178960409872}
 --- !u!114 &5866666020220519072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3753,13 +3880,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head:
-    vrTarget: {fileID: 8584654380040907227}
+    vrTarget: {fileID: 5901452233444264551}
     ikTarget: {fileID: 587535169}
     trackingPositionOffset: {x: 0, y: 0, z: 0}
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   leftHand:
     vrTarget: {fileID: 6502182840237255372}
-    ikTarget: {fileID: 587485847}
+    ikTarget: {fileID: 4593680151327805}
     trackingPositionOffset: {x: 0, y: 0, z: 0}
     trackingRotationOffset: {x: 0, y: 0, z: 0}
   rightHand:
