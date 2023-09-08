@@ -16,6 +16,19 @@ public class ReplayOynatici : MonoBehaviour
     public Slider slider;
     bool slider_controlling;
 
+    //카메라 리스트
+    int camera_index = 0;
+    public List<Camera> kameralar;
+
+    //줌
+    public float maximum_zoom = 150f; 
+    public float minumum_zoom = 10f;
+    //얼만큼 줄어들것인지
+    public float zoom_index = 5f;
+    public float rotation_index = 2f;
+
+    public Canvas cnvs;
+
     public ReplayOynatici()
     {
         replay_records = new List<ReplayRecord>();
@@ -38,8 +51,58 @@ public class ReplayOynatici : MonoBehaviour
 
     void Update()
     { 
+        //카메라 시점 변경
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            Camera_Change();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            Zoom();
+        }
+
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            UnZoom();
+        }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Camera_rot_up();
+        }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            Camera_rot_down();
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            Camera_rot_left();
+        }
+
+        if (Input.GetKey(KeyCode.T))
+        {
+            Camera_rot_right();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("다운");
+            //cnvs.enabled = !cnvs.enabled;
+            if(cnvs.enabled)
+            {
+                cnvs.enabled = false;
+            }
+            else
+            {
+                cnvs.enabled = true;
+            }
+        }
+
         //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아니라면)
-        if(Game.Game_Mode != Game.Game_Modes.RECORD)
+        if (Game.Game_Mode != Game.Game_Modes.RECORD)
         {
             // 플레이어 리플레이기능 실행
             foreach (ReplayRecord item in replay_records)
@@ -64,15 +127,103 @@ public class ReplayOynatici : MonoBehaviour
                     item.SetFrame(-1);
                 }
 
+                //나갈때는 길이의 -2을 해준다. //Get_Frame()에서 frame_index++ 해주기 때문에
+                if(Game.Game_Mode == Game.Game_Modes.Exit)
+                {
+                    item.SetFrame(item.Lenght - 2);
+                }
+
                 item.Play(); 
             }
         }
 
+        //리플레이 모드는 재생모드로 
         if (Game.Game_Mode == Game.Game_Modes.REPLAY)
         {
             Game.Game_Mode = Game.Game_Modes.PLAY;
         }
+
+        if(Game.Game_Mode == Game.Game_Modes.Exit)
+        {
+            Game.Game_Mode = Game.Game_Modes.RECORD;
+            //시간 멈추기
+            Time.timeScale = 1;
+        }
     }
+
+    public void Camera_Change()
+    {
+        //누를때마다 카메라 인덱스 추가 나머지값
+        camera_index = (camera_index + 1) % kameralar.Count;
+
+        //카메라 리스트가 null이 아니라면
+        if (kameralar != null)
+        {
+            for (int i = 0; i < kameralar.Count; i++)
+            {
+                //카메라 키기
+                if (i == camera_index)
+                {
+                    kameralar[i].enabled = true;
+                }
+
+                else
+                {
+                    kameralar[i].enabled = false;
+                }
+            }
+        }
+    }
+
+    #region 카메라 -> 직접 손으로 들고 찍는 ..?
+    //카메라 줌기능
+    public void Zoom()
+    {
+        //min 줌보다는 클때 
+        if(kameralar[camera_index].fieldOfView > minumum_zoom)
+        {
+            kameralar[camera_index].fieldOfView -= zoom_index;
+        }
+    }
+
+    public void UnZoom()
+    {
+        //min 줌보다는 클때 
+        if (kameralar[camera_index].fieldOfView < maximum_zoom)
+        { 
+            kameralar[camera_index].fieldOfView += zoom_index;
+        }
+    }
+
+    //제한각을 걸어놓으면
+    public void Camera_rot_up()
+    {
+        Vector3 rot = kameralar[camera_index].transform.localEulerAngles;
+        rot.x = (rot.x + rotation_index) % 360; //360 를 왜 나누는지
+        kameralar[camera_index].transform.localEulerAngles = rot;
+    }
+
+    public void Camera_rot_down()
+    { 
+        Vector3 rot = kameralar[camera_index].transform.localEulerAngles;
+        rot.x = (rot.x - rotation_index) % 360; //360 를 왜 나누는지
+        kameralar[camera_index].transform.localEulerAngles = rot;
+    }
+
+    public void Camera_rot_left()
+    {
+        Vector3 rot = kameralar[camera_index].transform.localEulerAngles;
+        rot.y = (rot.y - rotation_index) % 360; //360 를 왜 나누는지
+        kameralar[camera_index].transform.localEulerAngles = rot;
+    }
+
+    public void Camera_rot_right()
+    {
+        Vector3 rot = kameralar[camera_index].transform.localEulerAngles;
+        rot.y = (rot.y + rotation_index) % 360; //360 를 왜 나누는지
+        kameralar[camera_index].transform.localEulerAngles = rot;
+    }
+    #endregion
 
     public void Ekle(ReplayRecord rec)
     {
@@ -106,9 +257,12 @@ public class ReplayOynatici : MonoBehaviour
     //녹화
     public void Exit()
     {
-        Game.Game_Mode = Game.Game_Modes.RECORD;
+        //이전 -> Update문에서 해줘야 함.
+        /* Game.Game_Mode = Game.Game_Modes.RECORD;
         //시간 멈추기
-        Time.timeScale = 1;
+        Time.timeScale = 1;*/
+
+        Game.Game_Mode = Game.Game_Modes.Exit;
     }
 
     //슬라이더 클릭했을때 Pointer Down
@@ -136,7 +290,8 @@ public static class Game
         PAUSE,
         RECORD,
         REPLAY,
-        Slider
+        Slider,
+        Exit
     }
 
     public static Game_Modes Game_Mode
