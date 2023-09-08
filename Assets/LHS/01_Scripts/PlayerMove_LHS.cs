@@ -31,7 +31,9 @@ public class PlayerMove_LHS : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            anim.SetTrigger("Jump");
+            //anim.SetTrigger("Jump");
+
+            anim.SetBool("isJump", true);
         }
     }
 }

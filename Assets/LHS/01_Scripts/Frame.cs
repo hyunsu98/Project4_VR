@@ -10,12 +10,15 @@ public class Frame
     Quaternion rot;
     GameObject gameObject;
 
-    //받은 값을 저장해야 한다.
-    public Frame(GameObject go, Vector3 position, Quaternion rotation, Vector3 scale)
+    List<AnimationRecord> animation_record;
+
+    //저장
+    public Frame(GameObject go, Vector3 position, Quaternion rotation, Vector3 scale, List<AnimationRecord> anim_records)
     {
         pos = position;
         rot = rotation;
         this.scale = scale;
+        animation_record = anim_records;
         gameObject = go;
     }
 
@@ -49,6 +52,15 @@ public class Frame
         get
         {
             return gameObject;
+        }
+    }
+
+    //ReplayRecord 에서도 List가 있는데 ?
+    public List<AnimationRecord> Animation_Records
+    {
+        get
+        {
+            return animation_record;
         }
     }
     #endregion
