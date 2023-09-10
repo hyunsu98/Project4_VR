@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 //리플레이 플레이어? 
 //플레이된 객체의 정보를 List를 통해 담아야 한다.
-public class ReplayOynatici : MonoBehaviour
+public class ReplayManager : MonoBehaviour
 {
     //플레이 한 동작을 List에 담아서 저장
     List<ReplayRecord> replay_records;
@@ -29,7 +29,7 @@ public class ReplayOynatici : MonoBehaviour
 
     public Canvas cnvs;
 
-    public ReplayOynatici()
+    public ReplayManager()
     {
         replay_records = new List<ReplayRecord>();
 
@@ -94,10 +94,12 @@ public class ReplayOynatici : MonoBehaviour
             if(cnvs.enabled)
             {
                 cnvs.enabled = false;
+                Exit();
             }
             else
             {
                 cnvs.enabled = true;
+                Replay();
             }
         }
 
@@ -225,7 +227,7 @@ public class ReplayOynatici : MonoBehaviour
     }
     #endregion
 
-    public void Ekle(ReplayRecord rec)
+    public void AddRecord(ReplayRecord rec)
     {
         replay_records.Add(rec);
     }

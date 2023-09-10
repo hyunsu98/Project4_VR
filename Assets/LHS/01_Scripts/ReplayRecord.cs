@@ -5,24 +5,46 @@ using UnityEngine;
 //플레이어
 public class ReplayRecord : MonoBehaviour
 {
-    public ReplayOynatici oynatici;
-    public Animator animasyon;
+    //리플레이 매니저
+    public ReplayManager replayManager;
+    //[SerializeField] string replayManagerName = "ReplayManager"; //(추후변경)
 
+    //※ 재생 중 비활성화 할 필요가 없는 스크립트 (굳이?)
+
+    //재생될 애니메이터 , ※ 리지드 바디, 오디오 소스 
+    [SerializeField] Animator anim;
+    
+    //녹음된 프레임 목록 (전체, 애니메이션)
     List<Frame> frames;
     List<AnimationRecord> anim_records;
 
+    //최종길이
     int max_lenght;
+    //현재길이
     int length;
-    //인덱스는 -1부터 시작할 수 있게
+    //※ 삭제되지 않으면 -1로 유지, 삭제되면 삭제된 프레임을 사용
     int frame_index = -1;
 
     void Start()
     {
-        //시작하면 oynatici list에 저장
-        oynatici.Ekle(this);
-        //처음 길이는 카메라의 max길이와 같아야한다.
-        max_lenght = oynatici.max_length;
-        frames = new List<Frame>();
+        //동적으로 넣기
+        if(replayManager == null)
+        {
+            replayManager = Camera.main.GetComponent<ReplayManager>();
+            //replayManager = GameObject.Find(replayManagerName).GetComponent<ReplayManager>(); //(추후변경)
+        }
+
+        anim = GetComponentInChildren<Animator>();
+
+        if(replayManager != null) //-> 나중에 녹화 버튼 눌렀을때
+        {
+            //시작하면 oynatici list에 저장
+            replayManager.AddRecord(this);
+
+            //처음 길이는 카메라의 max길이와 같아야한다.
+            max_lenght = replayManager.max_length;
+            frames = new List<Frame>();
+        }
     }
 
     void Update()
@@ -34,10 +56,10 @@ public class ReplayRecord : MonoBehaviour
 
             //※ 애니메이션 오류생김
             //애니메이션이 null이 아니라면
-            if (animasyon != null)
+            if (anim != null)
             {
                 //배열의 반복문 -> 현재 파라미터의 이름을 넣는다.
-                foreach (AnimatorControllerParameter item in animasyon.parameters)
+                foreach (AnimatorControllerParameter item in anim.parameters)
                 {
                     string name = item.name;
 
@@ -45,17 +67,17 @@ public class ReplayRecord : MonoBehaviour
                     if (item.type == AnimatorControllerParameterType.Bool)
                     {
                         //생성해서 넣어줘야 한다. //item.defaultBool 기본 bool 값?
-                        anim_records.Add(new AnimationRecord(name, animasyon.GetBool(name), item.type));
+                        anim_records.Add(new AnimationRecord(name, anim.GetBool(name), item.type));
                     }
 
                     if (item.type == AnimatorControllerParameterType.Float)
                     {
-                        anim_records.Add(new AnimationRecord(name, animasyon.GetFloat(name), item.type));
+                        anim_records.Add(new AnimationRecord(name, anim.GetFloat(name), item.type));
                     }
 
                     if (item.type == AnimatorControllerParameterType.Int)
                     {
-                        anim_records.Add(new AnimationRecord(name, animasyon.GetInteger(name), item.type));
+                        anim_records.Add(new AnimationRecord(name, anim.GetInteger(name), item.type));
                     }
                 }
             }
@@ -103,20 +125,20 @@ public class ReplayRecord : MonoBehaviour
                 //저장된 애니메이션을 플레이 한다.
                 if(item.Type == AnimatorControllerParameterType.Bool)
                 {
-                    animasyon.SetBool(name, item.Bool_);
+                    anim.SetBool(name, item.Bool_);
                     //현재 단계를 중단.
                     continue;
                 }
 
                 else if (item.Type == AnimatorControllerParameterType.Int)
                 {
-                    animasyon.SetInteger(name, item.Int_);
+                    anim.SetInteger(name, item.Int_);
                     continue;
                 }
 
                 else if (item.Type == AnimatorControllerParameterType.Float)
                 {
-                    animasyon.SetFloat(name, item.Float_);
+                    anim.SetFloat(name, item.Float_);
                     continue;
                 }
             }
