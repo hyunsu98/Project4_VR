@@ -1555,14 +1555,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2a37b4585b9c334c90baa48d7b480ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_length: 3600
+  max_length: 1000
   slider: {fileID: 545023692}
-  kameralar: []
+  kameralar:
+  - {fileID: 963194227}
+  - {fileID: 961234144}
+  - {fileID: 266530169}
   maximum_zoom: 150
   minumum_zoom: 10
   zoom_index: 5
@@ -2132,7 +2135,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385733976}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2a37b4585b9c334c90baa48d7b480ae, type: 3}
   m_Name: 

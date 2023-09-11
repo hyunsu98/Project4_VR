@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //카메라
-
-//리플레이 플레이어? 
 //플레이된 객체의 정보를 List를 통해 담아야 한다.
 public class ReplayManager : MonoBehaviour
 {
-    //플레이 한 동작을 List에 담아서 저장
+    //플레이 한 동작들의 게임오브젝트를 List에 담아서 저장
     List<ReplayRecord> replay_records;
+
     //녹화할 최대 길이
     public int max_length = 100;
+
     public Slider slider;
     bool slider_controlling;
 
@@ -20,7 +20,7 @@ public class ReplayManager : MonoBehaviour
     int camera_index = 0;
     public List<Camera> kameralar;
 
-    //줌
+    //줌 -> VR은 안됨 
     public float maximum_zoom = 150f; 
     public float minumum_zoom = 10f;
     //얼만큼 줄어들것인지
@@ -29,30 +29,23 @@ public class ReplayManager : MonoBehaviour
 
     public Canvas cnvs;
 
+    //Start하면 오류 되서 생성자에서?
     public ReplayManager()
     {
         replay_records = new List<ReplayRecord>();
 
-        //시작할때 녹화모드
+        //시작할때 녹화모드 -> 버튼을 누르면 실행될 수 있게 함
         Game.Game_Mode = Game.Game_Modes.RECORD;
 
         //처음은 컨트롤러 false;
         slider_controlling = false;
     }
 
-    void Start()
-    {
-        //Start하면 오류 되서 생성자에서?
-        /*replay_records = new List<ReplayRecord>();
-
-        //시작할때 녹화모드
-        Game.Game_Mode = Game.Game_Modes.RECORD;*/
-    }
-
     void Update()
-    { 
+    {
+        #region Input 시스템 (카메라)
         //카메라 시점 변경
-        if(Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             Camera_Change();
         }
@@ -86,11 +79,11 @@ public class ReplayManager : MonoBehaviour
         {
             Camera_rot_right();
         }
+        #endregion
 
+        // 캔버스
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("다운");
-            //cnvs.enabled = !cnvs.enabled;
             if(cnvs.enabled)
             {
                 cnvs.enabled = false;
@@ -102,16 +95,18 @@ public class ReplayManager : MonoBehaviour
                 Replay();
             }
         }
-
-        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아니라면)
+      
+        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때)
         if (Game.Game_Mode != Game.Game_Modes.RECORD)
         {
-            // 플레이어 리플레이기능 실행
+            // 플레이어 리플레이기능 실행 (배열)
             foreach (ReplayRecord item in replay_records)
             {
                 //슬라이드 컨트롤러가 true 일때 
                 if (slider_controlling)
                 {
+                    //현재 프레임을 전달해야함.
+
                     //슬라이더의 값은 int형으로 형변환
                     //item.SetFrame((int)slider.value);
                     item.SetFrame(Convert.ToInt32((slider.value)));
@@ -119,6 +114,7 @@ public class ReplayManager : MonoBehaviour
 
                 else
                 {
+                    //item 프레임을 읽어온다.
                     slider.value = item.GetFrame();
                     //슬라이더의 최대길이는 플레이 레코더의 길이만큼!
                     slider.maxValue = item.Lenght;
@@ -126,6 +122,7 @@ public class ReplayManager : MonoBehaviour
 
                 if (Game.Game_Mode == Game.Game_Modes.REPLAY)
                 {
+                    //다시 처음부터 시작할 수 있게
                     item.SetFrame(-1);
                 }
 
@@ -177,8 +174,8 @@ public class ReplayManager : MonoBehaviour
         }
     }
 
-    #region 카메라 -> 직접 손으로 들고 찍는 ..?
-    //카메라 줌기능
+    #region 카메라 -> 직접 손으로 들고 찍는 ..? 
+    //카메라 줌기능 VR은 줌 아웃 안됨!
     public void Zoom()
     {
         //min 줌보다는 클때 
@@ -227,6 +224,7 @@ public class ReplayManager : MonoBehaviour
     }
     #endregion
 
+    //레코더들을 List에 담기
     public void AddRecord(ReplayRecord rec)
     {
         replay_records.Add(rec);
@@ -288,12 +286,12 @@ public static class Game
 
     public enum Game_Modes
     {
-        PLAY,
-        PAUSE,
-        RECORD,
-        REPLAY,
-        Slider,
-        Exit
+        PLAY,//재생
+        PAUSE, //멈춤
+        RECORD, //녹음
+        REPLAY, //리플레이
+        Slider, //슬라이더
+        Exit //나가기
     }
 
     public static Game_Modes Game_Mode

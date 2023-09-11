@@ -12,8 +12,6 @@ public class Frame
 
     List<AnimationRecord> animation_record;
 
-     
-
     //data 저장 값
     public Frame(GameObject go, Vector3 position, Quaternion rotation, Vector3 scale, List<AnimationRecord> anim_records)
     {
@@ -28,43 +26,28 @@ public class Frame
     //읽기전용 프로퍼티
     public Vector3 Position
     {
-        get
-        {
-            return pos;
-        }
+        get { return pos; }
     }
 
     public Vector3 Scale
     {
-        get
-        {
-            return scale;
-        }
+        get { return scale; }
     }
 
     public Quaternion Rotation
     {
-        get
-        {
-            return rot;
-        }
+        get { return rot; }
     }
 
     public GameObject GameObject
     {
-        get
-        {
-            return gameObject;
-        }
+        get { return gameObject; }
     }
 
     //ReplayRecord 에서도 List가 있는데 ?
     public List<AnimationRecord> Animation_Records
     {
-        get
-        {
-            return animation_record;
-        }
+        get { return animation_record; }
     }
     #endregion
 }
