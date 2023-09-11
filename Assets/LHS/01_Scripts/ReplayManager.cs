@@ -131,17 +131,31 @@ public class ReplayManager : MonoBehaviour
                 {
                     item.SetFrame(item.Lenght - 2);
                 }
+                
+                //기본 나가기 하면 원래 녹화중
+               /* if(item.Lenght > 0)
+                {
+                    item.Play();
+                    Debug.Log("녹화중");
+                }*/
 
-                item.Play(); 
+                item.Play();
             }
         }
+        
+        /*if(Input.GetKeyDown(KeyCode.H))
+        {
+            Game.Game_Mode = Game.Game_Modes.RECORD;
+
+            Debug.Log("녹화시작");
+        }*/
 
         //리플레이 모드는 재생모드로 
         if (Game.Game_Mode == Game.Game_Modes.REPLAY)
         {
             Game.Game_Mode = Game.Game_Modes.PLAY;
         }
-
+         
         if(Game.Game_Mode == Game.Game_Modes.Exit)
         {
             Game.Game_Mode = Game.Game_Modes.RECORD;

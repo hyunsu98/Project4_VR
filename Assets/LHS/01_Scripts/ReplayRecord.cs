@@ -7,7 +7,7 @@ public class ReplayRecord : MonoBehaviour
 {
     //리플레이 매니저
     public ReplayManager replayManager;
-    //[SerializeField] string replayManagerName = "ReplayManager"; //(추후변경)
+    [SerializeField] string replayManagerName = "ReplayManager"; //(추후변경)
 
     //※ 재생 중 비활성화 할 필요가 없는 스크립트 - 움직임 필요할 수도!
 
@@ -32,8 +32,8 @@ public class ReplayRecord : MonoBehaviour
         //동적으로 넣기
         if(replayManager == null)
         {
-            replayManager = Camera.main.GetComponent<ReplayManager>();
-            //replayManager = GameObject.Find(replayManagerName).GetComponent<ReplayManager>(); //(추후변경)
+            //replayManager = Camera.main.GetComponent<ReplayManager>();
+            replayManager = GameObject.Find(replayManagerName).GetComponent<ReplayManager>(); //(추후변경)
         }
 
         anim = GetComponentInChildren<Animator>();
