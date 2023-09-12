@@ -99,7 +99,8 @@ public class ReplayManager : MonoBehaviour
         //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때) Game.Game_Mode != Game.Game_Modes.RECORD
         if (Game.Game_Mode != Game.Game_Modes.RECORD)
         {
-            Debug.Log("녹화중아님");
+            Debug.Log(Game.Game_Mode);
+
             // 플레이어 리플레이기능 실행 (배열)
             foreach (ReplayRecord item in replay_records)
             {
@@ -126,6 +127,8 @@ public class ReplayManager : MonoBehaviour
                     Debug.Log("리플레이");
                     //다시 처음부터 시작할 수 있게
                     item.SetFrame(-1);
+
+                    
                 }
 
                 //나갈때는 길이의 -2을 해준다. //Get_Frame()에서 frame_index++ 해주기 때문에
@@ -141,7 +144,7 @@ public class ReplayManager : MonoBehaviour
                     item.Play();
                     Debug.Log("녹화중");
                 }*/
-
+                
                 item.Play();
             }
         }

@@ -59,9 +59,10 @@ public class ReplayRecord : MonoBehaviour
             //왜 얘는 Update문에서 할까?
             anim_records = new List<AnimationRecord>();
 
+            #region 애니메이션
             //※ 애니메이션 오류생김
             //애니메이션이 null이 아니라면
-            if (anim != null)
+            /*if (anim != null)
             {
                 //※ 배열의 반복문 -> 현재 파라미터의 이름을 넣는다.
                 foreach (AnimatorControllerParameter item in anim.parameters)
@@ -85,7 +86,8 @@ public class ReplayRecord : MonoBehaviour
                         anim_records.Add(new AnimationRecord(name, anim.GetInteger(name), item.type));
                     }
                 }
-            }
+            }*/
+            #endregion
 
             Frame frame = new Frame(this.gameObject, transform.position, transform.rotation, transform.localScale, anim_records);
             AddFrame(frame);
@@ -114,6 +116,8 @@ public class ReplayRecord : MonoBehaviour
             //RemoveAt(index) 해당 인덱스에 있는 것을 제거
             //녹화종료 -> UI
             Debug.Log("녹화 종료");
+
+            //다시 3인칭 시점으로 바뀌어야 함.
 
             //방법2
             /*frames.RemoveAt(0);
@@ -186,12 +190,14 @@ public class ReplayRecord : MonoBehaviour
             //그 다음 프레임에서 시작할 수 있도록
             frame_index--;
 
-            Time.timeScale = 0;
+            Debug.Log("멈춤");
+            //Time.timeScale = 0;
         }
 
         else
         {
             Time.timeScale = 1;
+            Debug.Log("재생");
         }
 
         //프레임인덱스가 길이보다 크거나 같으면
@@ -201,6 +207,7 @@ public class ReplayRecord : MonoBehaviour
             Game.Game_Mode = Game.Game_Modes.PAUSE;
             frame_index = length - 1;
             //null을 반환시킨다
+            Debug.Log("프레임 큼");
             return null;
         }
 
@@ -209,7 +216,7 @@ public class ReplayRecord : MonoBehaviour
         {
             //이거 안쓰면 오류남
             frame_index = length - 1;
-
+            Debug.Log("프레임 작음");
             return null;
         }
 
