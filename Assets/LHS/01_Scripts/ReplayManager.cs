@@ -32,10 +32,10 @@ public class ReplayManager : MonoBehaviour
     //Start하면 오류 되서 생성자에서?
     public ReplayManager()
     {
+
         replay_records = new List<ReplayRecord>();
 
         //시작할때 녹화모드 -> 버튼을 누르면 실행될 수 있게 함
-        Game.Game_Mode = Game.Game_Modes.RECORD;
 
         //처음은 컨트롤러 false;
         slider_controlling = false;
@@ -87,18 +87,19 @@ public class ReplayManager : MonoBehaviour
             if(cnvs.enabled)
             {
                 cnvs.enabled = false;
-                Exit();
+                Exit(); //->녹화가 됨
             }
             else
             {
                 cnvs.enabled = true;
-                Replay();
+                Replay(); //-> 리플레이 가능
             }
         }
-      
-        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때)
+
+        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때) Game.Game_Mode != Game.Game_Modes.RECORD
         if (Game.Game_Mode != Game.Game_Modes.RECORD)
         {
+            Debug.Log("녹화중아님");
             // 플레이어 리플레이기능 실행 (배열)
             foreach (ReplayRecord item in replay_records)
             {
@@ -122,18 +123,20 @@ public class ReplayManager : MonoBehaviour
 
                 if (Game.Game_Mode == Game.Game_Modes.REPLAY)
                 {
+                    Debug.Log("리플레이");
                     //다시 처음부터 시작할 수 있게
                     item.SetFrame(-1);
                 }
 
                 //나갈때는 길이의 -2을 해준다. //Get_Frame()에서 frame_index++ 해주기 때문에
-                if(Game.Game_Mode == Game.Game_Modes.Exit)
+                if (Game.Game_Mode == Game.Game_Modes.Exit)
                 {
                     item.SetFrame(item.Lenght - 2);
+                    Debug.Log("나가기");
                 }
-                
+
                 //기본 나가기 하면 원래 녹화중
-               /* if(item.Lenght > 0)
+                /*if (item.Lenght > 0)
                 {
                     item.Play();
                     Debug.Log("녹화중");
@@ -142,13 +145,6 @@ public class ReplayManager : MonoBehaviour
                 item.Play();
             }
         }
-        
-        /*if(Input.GetKeyDown(KeyCode.H))
-        {
-            Game.Game_Mode = Game.Game_Modes.RECORD;
-
-            Debug.Log("녹화시작");
-        }*/
 
         //리플레이 모드는 재생모드로 
         if (Game.Game_Mode == Game.Game_Modes.REPLAY)
@@ -158,7 +154,7 @@ public class ReplayManager : MonoBehaviour
          
         if(Game.Game_Mode == Game.Game_Modes.Exit)
         {
-            Game.Game_Mode = Game.Game_Modes.RECORD;
+            //Game.Game_Mode = Game.Game_Modes.RECORD;
             //시간 멈추기
             Time.timeScale = 1;
         }
@@ -279,6 +275,13 @@ public class ReplayManager : MonoBehaviour
         Game.Game_Mode = Game.Game_Modes.Exit;
     }
 
+    //녹화중
+    public void Rec()
+    {
+        Game.Game_Mode = Game.Game_Modes.RECORD;
+        Time.timeScale = 1;
+    }
+
     //슬라이더 클릭했을때 Pointer Down
     public void Click_Slider()
     {
@@ -305,7 +308,8 @@ public static class Game
         RECORD, //녹음
         REPLAY, //리플레이
         Slider, //슬라이더
-        Exit //나가기
+        Exit, //나가기
+        IDLE
     }
 
     public static Game_Modes Game_Mode

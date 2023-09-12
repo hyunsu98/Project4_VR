@@ -89,6 +89,8 @@ public class ReplayRecord : MonoBehaviour
 
             Frame frame = new Frame(this.gameObject, transform.position, transform.rotation, transform.localScale, anim_records);
             AddFrame(frame);
+
+            Debug.Log("녹화중입니다" + frame);
         }
     }
 
@@ -124,7 +126,7 @@ public class ReplayRecord : MonoBehaviour
         length++;*/
     }
 
-    //재생 플레이
+    //2 >> 재생 플레이
     public void Play()
     {
         Frame frm;
@@ -171,7 +173,7 @@ public class ReplayRecord : MonoBehaviour
         }
     }
 
-    //리플레이
+    //1 >> 리플레이
     Frame Get_Frame()
     {
         Debug.Log("리플레이 시작");
@@ -179,7 +181,7 @@ public class ReplayRecord : MonoBehaviour
         frame_index++;
 
         //만약게임 멈춤이라면
-        if(Game.Game_Mode == Game.Game_Modes.PAUSE)
+        if (Game.Game_Mode == Game.Game_Modes.PAUSE)
         {
             //그 다음 프레임에서 시작할 수 있도록
             frame_index--;
@@ -193,7 +195,7 @@ public class ReplayRecord : MonoBehaviour
         }
 
         //프레임인덱스가 길이보다 크거나 같으면
-        if(frame_index >= length)
+        if (frame_index >= length)
         {
             //멈춤
             Game.Game_Mode = Game.Game_Modes.PAUSE;
@@ -203,15 +205,17 @@ public class ReplayRecord : MonoBehaviour
         }
 
         //시작하기 전에는 프레임과 녹화된 길이도 -1 -> 0에서 다시 시작할 수 있게
-        if(frame_index == -1)
+        if (frame_index == -1)
         {
             //이거 안쓰면 오류남
             frame_index = length - 1;
+
+            return null;
         }
 
         Debug.Log($"현재 프레임 {frame_index} / 최대 길이 {max_lenght} / 녹화된 길이 {length}");
+    
 
-        //프레임의 현재 위치를 리턴
         return frames[frame_index];
     }
 
