@@ -209,7 +209,7 @@ public class ReplayRecord : MonoBehaviour
             frame_index = length - 1;
         }
 
-        Debug.Log($"현재 프레임 + {frame_index} / 최대 길이 {max_lenght} / 녹화된 길이 {length}");
+        Debug.Log($"현재 프레임 {frame_index} / 최대 길이 {max_lenght} / 녹화된 길이 {length}");
 
         //프레임의 현재 위치를 리턴
         return frames[frame_index];
