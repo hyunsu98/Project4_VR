@@ -3,6 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public static class Game
+{
+    public static Game_Modes Game_mode;
+
+    public enum Game_Modes
+    {
+        PLAY, //재생
+        PAUSE, //멈춤
+        RECORD, //녹음
+        REPLAY, //리플레이
+        Slider, //슬라이더
+        Exit, //나가기
+        IDLE
+    }
+
+    public static Game_Modes Game_Mode
+    {
+        get
+        {
+            return Game_mode;
+        }
+
+        set
+        {
+            Game_mode = value;
+        }
+    }
+}
+
 //카메라
 //플레이된 객체의 정보를 List를 통해 담아야 한다.
 public class ReplayManager : MonoBehaviour
@@ -32,7 +61,6 @@ public class ReplayManager : MonoBehaviour
     //Start하면 오류 되서 생성자에서?
     public ReplayManager()
     {
-
         replay_records = new List<ReplayRecord>();
 
         //시작할때 녹화모드 -> 버튼을 누르면 실행될 수 있게 함
@@ -81,14 +109,17 @@ public class ReplayManager : MonoBehaviour
         }
         #endregion
 
-        // 캔버스
+        // 캔버스 -> 선택해서 열릴 수 있게
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            //활성화 되있으면 -> 비활성화로
             if(cnvs.enabled)
             {
                 cnvs.enabled = false;
                 Exit(); //->녹화가 됨
             }
+
+            //비활성화면 -> 활성화로
             else
             {
                 cnvs.enabled = true;
@@ -96,55 +127,47 @@ public class ReplayManager : MonoBehaviour
             }
         }
 
-        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때) Game.Game_Mode != Game.Game_Modes.RECORD
+        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때)
         if (Game.Game_Mode != Game.Game_Modes.RECORD)
         {
-            Debug.Log(Game.Game_Mode);
+            // 리플레이 , 플레이 모드 일때 
+            Debug.Log("현재 게임 모드" + Game.Game_Mode);
 
-            // 플레이어 리플레이기능 실행 (배열)
+            // 저장된 모든 replayrecord의 값들을 재생 시키기 
             foreach (ReplayRecord item in replay_records)
             {
-                //슬라이드 컨트롤러가 true 일때 
+                //슬라이더를 클릭했을 때의 값을 넘겨준다. -> 현재 프레임이 되도록
                 if (slider_controlling)
                 {
-                    //현재 프레임을 전달해야함.
-
                     //슬라이더의 값은 int형으로 형변환
-                    //item.SetFrame((int)slider.value);
                     item.SetFrame(Convert.ToInt32((slider.value)));
                 }
 
                 else
                 {
+                    //※ 모든 프레임이 다를 텐데 ? -> 최대의 길이로 녹음된 객체로
                     //item 프레임을 읽어온다.
                     slider.value = item.GetFrame();
-                    //슬라이더의 최대길이는 플레이 레코더의 길이만큼!
+                    //슬라이더의 최대길이는 녹화된 길이만큼
                     slider.maxValue = item.Lenght;
                 }
 
                 if (Game.Game_Mode == Game.Game_Modes.REPLAY)
                 {
-                    Debug.Log("리플레이");
-                    //다시 처음부터 시작할 수 있게
-                    item.SetFrame(-1);
+                    Debug.Log("RM 리플레이 모드");
 
-                    
+                    //재생 되는 중에 replay모드면 처음부터 시작할 수 있게
+                    item.SetFrame(-1);
                 }
 
-                //나갈때는 길이의 -2을 해준다. //Get_Frame()에서 frame_index++ 해주기 때문에
                 if (Game.Game_Mode == Game.Game_Modes.Exit)
                 {
+                    //녹화된 길이에서 -2 뺀 값을 쓰기
+                    //Get_Frame()에서 frame_index++ 해주기 때문에
                     item.SetFrame(item.Lenght - 2);
-                    Debug.Log("나가기");
+                    Debug.Log("RM Exit 모드");
                 }
 
-                //기본 나가기 하면 원래 녹화중
-                /*if (item.Lenght > 0)
-                {
-                    item.Play();
-                    Debug.Log("녹화중");
-                }*/
-                
                 item.Play();
             }
         }
@@ -158,7 +181,14 @@ public class ReplayManager : MonoBehaviour
         if(Game.Game_Mode == Game.Game_Modes.Exit)
         {
             //Game.Game_Mode = Game.Game_Modes.RECORD;
-            //시간 멈추기
+
+            //게임 진행
+            Time.timeScale = 1;
+        }
+
+        //녹화중
+        if(Game.Game_Mode == Game.Game_Modes.RECORD)
+        {
             Time.timeScale = 1;
         }
     }
@@ -237,7 +267,7 @@ public class ReplayManager : MonoBehaviour
     }
     #endregion
 
-    //레코더들을 List에 담기
+    //ReplayRecord 시작 할 때 자기 담음.
     public void AddRecord(ReplayRecord rec)
     {
         replay_records.Add(rec);
@@ -247,7 +277,8 @@ public class ReplayManager : MonoBehaviour
     public void Pause()
     {
         Game.Game_Mode = Game.Game_Modes.PAUSE;
-        //시간 멈추기
+
+        //시간 멈추기 -> 현재 프레임으로 멈추기?
         Time.timeScale = 0;
     }
 
@@ -255,7 +286,8 @@ public class ReplayManager : MonoBehaviour
     public void Play()
     {
         Game.Game_Mode = Game.Game_Modes.PLAY;
-        //시간 멈추기
+        
+        //게임 진행
         Time.timeScale = 1;
     }
 
@@ -263,18 +295,14 @@ public class ReplayManager : MonoBehaviour
     public void Replay()
     {
         Game.Game_Mode = Game.Game_Modes.REPLAY;
-        //시간 멈추기
+        
+        //게임 진행
         Time.timeScale = 1;
     }
 
     //녹화
     public void Exit()
     {
-        //이전 -> Update문에서 해줘야 함.
-        /* Game.Game_Mode = Game.Game_Modes.RECORD;
-        //시간 멈추기
-        Time.timeScale = 1;*/
-
         Game.Game_Mode = Game.Game_Modes.Exit;
     }
 
@@ -282,7 +310,6 @@ public class ReplayManager : MonoBehaviour
     public void Rec()
     {
         Game.Game_Mode = Game.Game_Modes.RECORD;
-        Time.timeScale = 1;
     }
 
     //슬라이더 클릭했을때 Pointer Down
@@ -300,31 +327,3 @@ public class ReplayManager : MonoBehaviour
     }
 }
 
-public static class Game
-{
-    public static Game_Modes Game_mode;
-
-    public enum Game_Modes
-    {
-        PLAY,//재생
-        PAUSE, //멈춤
-        RECORD, //녹음
-        REPLAY, //리플레이
-        Slider, //슬라이더
-        Exit, //나가기
-        IDLE
-    }
-
-    public static Game_Modes Game_Mode
-    {
-        get
-        {
-            return Game_mode;
-        }
-
-        set
-        {
-            Game_mode = value;
-        }
-    }
-}
