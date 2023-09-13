@@ -3747,7 +3747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a37b4585b9c334c90baa48d7b480ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_length: 1000
+  max_length: 3600
   slider: {fileID: 609912344}
   kameralar:
   - {fileID: 963194227}
@@ -4660,7 +4660,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -103.6, y: -344.045}
+  m_AnchoredPosition: {x: -103.6001, y: -344.04492}
   m_SizeDelta: {x: 207.2, y: -688.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1712172098
