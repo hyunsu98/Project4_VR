@@ -119,12 +119,15 @@ public class ReplayManager_Ver2 : MonoBehaviour
 
             //저장된 리스트의 0번째부터
             PlayerInfo info = loadList[i].playerJsonList[loadIndex];
+
             unit[i].transform.position = info.pos;
             unit[i].transform.rotation = info.rot;
 
             if(i == unit.Length - 1 && curTime >= info.time)
             {
                 loadIndex++;
+
+                Debug.Log($"읽을인덱스 {loadIndex} , list 카운트 수 {loadList[i].playerJsonList.Count}");
 
                 if(loadIndex >= loadList[i].playerJsonList.Count)
                 {
@@ -169,6 +172,7 @@ public class ReplayManager_Ver2 : MonoBehaviour
     // 녹화 시작
     public void OnRecordStart(int who)
     {
+        print("녹화시작" + who);
         this.who = who;
         isRecord = true;
         //처음부터 녹화
@@ -177,6 +181,8 @@ public class ReplayManager_Ver2 : MonoBehaviour
 
     public void OnRecordEnd()
     {
+        print("녹화종료" + who);
+
         isRecord = false;
 
         //파일 쓰기
@@ -187,8 +193,9 @@ public class ReplayManager_Ver2 : MonoBehaviour
 
     public void OnRecordPlay()
     {
+        print("리플레이");
 
-        if(isRecord)
+        if (isRecord)
         {
             OnRecordEnd();
         }
