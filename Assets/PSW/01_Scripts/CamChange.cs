@@ -16,7 +16,7 @@ public class CamChange : MonoBehaviour
 
         // 카메라를 Player1의 자식 오브젝트로 만듭니다.
         transform.SetParent(player1);
-        transform.localPosition = Vector3.zero; // 카메라의 로컬 위치를 원점(0, 0, 0)으로 설정
+        //transform.localPosition =  // 카메라의 로컬 위치를 원점(0, 0, 0)으로 설정
     }
 
     void Update()
@@ -29,7 +29,7 @@ public class CamChange : MonoBehaviour
 
             // 카메라의 부모를 변경하여 현재 대상의 자식으로 만듭니다.
             transform.SetParent(currentTarget);
-            transform.localPosition = Vector3.zero; // 로컬 위치를 원점으로 설정
+            //transform.localPosition = Vector3.zero; // 로컬 위치를 원점으로 설정
         }
     }
 }
