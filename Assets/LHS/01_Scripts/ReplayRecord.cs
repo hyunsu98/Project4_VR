@@ -13,7 +13,7 @@ public class ReplayRecord : MonoBehaviour
 
     //재생될 애니메이터 , ※ 리지드 바디, 오디오 소스 
     [SerializeField] Animator anim;
-    
+
     //녹음된 프레임 목록 (전체, 애니메이션)
     List<Frame> frames;
     List<AnimationRecord> anim_records;
@@ -30,14 +30,14 @@ public class ReplayRecord : MonoBehaviour
     void Start()
     {
         //동적으로 넣기
-        if(replayManager == null)
+        if (replayManager == null)
         {
             replayManager = GameObject.Find(replayManagerName).GetComponent<ReplayManager>();
         }
 
         anim = GetComponentInChildren<Animator>();
 
-        if(replayManager != null) //-> 나중에 녹화 버튼 눌렀을때
+        if (replayManager != null) //-> 나중에 녹화 버튼 눌렀을때
         {
             //시작하면 replaymanager list에 저장
             replayManager.AddRecord(this);
@@ -49,49 +49,57 @@ public class ReplayRecord : MonoBehaviour
             frames = new List<Frame>();
         }
     }
+    float curTime;
+    float saveTime = 1/10f;
 
     void Update()
     {
+        curTime += Time.deltaTime;
+
+        if (Game.Game_Mode == Game.Game_Modes.RECORD)
         // 녹화 모드일 때
-        if(Game.Game_Mode == Game.Game_Modes.RECORD)
         {
-            #region 애니메이션
-            //왜 얘는 Update문에서 할까?
-            //anim_records = new List<AnimationRecord>();
-
-            //※ 애니메이션 오류생김
-            //애니메이션이 null이 아니라면
-            /*if (anim != null)
+            if (curTime > saveTime)
             {
-                //※ 배열의 반복문 -> 현재 파라미터의 이름을 넣는다.
-                foreach (AnimatorControllerParameter item in anim.parameters)
+                #region 애니메이션
+                //왜 얘는 Update문에서 할까?
+                //anim_records = new List<AnimationRecord>();
+
+                //※ 애니메이션 오류생김
+                //애니메이션이 null이 아니라면
+                /*if (anim != null)
                 {
-                    string name = item.name;
-
-                    //만약 아이템 타입이 애니메이션 컨트롤러 파라미터 bool과 같으면 
-                    if (item.type == AnimatorControllerParameterType.Bool)
+                    //※ 배열의 반복문 -> 현재 파라미터의 이름을 넣는다.
+                    foreach (AnimatorControllerParameter item in anim.parameters)
                     {
-                        //생성해서 넣어줘야 한다. //item.defaultBool 기본 bool 값?
-                        anim_records.Add(new AnimationRecord(name, anim.GetBool(name), item.type));
+                        string name = item.name;
+
+                        //만약 아이템 타입이 애니메이션 컨트롤러 파라미터 bool과 같으면 
+                        if (item.type == AnimatorControllerParameterType.Bool)
+                        {
+                            //생성해서 넣어줘야 한다. //item.defaultBool 기본 bool 값?
+                            anim_records.Add(new AnimationRecord(name, anim.GetBool(name), item.type));
+                        }
+
+                        if (item.type == AnimatorControllerParameterType.Float)
+                        {
+                            anim_records.Add(new AnimationRecord(name, anim.GetFloat(name), item.type));
+                        }
+
+                        if (item.type == AnimatorControllerParameterType.Int)
+                        {
+                            anim_records.Add(new AnimationRecord(name, anim.GetInteger(name), item.type));
+                        }
                     }
+                }*/
+                #endregion
+                saveTime = curTime + 0.1f;
 
-                    if (item.type == AnimatorControllerParameterType.Float)
-                    {
-                        anim_records.Add(new AnimationRecord(name, anim.GetFloat(name), item.type));
-                    }
+                Frame frame = new Frame(this.gameObject, transform.position, transform.rotation, transform.localScale, anim_records);
+                AddFrame(frame);
 
-                    if (item.type == AnimatorControllerParameterType.Int)
-                    {
-                        anim_records.Add(new AnimationRecord(name, anim.GetInteger(name), item.type));
-                    }
-                }
-            }*/
-            #endregion
-
-            Frame frame = new Frame(this.gameObject, transform.position, transform.rotation, transform.localScale, anim_records);
-            AddFrame(frame);
-
-            //Debug.Log("녹화모드" + length);
+                //Debug.Log("녹화모드" + length);
+            }
         }
     }
 
@@ -101,7 +109,7 @@ public class ReplayRecord : MonoBehaviour
     void AddFrame(Frame frm)
     {
         //녹화 공간 남아있음
-        if(length <= max_lenght)
+        if (length <= max_lenght)
         {
             //프레임을 더해준다
             frames.Add(frm);
@@ -117,7 +125,7 @@ public class ReplayRecord : MonoBehaviour
         {
             Debug.Log("녹화 종료");
             //다시 3인칭 시점으로 바뀌어야 함.
-            
+
             //방법2
             //RemoveAt(index) 해당 인덱스에 있는 것을 제거
             /*frames.RemoveAt(0);
@@ -136,13 +144,17 @@ public class ReplayRecord : MonoBehaviour
         Frame frm;
 
         //frm이 Get_Frame()일때 null이 아니라면 [frm = Get_Frame() -> 현재 프레임의 위치]
-        if((frm = Get_Frame()) != null)
+        if ((frm = Get_Frame()) != null)
         {
             Debug.Log("RR 리플레이 모드.");
 
             transform.position = frm.Position;
             transform.rotation = frm.Rotation;
             transform.localScale = frm.Scale;
+
+            //transform.position = Vector3.Lerp(transform.position, frm.Position, Time.deltaTime * 10);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, frm.Rotation, Time.deltaTime * 10);
+            //transform.localScale = Vector3.Lerp(transform.localScale, frm.Scale, Time.deltaTime * 10);
 
             #region 애니메이션
             /*foreach (var item in frm.Animation_Records)
@@ -186,7 +198,6 @@ public class ReplayRecord : MonoBehaviour
     {
         Debug.Log("RR 리플레이 - getFrame");
 
-        //0부터 시작
         frame_index++;
 
         //만약게임 멈춤이라면
@@ -206,7 +217,7 @@ public class ReplayRecord : MonoBehaviour
         }
 
         //현재프레임이 녹화된 길이보다 크거나 같으면
-        if (frame_index > length)
+        if (frame_index >= length)
         {
             Debug.Log("재생 다 됨");
 
@@ -230,17 +241,17 @@ public class ReplayRecord : MonoBehaviour
             return null;
         }
 
-        Debug.Log($"현재 프레임 {frame_index} / 최대 길이 {max_lenght} / 녹화된 길이 {length}");
+        Debug.Log($"{gameObject.name} 정보 : 현재 프레임 {frame_index} / 최대 길이 {max_lenght} / 녹화된 길이 {length}");
 
         return frames[frame_index];
-}
+    }
 
     //현재 프레임 쓰고 얻기
     public void SetFrame(int value)
     {
         frame_index = value;
     }
-    
+
     //프레임인덱스 넘겨주기 -> 현재 프레임의 위치를 넘겨주기 위해
     public int GetFrame()
     {

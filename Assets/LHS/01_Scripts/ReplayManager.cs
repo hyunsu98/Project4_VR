@@ -58,12 +58,18 @@ public class ReplayManager : MonoBehaviour
 
     public Canvas cnvs;
 
-    //Start하면 오류 되서 생성자에서?
+    //Start하면 오류 되서 생성자에서? -> Awake
     public ReplayManager()
+    {
+        
+    }
+
+    public void Awake()
     {
         replay_records = new List<ReplayRecord>();
 
         //시작할때 녹화모드 -> 버튼을 누르면 실행될 수 있게 함
+        Game.Game_Mode = Game.Game_Modes.IDLE;
 
         //처음은 컨트롤러 false;
         slider_controlling = false;
@@ -127,8 +133,8 @@ public class ReplayManager : MonoBehaviour
             }
         }
 
-        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때)
-        if (Game.Game_Mode != Game.Game_Modes.RECORD)
+        //게임모드가 레코드가 아니라면 플레이 가능 (녹화중이 아닐 때) Game.Game_Mode != Game.Game_Modes.RECORD
+        if (Game.Game_Mode == Game.Game_Modes.REPLAY || Game.Game_Mode == Game.Game_Modes.PLAY)
         {
             // 리플레이 , 플레이 모드 일때 
             Debug.Log("현재 게임 모드" + Game.Game_Mode);
@@ -158,6 +164,7 @@ public class ReplayManager : MonoBehaviour
 
                     //재생 되는 중에 replay모드면 처음부터 시작할 수 있게
                     item.SetFrame(-1);
+                    item.Play();
                 }
 
                 if (Game.Game_Mode == Game.Game_Modes.Exit)
