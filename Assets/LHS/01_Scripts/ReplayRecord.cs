@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,11 +49,11 @@ public class ReplayRecord : MonoBehaviour
         }
     }
     float curTime;
-    float saveTime = 1/10f;
+    float saveTime = 1 / 10f;
 
     void Update()
     {
-        curTime += Time.deltaTime;
+        /*curTime += Time.deltaTime;
 
         if (Game.Game_Mode == Game.Game_Modes.RECORD)
         // 녹화 모드일 때
@@ -67,7 +66,7 @@ public class ReplayRecord : MonoBehaviour
 
                 //※ 애니메이션 오류생김
                 //애니메이션이 null이 아니라면
-                /*if (anim != null)
+                *//*if (anim != null)
                 {
                     //※ 배열의 반복문 -> 현재 파라미터의 이름을 넣는다.
                     foreach (AnimatorControllerParameter item in anim.parameters)
@@ -91,7 +90,7 @@ public class ReplayRecord : MonoBehaviour
                             anim_records.Add(new AnimationRecord(name, anim.GetInteger(name), item.type));
                         }
                     }
-                }*/
+                }*//*
                 #endregion
                 saveTime = curTime + 0.1f;
 
@@ -100,6 +99,49 @@ public class ReplayRecord : MonoBehaviour
 
                 //Debug.Log("녹화모드" + length);
             }
+        }*/
+
+        if (Game.Game_Mode == Game.Game_Modes.RECORD)
+        // 녹화 모드일 때
+        {
+            #region 애니메이션
+            //왜 얘는 Update문에서 할까?
+            //anim_records = new List<AnimationRecord>();
+
+            //※ 애니메이션 오류생김
+            //애니메이션이 null이 아니라면
+            /*if (anim != null)
+            {
+                //※ 배열의 반복문 -> 현재 파라미터의 이름을 넣는다.
+                foreach (AnimatorControllerParameter item in anim.parameters)
+                {
+                    string name = item.name;
+
+                    //만약 아이템 타입이 애니메이션 컨트롤러 파라미터 bool과 같으면 
+                    if (item.type == AnimatorControllerParameterType.Bool)
+                    {
+                        //생성해서 넣어줘야 한다. //item.defaultBool 기본 bool 값?
+                        anim_records.Add(new AnimationRecord(name, anim.GetBool(name), item.type));
+                    }
+
+                    if (item.type == AnimatorControllerParameterType.Float)
+                    {
+                        anim_records.Add(new AnimationRecord(name, anim.GetFloat(name), item.type));
+                    }
+
+                    if (item.type == AnimatorControllerParameterType.Int)
+                    {
+                        anim_records.Add(new AnimationRecord(name, anim.GetInteger(name), item.type));
+                    }
+                }
+            }*/
+            #endregion
+
+            Frame frame = new Frame(this.gameObject, transform.position, transform.rotation, transform.localScale, anim_records);
+            AddFrame(frame);
+
+            //Debug.Log("녹화모드" + length);
+
         }
     }
 
