@@ -164,7 +164,7 @@ public class ReplayManager : MonoBehaviour
 
                     //재생 되는 중에 replay모드면 처음부터 시작할 수 있게
                     item.SetFrame(-1);
-                    item.Play();
+                    //item.Play();
                 }
 
                 if (Game.Game_Mode == Game.Game_Modes.Exit)
