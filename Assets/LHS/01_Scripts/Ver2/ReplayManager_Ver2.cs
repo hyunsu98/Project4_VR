@@ -118,8 +118,8 @@ public class ReplayManager_Ver2 : MonoBehaviour
         //리플레이중
         else if(isReplay)
         {
-            Replaying();
-            //ReplayingPlay1(who);
+            //Replaying();
+            ReplayingPlay1(who);
         }
     }
 
