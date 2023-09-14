@@ -13,10 +13,10 @@ public class PlayerRotation : MonoBehaviour
         Vector3 vector3;
         //그 변수에 나의 위치를 넣는다.
         vector3 = transform.localPosition;
-        //만든 변수의 x 값은 vrCamera 의 x 값으로 한다.
-        vector3.x = vrCamera.position.x;
-        //만든 변수의 z 값은 vrCamera 의 z 값으로 한다.
-        vector3.z = vrCamera.position.z;
+        ////만든 변수의 x 값은 vrCamera 의 x 값으로 한다.
+        //vector3.x = vrCamera.position.x;
+        ////만든 변수의 z 값은 vrCamera 의 z 값으로 한다.
+        //vector3.z = vrCamera.position.z;
         //나의 위치를 만든변수로 셋팅한다.
         transform.position = vector3;
 
