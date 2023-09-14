@@ -28,21 +28,21 @@ public class PlayerVRCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //// G키를 누르면 플레이어 교환
-        //if (Input.GetKeyDown(KeyCode.G))
-        //{
-        //    if(isPlayerActive)
-        //    {
-        //        SetActivePlayer(tr1.transform);
-        //    }
-        //    else
-        //    {
-        //        SetActivePlayer(tr2.transform);
-        //    }
+        // G키를 누르면 플레이어 교환
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (isPlayerActive)
+            {
+                SetActivePlayer(tr1.transform);
+            }
+            else
+            {
+                SetActivePlayer(tr2.transform);
+            }
 
-        //    // 플레이어 교환 후 상태 변경
-        //    isPlayerActive = !isPlayerActive;
-        //}
+            // 플레이어 교환 후 상태 변경
+            isPlayerActive = !isPlayerActive;
+        }
     }
 
     // 주어진 플레이어를 활성화하고 카메라를 해당 위치로 이동
