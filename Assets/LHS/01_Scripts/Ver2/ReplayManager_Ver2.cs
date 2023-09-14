@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//저장되야할 정보 : 오브젝트이름, 시간, 위치, 회전, 팔 위치, 음성파일
+/*//저장되야할 정보 : 오브젝트이름, 시간, 위치, 회전, 팔 위치, 음성파일
 [System.Serializable]
 public class PlayerInfo
 {
@@ -48,10 +48,10 @@ public class PlayerJsonList<T>
 {
     public List<T> playerJsonList;
 }
-/*public class PlayerJsonList<PlayerInfo>
+*//*public class PlayerJsonList<PlayerInfo>
 {
     public List<PlayerInfo> list;
-}*/
+}*//*
 
 [Serializable]
 public class UnitInfo
@@ -64,7 +64,7 @@ public class UnitInfo
 
 
 
-}
+}*/
 
 public class ReplayManager_Ver2 : MonoBehaviour
 {
