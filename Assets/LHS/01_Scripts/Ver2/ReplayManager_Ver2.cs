@@ -53,6 +53,16 @@ public class PlayerJsonList<T>
     public List<PlayerInfo> list;
 }*/
 
+[Serializable]
+public class UnitInfo
+{
+    public GameObject unit;
+    public PlayerJsonList<PlayerInfo> loadInfo;
+    public int unitLoadIndex;
+    public float curTime;
+    public bool play;
+}
+
 public class ReplayManager_Ver2 : MonoBehaviour
 {
     //녹화여부
@@ -79,6 +89,8 @@ public class ReplayManager_Ver2 : MonoBehaviour
     //녹화된 객체들을 불러올 List
     List<PlayerJsonList<PlayerInfo>> loadList;
 
+    public List<UnitInfo> unitList = new List<UnitInfo>();
+
     private void Start()
     {
         // 시작할 때 녹화중 아님
@@ -104,36 +116,80 @@ public class ReplayManager_Ver2 : MonoBehaviour
         else if(isReplay)
         {
             Replaying();
+            //ReplayingPlay1(who);
         }
     }
 
+    float time;
     //리플레이
     private void Replaying()
     {
-        curTime += Time.deltaTime;
+        //curTime += Time.deltaTime;
 
         //재생 될 객체의 수만큼 반복한다.
-        for (int i = 0; i < unit.Length; i++)
+        for (int i = 0; i < unitList.Count; i++)
         {
             Debug.Log(unit.Length);
 
+            unitList[i].curTime += Time.deltaTime;
+
             //저장된 리스트의 0번째부터
-            PlayerInfo info = loadList[i].playerJsonList[loadIndex];
+            //PlayerInfo info = loadList[i].playerJsonList[loadIndex];
+            PlayerInfo info = unitList[i].loadInfo.playerJsonList[unitList[i].unitLoadIndex];
 
-            unit[i].transform.position = info.pos;
-            unit[i].transform.rotation = info.rot;
+            //플레이 
+            /*unitList[i].unit.transform.position = info.pos;
+            unitList[i].unit.transform.rotation = info.rot;*/
 
-            if(i == unit.Length - 1 && curTime >= info.time)
+            unit[i].transform.position = Vector3.Lerp(transform.position, info.pos, 1);
+            unit[i].transform.rotation = Quaternion.Lerp(transform.rotation, info.rot, 1);
+
+            if (unitList[i].curTime >= info.time) //i == unitList.Count && curTime >= info.time
             {
-                loadIndex++;
+                print("시간" + info.time);
+                //각 객체의 인덱스 길이만큼 추가해야 한다.
+                //loadIndex++;
+                unitList[i].unitLoadIndex++;
 
-                Debug.Log($"읽을인덱스 {loadIndex} , list 카운트 수 {loadList[i].playerJsonList.Count}");
+                Debug.Log($"객체 이름 {unitList[i].unit},  읽을인덱스 {unitList[i].unitLoadIndex} , list 카운트 수 {unitList[i].loadInfo.playerJsonList.Count}");
 
-                if(loadIndex >= loadList[i].playerJsonList.Count)
+                if (unitList[i].unitLoadIndex >= unitList[i].loadInfo.playerJsonList.Count)
                 {
                     isReplay = false;
-                    print("Stop");
+                    print("Stop" + unitList[i].loadInfo.playerJsonList.Count);
                 }
+            }
+        }
+    }
+
+    private void ReplayingPlay1(int who)
+    {
+        curTime += Time.deltaTime;
+
+        //저장된 리스트의 0번째부터
+        //PlayerInfo info = loadList[i].playerJsonList[loadIndex];
+        PlayerInfo info = unitList[who].loadInfo.playerJsonList[unitList[who].unitLoadIndex];
+
+        //플레이 
+        /*unitList[i].unit.transform.position = info.pos;
+        unitList[i].unit.transform.rotation = info.rot;*/
+
+        unit[who].transform.position = Vector3.Lerp(transform.position, info.pos, 1);
+        unit[who].transform.rotation = Quaternion.Lerp(transform.rotation, info.rot, 1);
+
+        if (curTime >= info.time) //i == unitList.Count && curTime >= info.time
+        {
+            print("시간" + info.time);
+            //각 객체의 인덱스 길이만큼 추가해야 한다.
+            //loadIndex++;
+            unitList[who].unitLoadIndex++;
+
+            Debug.Log($"객체 이름 {unitList[who].unit},  읽을인덱스 {unitList[who].unitLoadIndex} , list 카운트 수 {unitList[who].loadInfo.playerJsonList.Count}");
+
+            if (unitList[who].unitLoadIndex >= unitList[who].loadInfo.playerJsonList.Count)
+            {
+                isReplay = false;
+                print("Stop" + unitList[who].loadInfo.playerJsonList.Count);
             }
         }
     }
@@ -175,6 +231,7 @@ public class ReplayManager_Ver2 : MonoBehaviour
         print("녹화시작" + who);
         this.who = who;
         isRecord = true;
+        
         //처음부터 녹화
         saveList.playerJsonList.Clear();
     }
@@ -185,9 +242,10 @@ public class ReplayManager_Ver2 : MonoBehaviour
 
         isRecord = false;
 
+        //파일이 있으면 ?
+
         //파일 쓰기
         string json = JsonUtility.ToJson(saveList, true);
-
         File.WriteAllText(Application.dataPath + "/save" + who + ".txt", json);
     }
 
@@ -201,16 +259,44 @@ public class ReplayManager_Ver2 : MonoBehaviour
         }
         isReplay = true;
 
-        for(int i = 0; i < unit.Length; i++)
+        for(int i = 0; i < unitList.Count; i++)
         {
             string json = File.ReadAllText(Application.dataPath + "/save" + i + ".txt");
 
             var jsonList = JsonUtility.FromJson<PlayerJsonList<PlayerInfo>>(json);
+            
             loadList.Add(jsonList);
+
+            unitList[i].loadInfo = jsonList;
+            unitList[i].unitLoadIndex = 0;
         }
 
-        loadIndex = 0;
+        //loadIndex = 0;
         curTime = 0;
+    }
 
+    public void OnRecordPlay2(int who)
+    {
+        print("리플레이");
+
+        if (isRecord)
+        {
+            OnRecordEnd();
+        }
+
+        this.who = who;
+        isReplay = true;
+
+        string json = File.ReadAllText(Application.dataPath + "/save" + who + ".txt");
+
+        var jsonList = JsonUtility.FromJson<PlayerJsonList<PlayerInfo>>(json);
+
+        loadList.Add(jsonList);
+
+        unitList[who].loadInfo = jsonList;
+        unitList[who].unitLoadIndex = 0;
+
+        //loadIndex = 0;
+        curTime = 0;
     }
 }
