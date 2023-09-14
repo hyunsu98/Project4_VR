@@ -17,17 +17,24 @@ public class PlayerMove : MonoBehaviour
     public RigBuilder rigBuilder;
 
     //이동해야 하는 Player
-    public Transform targetPlayer; 
+    public Transform targetPlayer;
 
-    void Start()
-    {
-
-    }
+    public Transform player;
 
     void Update()
     {
+        // 카메라 위치 셋팅
         Vector3 offset = trEye.position - trCenterEye.position;
         trOvrRig.position += offset;
+
+        // Vr 카메라의 위치와 회전을 플레이어에 적용
+        //나의 자식으로 있는 플레이어로 계속 바뀌어야 함.
+        CharacterModel myPlayer = transform.GetComponentInChildren<CharacterModel>();
+
+        Quaternion newRotation = Quaternion.Euler(0, trCenterEye.rotation.eulerAngles.y, 0);
+        myPlayer.transform.rotation = newRotation;
+
+        // 플레이어 교체 코드
         if (Input.GetKeyDown(KeyCode.G))
         {
             //rigBuilder 를 비활성화
