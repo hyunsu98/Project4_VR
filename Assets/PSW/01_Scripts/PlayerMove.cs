@@ -21,6 +21,8 @@ public class PlayerMove : MonoBehaviour
 
     public Transform player;
 
+    public CharacterModel myPlayer;
+
     void Update()
     {
         // 카메라 위치 셋팅
@@ -29,7 +31,6 @@ public class PlayerMove : MonoBehaviour
 
         // Vr 카메라의 위치와 회전을 플레이어에 적용
         //나의 자식으로 있는 플레이어로 계속 바뀌어야 함.
-        CharacterModel myPlayer = transform.GetComponentInChildren<CharacterModel>();
 
         Quaternion newRotation = Quaternion.Euler(0, trCenterEye.rotation.eulerAngles.y, 0);
         myPlayer.transform.rotation = newRotation;
