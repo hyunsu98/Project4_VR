@@ -61,6 +61,7 @@ public class PlayerMove : MonoBehaviour
 
             //rigBuilder 를 이용해서 부모로부터 나가자
             rigBuilder.transform.SetParent(null);
+
             //나의 위치를 targetPlayer 의 위치로 하자
             transform.position = targetPlayer.position;
             //나의 각도를 targetPlayer 의 각도로 하자
@@ -69,7 +70,6 @@ public class PlayerMove : MonoBehaviour
             CharacterModel cm = targetPlayer.GetComponent<CharacterModel>();
 
             cm.enabled = true;
-
             //trEye 에 가져온 컴포넌트의 trEye 를 셋팅
             trEye = cm.trEye;
 
