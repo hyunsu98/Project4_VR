@@ -28,6 +28,10 @@ public class PlayerRecord : MonoBehaviour
 
     public List<UnitInfo> unitList = new List<UnitInfo>();
 
+    //팔 오브젝트
+    LHandTarget lHand;
+    RHandTarget rHand;
+
     private void Start()
     {
         // 시작할 때 녹화중 아님
@@ -40,6 +44,9 @@ public class PlayerRecord : MonoBehaviour
 
         //불러올 List
         loadList = new PlayerJsonList<PlayerInfo>();
+
+        lHand = transform.GetComponentInChildren<LHandTarget>();
+        rHand = transform.GetComponentInChildren<RHandTarget>();
     }
 
     private void Update()
@@ -70,6 +77,12 @@ public class PlayerRecord : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, info.pos, 1);
         transform.rotation = Quaternion.Lerp(transform.rotation, info.rot, 1);
+
+        lHand.transform.position = info.leftHand.pos;
+        lHand.transform.rotation = info.leftHand.rot;
+
+        rHand.transform.position = info.rightHand.pos;
+        rHand.transform.rotation = info.rightHand.rot;
 
         if (curTime >= info.time) //i == unitList.Count && curTime >= info.time
         {
@@ -106,14 +119,27 @@ public class PlayerRecord : MonoBehaviour
     //저장
     private void SavePlayerInfo()
     {
+        LeftHandInfo leftHandInfo = new LeftHandInfo()
+        {
+            pos = lHand.transform.position,
+            rot = lHand.transform.rotation
+        };
+
+        RightHandInfo rightHandInfo = new RightHandInfo()
+        {
+            pos = rHand.transform.position,
+            rot = rHand.transform.rotation
+        };
+
         PlayerInfo info = new PlayerInfo()
         {
             name = gameObject.name,
             time = totalTime,
             pos = transform.position,
             rot = transform.rotation,
-            leftHand = null,
-            rightHand = null
+
+            leftHand = leftHandInfo,
+            rightHand = rightHandInfo
         };
 
         saveList.playerJsonList.Add(info);
@@ -128,6 +154,21 @@ public class PlayerRecord : MonoBehaviour
 
         //처음부터 녹화
         saveList.playerJsonList.Clear();
+
+        //내 녹화할 때 재생될 플레이어가 있으면 
+        if (ReplaySet.instance.isPlay)
+        {
+            if (ReplaySet.instance.unit.Count > 0)
+            {
+                ReplaySet.instance.OnRecordPlay();
+                print("녹화될 재생플레이어가 있다");
+            }
+        }
+
+        else
+        {
+            print("녹화될 재생플레이어가 없다");
+        }
     }
 
 

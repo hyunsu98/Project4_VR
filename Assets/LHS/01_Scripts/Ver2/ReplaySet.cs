@@ -11,6 +11,8 @@ public class ReplaySet : MonoBehaviour
     //게임오브젝트
     public List<GameObject> unit;
 
+    public bool isPlay;
+
     private void Awake()
     {
         if(instance == null)
@@ -35,6 +37,7 @@ public class ReplaySet : MonoBehaviour
             for (int i = 0; i < unit.Count; i++)
             {
                 unit[i].GetComponent<PlayerRecord>().OnRecordPlay();
+                isPlay = false;
             }
 
             print(unit.Count);

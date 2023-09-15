@@ -18,7 +18,7 @@ public class PlayerInfo
     //HandAnchor ÆÈ À§Ä¡ (¿ÞÆÈ / ¿À¸¥ÆÈ)
     public LeftHandInfo leftHand;
 
-    public LeftHandInfo rightHand;
+    public RightHandInfo rightHand;
 }
 
 //¿ÞÆÈ
