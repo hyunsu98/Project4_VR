@@ -21,6 +21,12 @@ public class RecSet : MonoBehaviour
 
     //녹화 시작
     //자식 객체의 player
+
+    public void Update()
+    {
+      
+    }
+
     public void OnRecordStart()
     {
         //자식에 붙어있는 플레이어의 녹화컴포넌트를 가져온다.

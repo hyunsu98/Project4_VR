@@ -17,17 +17,19 @@ public class LHandTarget : MonoBehaviour
     void Update()
     {
         //녹화중일때
-        if(isTargeting)
+        if (isTargeting)
         {
             //저장되어야 할 포지션
             transform.position = target.transform.position;
             transform.rotation = target.transform.rotation;
         }
-        
+
         //녹화중 아닐때
         else
         {
-            
+
         }
     }
 }
+
+

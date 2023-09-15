@@ -160,7 +160,7 @@ public class PlayerRecord : MonoBehaviour
         {
             if (ReplaySet.instance.unit.Count > 0)
             {
-                ReplaySet.instance.OnRecordPlay();
+                ReplaySet.instance.OnAutoReplayForRecording(this);
                 print("녹화될 재생플레이어가 있다");
             }
         }
@@ -181,9 +181,6 @@ public class PlayerRecord : MonoBehaviour
         //파일 쓰기
         string json = JsonUtility.ToJson(saveList, true);
         File.WriteAllText(Application.dataPath + "/save" + gameObject.name + ".txt", json);
-
-        //녹화종료 후 리플레이 대상에 추가
-        ReplaySet.instance.unit.Add(this.gameObject);
     }
 
     public void OnRecordPlay()
@@ -196,6 +193,7 @@ public class PlayerRecord : MonoBehaviour
         }
 
         isReplay = true;
+        isRecord = false;
 
         string json = File.ReadAllText(Application.dataPath + "/save" + gameObject.name + ".txt");
 
