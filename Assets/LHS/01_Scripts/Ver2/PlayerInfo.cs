@@ -1,15 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using System;
 
-//저장되야할 정보 : 오브젝트이름, 시간, 위치, 회전, 팔 위치, 음성파일
+//저장되야할 정보 : 오브젝트이름, 시간, 위치, 회전, 팔 위치, ++ 음성파일 , 이벤트 발생시점
 [Serializable]
 public class PlayerInfo
 {
     //이름
-    public GameObject gameObject;
+    public string name;
     //시간
     public float time;
     //위치
@@ -20,7 +18,7 @@ public class PlayerInfo
     //HandAnchor 팔 위치 (왼팔 / 오른팔)
     public LeftHandInfo leftHand;
 
-    public LeftHandInfo rightHand;
+    public RightHandInfo rightHand;
 }
 
 //왼팔
@@ -46,6 +44,9 @@ public class PlayerJsonList<T>
     public List<T> playerJsonList;
 }
 
+//※ 추후 사운드
+
+//리플레이 될 객체들
 [Serializable]
 public class UnitInfo
 {
@@ -58,5 +59,3 @@ public class UnitInfo
     //로드 될 시간
     public float curTime;
 }
-
-//※ 추후 사운드
