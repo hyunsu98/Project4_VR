@@ -28,7 +28,6 @@ public class PlayerRecord : MonoBehaviour
 
     public List<UnitInfo> unitList = new List<UnitInfo>();
 
-
     private void Start()
     {
         // 시작할 때 녹화중 아님
@@ -78,7 +77,7 @@ public class PlayerRecord : MonoBehaviour
             //각 객체의 인덱스 길이만큼 추가해야 한다.
             loadIndex++;
 
-            Debug.Log($"객체 이름 {info.gameObject},  읽을인덱스 {loadIndex} , list 카운트 수 {saveList.playerJsonList.Count}");
+            Debug.Log($"객체 이름 {info.name},  읽을인덱스 {loadIndex} , list 카운트 수 {saveList.playerJsonList.Count}");
 
             if (loadIndex >= saveList.playerJsonList.Count)
             {
@@ -109,6 +108,7 @@ public class PlayerRecord : MonoBehaviour
     {
         PlayerInfo info = new PlayerInfo()
         {
+            name = gameObject.name,
             time = totalTime,
             pos = transform.position,
             rot = transform.rotation,
@@ -123,7 +123,7 @@ public class PlayerRecord : MonoBehaviour
     // 녹화 시작
     public void OnRecordStart()
     {
-        print("녹화시작");
+        Debug.Log(gameObject.name + "녹화시작");
         isRecord = true;
 
         //처음부터 녹화
@@ -133,13 +133,16 @@ public class PlayerRecord : MonoBehaviour
 
     public void OnRecordEnd()
     {
-        print("녹화종료");
+        Debug.Log(gameObject.name + "녹화종료");
 
         isRecord = false;
 
         //파일 쓰기
         string json = JsonUtility.ToJson(saveList, true);
         File.WriteAllText(Application.dataPath + "/save" + gameObject.name + ".txt", json);
+
+        //녹화종료 후 리플레이 대상에 추가
+        ReplaySet.instance.unit.Add(this.gameObject);
     }
 
     public void OnRecordPlay()

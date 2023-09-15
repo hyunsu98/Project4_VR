@@ -61,9 +61,6 @@ public class UnitInfo
     public int unitLoadIndex;
     public float curTime;
     public bool play;
-
-
-
 }*/
 
 public class ReplayManager_Ver2 : MonoBehaviour
