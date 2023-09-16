@@ -6,12 +6,18 @@ using UnityEngine;
 public class LHandTarget : MonoBehaviour
 {
     public Transform target;
+    public Transform idle;
 
     public bool isTargeting;
 
     void Start()
     {
-        
+        //시작할때 손 셋팅
+        if(idle != null)
+        {
+            transform.position = idle.transform.position;
+            transform.rotation = idle.transform.rotation;
+        }
     }
 
     void Update()

@@ -5,12 +5,17 @@ using UnityEngine;
 public class RHandTarget : MonoBehaviour
 {
     public Transform target;
+    public Transform idle;
 
     public bool isTargeting;
 
     void Start()
     {
-        
+        if(idle != null)
+        {
+            transform.position = idle.transform.position;
+            transform.rotation = idle.transform.rotation;
+        }
     }
 
     // Update is called once per frame

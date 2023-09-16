@@ -14,25 +14,24 @@ public class PlayerMove : MonoBehaviour
     // CenterEye
     public Transform trCenterEye;
 
-    // Model -> Rig Builder , CharacterModel
+    // Model -> Rig Builder
     public RigBuilder rigBuilder;
-    public CharacterModel charModel;
 
     //이동해야 하는 Player
     public Transform targetPlayer;
 
     public Transform player;
 
-
-    LHandTarget lt;
-    RHandTarget rt;
-
-
     void Update()
     {
-        // 카메라 위치 셋팅
+        //※소원 카메라 위치 셋팅
+        /*Vector3 offset = trEye.position - trCenterEye.position;
+        trOvrRig.position += offset;*/
+
+        //※현숙추가부분(고정이 아닌 y축만 고정 후 이동할 수 있게)
         Vector3 offset = trEye.position - trCenterEye.position;
-        trOvrRig.position += offset;
+        Vector3 newPosition2 = trOvrRig.position + new Vector3(0, offset.y, 0);
+        trOvrRig.position = newPosition2;
 
         // Vr 카메라의 위치와 회전을 플레이어에 적용
         //나의 자식으로 있는 플레이어로 계속 바뀌어야 함.
@@ -41,23 +40,30 @@ public class PlayerMove : MonoBehaviour
         Quaternion newRotation = Quaternion.Euler(0, trCenterEye.rotation.eulerAngles.y, 0);
         myPlayer.transform.rotation = newRotation;
 
-        lt = transform.GetComponentInChildren<LHandTarget>();
-        rt = transform.GetComponentInChildren<RHandTarget>();
+        //※현숙추가부분(위치추가)
+        // 카메라는 내 눈 앞에 있고 싶다. 하지만 카메라의 이동의 따라 이동하고 싶다.
+        // 플레이어는 카메라의 x z축을 따라가지만
+        // 카메라는 trEye의 y축을 따라간다.
+        Vector3 newPosition = new Vector3(trCenterEye.transform.position.x, myPlayer.transform.position.y, trCenterEye.transform.position.z);
+        myPlayer.transform.position = newPosition;
 
-        lt.enabled = true;
-        rt.enabled = true;
+        //※현숙추가부분(팔리깅)
+        LHandTarget lt = transform.GetComponentInChildren<LHandTarget>();
+        RHandTarget rt = transform.GetComponentInChildren<RHandTarget>();
+
+        //player에 있을때는 따라할 수 있게
+        lt.isTargeting = true;
+        rt.isTargeting = true;
 
         // 플레이어 교체 코드
         if (Input.GetKeyDown(KeyCode.G))
         {
-            //rigBuilder 를 비활성화
+            //rigBuilder 를 비활성화 -> 안꺼도 됨.
             //rigBuilder.enabled = false;
 
-            //charModel를 비활성화 해야한다.
-            //rigBuilder.enabled = false;
-            charModel.enabled = false;
-            lt.enabled = false;
-            rt.enabled = false;
+            //player 나갈때는 따라할 수 없게
+            lt.isTargeting = false;
+            rt.isTargeting = false;
 
             //rigBuilder 를 이용해서 부모로부터 나가자
             rigBuilder.transform.SetParent(null);
@@ -69,7 +75,6 @@ public class PlayerMove : MonoBehaviour
             //targetPlayer 에서 CharacterModel 를 가져오자.
             CharacterModel cm = targetPlayer.GetComponent<CharacterModel>();
 
-            cm.enabled = true;
             //trEye 에 가져온 컴포넌트의 trEye 를 셋팅
             trEye = cm.trEye;
 
@@ -78,9 +83,6 @@ public class PlayerMove : MonoBehaviour
 
             //가져온 컴포넌트 를 활성화
             rb.enabled = true;
-
-            //charModel.enabled = false;
-            charModel.enabled = true;
 
             //targetPlayer 의 부모를 나로 하자
             targetPlayer.SetParent(transform);

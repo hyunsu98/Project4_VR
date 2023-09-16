@@ -55,6 +55,8 @@ public class RecSet : MonoBehaviour
         {
             Debug.Log("RM" + recrod + "의 녹화종료");
             recrod.OnRecordEnd();
+
+            //녹화 정지를 누르면 main 플레이어로 바꿔야 함!
         }
 
         else
