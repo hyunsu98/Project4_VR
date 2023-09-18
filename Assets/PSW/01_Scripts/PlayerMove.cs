@@ -94,7 +94,7 @@ public class PlayerMove : MonoBehaviour
 
     public void CharChange(GameObject target)
     {
-        targetPlayer = target.transform;
+        //targetPlayer = target.transform;
         //rigBuilder ¸¦ ºñÈ°¼ºÈ­ -> ¾È²¨µµ µÊ.
         //rigBuilder.enabled = false;
 
