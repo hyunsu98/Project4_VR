@@ -26,13 +26,23 @@ public class PlayerMove : MonoBehaviour
     LHandTarget lt;
     RHandTarget rt;
 
+    public bool isRecMove;
+
+    //기준점이 될 위치
+    Transform mainPos;
+
+    private void Start()
+    {
+        mainPos = this.transform;
+    }
+
     void Update()
     {
         //※소원 카메라 위치 셋팅
-        /*Vector3 offset = trEye.position - trCenterEye.position;
+       /* Vector3 offset = trEye.position - trCenterEye.position;
         trOvrRig.position += offset;*/
 
-        //※현숙추가부분(고정이 아닌 y축만 고정 후 이동할 수 있게)
+        //※현숙추가부분(고정이 아닌 y축만 고정 후 이동할 수 있게) 녹화 시작할때만!
         Vector3 offset = trEye.position - trCenterEye.position;
         Vector3 newPosition2 = trOvrRig.position + new Vector3(0, offset.y, 0);
         trOvrRig.position = newPosition2;
@@ -44,11 +54,16 @@ public class PlayerMove : MonoBehaviour
         Quaternion newRotation = Quaternion.Euler(0, trCenterEye.rotation.eulerAngles.y, 0);
         myPlayer.transform.rotation = newRotation;
 
-        //※현숙추가부분(위치추가)
+        //※현숙추가부분(위치추가) -> 녹화 시작할때만!
         // 카메라는 내 눈 앞에 있고 싶다. 하지만 카메라의 이동의 따라 이동하고 싶다.
         // 플레이어는 카메라의 x z축을 따라가지만 카메라는 trEye의 y축을 따라간다.
-        Vector3 newPosition = new Vector3(trCenterEye.transform.position.x, myPlayer.transform.position.y, trCenterEye.transform.position.z);
-        myPlayer.transform.position = newPosition;
+        if(isRecMove)
+        {
+            //켰을때 내 위치가 달라지기 때문에 -> 자꾸 앞으로 가는 오류 발생
+            //현재 내 위치와 trCenterEye의 위치의 차이 만큼만 이동시키면 내 위치에서 움직이지 않을까?
+            Vector3 newPosition = new Vector3(trCenterEye.transform.position.x, myPlayer.transform.position.y, trCenterEye.transform.position.z);
+            myPlayer.transform.position = newPosition;
+        }
 
         //※현숙추가부분(팔리깅)
         lt = transform.GetComponentInChildren<LHandTarget>();
@@ -60,25 +75,7 @@ public class PlayerMove : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.C))
         {
-            player_index = (player_index + 1) % playerList.Count;
-
-            if(playerList != null)
-            {
-                for(int i = 0; i < playerList.Count; i++)
-                {
-                    //같은 것은
-                    if(i == player_index)
-                    {
-                        targetPlayer = playerList[i].transform;
-                    }
-
-                    //같지 않다
-                    else
-                    {
-                        
-                    }
-                }
-            }
+            PlayerChange();
         }
 
         // 플레이어 교체 코드
@@ -122,5 +119,28 @@ public class PlayerMove : MonoBehaviour
         targetPlayer = rigBuilder.transform;
         //rigBuilder 에 위에 지역변수로 받아놨던 rigBuilder를 셋팅
         rigBuilder = rb;
+    }
+
+    public void PlayerChange()
+    {
+        player_index = (player_index + 1) % playerList.Count;
+
+        if (playerList != null)
+        {
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                //같은 것은
+                if (i == player_index)
+                {
+                    targetPlayer = playerList[i].transform;
+                }
+
+                //같지 않다
+                else
+                {
+
+                }
+            }
+        }
     }
 }
