@@ -25,14 +25,15 @@ public class PlayerChange : MonoBehaviour
 
             // 부딪힌 곳이 있다면
             // 만약 마우스 왼쪽버튼을 눌렀을 때
-            if (OVRInput.GetDown(OVRInput.Button.One))
+            // ※녹화종료가 눌림 이거 수정해야함
+            if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.Touch))
             {
                 //만약 닿은곳이 Enemy라면
                 if (hitInfo.collider.CompareTag("Player"))
                 {
                     Debug.Log(hitInfo.collider.name);
 
-                    //PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
+                    PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
                 }
             }
         }

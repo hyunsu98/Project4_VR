@@ -46,14 +46,14 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         //※소원 카메라 위치 셋팅
-       /* Vector3 offset = trEye.position - trCenterEye.position;
-        trOvrRig.position += offset;*/
+        Vector3 offset = trEye.position - trCenterEye.position;
+        trOvrRig.position += offset;
 
         //※현숙추가부분(고정이 아닌 y축만 고정 후 이동할 수 있게) 녹화 시작할때만!
-        Vector3 offset = trEye.position - trCenterEye.position;
+        /*Vector3 offset = trEye.position - trCenterEye.position;
         Vector3 newPosition2 = trOvrRig.position + new Vector3(0, offset.y, 0);
         trOvrRig.position = newPosition2;
-
+*/
         // Vr 카메라의 위치와 회전을 플레이어에 적용
         //나의 자식으로 있는 플레이어로 계속 바뀌어야 함.
         CharacterModel myPlayer = transform.GetComponentInChildren<CharacterModel>();
@@ -88,13 +88,13 @@ public class PlayerMove : MonoBehaviour
         // 플레이어 교체 코드
         if (Input.GetKeyDown(KeyCode.G))
         {
-            CharChange();
+            //CharChange();
         }
     }
 
-    public void CharChange()
+    public void CharChange(GameObject target)
     {
-        //targetPlayer = target.transform;
+        targetPlayer = target.transform;
         //rigBuilder 를 비활성화 -> 안꺼도 됨.
         //rigBuilder.enabled = false;
 
