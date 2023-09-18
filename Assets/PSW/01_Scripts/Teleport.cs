@@ -97,6 +97,7 @@ public class Teleport : MonoBehaviour
         isPlacingPlayer = false;
     }
 
+    // 특정 위치에서 땅의 높이를 검색하는 역할
     private float GetGroundHeight(Vector3 position)
     {
         Ray ray = new Ray(position + Vector3.up * 100f, Vector3.down);
@@ -109,4 +110,16 @@ public class Teleport : MonoBehaviour
 
         return 0f; // 땅을 찾지 못한 경우 기본값으로 0을 반환
     }
+
+    // 1. position 매개변수로 전달된 위치 주변에서 아래 방향으로 RayCast를 발사한다.
+    // 2. Ray는 'position'에서 시작하여 'Vector3.up'을 사용하여 위쪽으로 100 떨어진 곳에서 아래쪽으로 Ray를 발사한다.
+    // -> 이것은 Ray를 해당 위치에서 100 위로 올리는 역할을 한다.
+
+    // 3.'Physics.Raycast' 함수를 사용하여 Ray 와 충돌하는 객체를 검색한다.
+    // -> 'out hitInfo'를 사용하여 충돌 정보를 저장한다.
+
+    // 4. Ray가 어떤 물체와 충돌할 경우, 'hitInfo.point.y' 를 사용하여 충돌 지점의 y 좌표를 가져온다. 이것이 바로 땅의 표면 높이
+    // 5. 땅을 찾은 경우, 땅의 표면의 높이를 반환한다.
+
+    // 6. Ray 가 어떤 
 }
