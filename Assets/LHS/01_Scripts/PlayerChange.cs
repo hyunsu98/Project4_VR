@@ -32,7 +32,7 @@ public class PlayerChange : MonoBehaviour
                 {
                     Debug.Log(hitInfo.collider.name);
 
-                    PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
+                    //PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
                 }
             }
         }

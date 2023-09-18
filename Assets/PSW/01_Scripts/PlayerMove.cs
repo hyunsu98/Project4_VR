@@ -88,11 +88,11 @@ public class PlayerMove : MonoBehaviour
         // 플레이어 교체 코드
         if (Input.GetKeyDown(KeyCode.G))
         {
-            //CharChange();
+            CharChange();
         }
     }
 
-    public void CharChange(GameObject target)
+    public void CharChange()
     {
         //targetPlayer = target.transform;
         //rigBuilder 를 비활성화 -> 안꺼도 됨.
