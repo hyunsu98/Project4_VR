@@ -61,9 +61,6 @@ public class UnitInfo
     public int unitLoadIndex;
     public float curTime;
     public bool play;
-
-
-
 }*/
 
 public class ReplayManager_Ver2 : MonoBehaviour
@@ -94,6 +91,10 @@ public class ReplayManager_Ver2 : MonoBehaviour
 
     public List<UnitInfo> unitList = new List<UnitInfo>();
 
+    //손 타겟
+    LHandTarget lt;
+    RHandTarget rt;
+
     private void Start()
     {
         // 시작할 때 녹화중 아님
@@ -106,6 +107,9 @@ public class ReplayManager_Ver2 : MonoBehaviour
 
         //불러올 List
         loadList = new List<PlayerJsonList<PlayerInfo>>();
+
+        LHandTarget lt = transform.GetComponentInChildren<LHandTarget>();
+        RHandTarget rt = transform.GetComponentInChildren<RHandTarget>();
     }
 
     private void Update()
@@ -115,9 +119,14 @@ public class ReplayManager_Ver2 : MonoBehaviour
         {
             Recording(who);
         }
+
         //리플레이중
         else if(isReplay)
         {
+            lt.isTargeting = true;
+            rt.isTargeting = true;
+
+            //나의 손을 가져와서 타겟팅 꺼주기
             //Replaying();
             ReplayingPlay1(who);
         }
@@ -260,9 +269,10 @@ public class ReplayManager_Ver2 : MonoBehaviour
         {
             OnRecordEnd();
         }
+
         isReplay = true;
 
-        for(int i = 0; i < unitList.Count; i++)
+        for (int i = 0; i < unitList.Count; i++)
         {
             string json = File.ReadAllText(Application.dataPath + "/save" + i + ".txt");
 

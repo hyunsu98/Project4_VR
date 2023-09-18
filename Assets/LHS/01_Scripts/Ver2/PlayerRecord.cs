@@ -17,17 +17,12 @@ public class PlayerRecord : MonoBehaviour
     float curTime = 0;
     float recordTime = 0.1f;
 
-    //저장/재생 될 플레이어들 -> 녹화된 객체가 있으면 추가!
-    public GameObject[] unit;
-
     //녹화된 객체들을 담을 List
     PlayerJsonList<PlayerInfo> saveList;
 
-    //녹화된 객체들을 불러올 List
-    PlayerJsonList<PlayerInfo> loadList;
-
-    public List<UnitInfo> unitList = new List<UnitInfo>();
-
+    //팔 오브젝트
+    LHandTarget lHand;
+    RHandTarget rHand;
 
     private void Start()
     {
@@ -39,8 +34,8 @@ public class PlayerRecord : MonoBehaviour
         saveList = new PlayerJsonList<PlayerInfo>();
         saveList.playerJsonList = new List<PlayerInfo>();
 
-        //불러올 List
-        loadList = new PlayerJsonList<PlayerInfo>();
+        lHand = transform.GetComponentInChildren<LHandTarget>();
+        rHand = transform.GetComponentInChildren<RHandTarget>();
     }
 
     private void Update()
@@ -50,9 +45,14 @@ public class PlayerRecord : MonoBehaviour
         {
             Recording();
         }
+
         //리플레이중
         else if (isReplay)
         {
+            //재생 시에는 손 타겟 없어야 함!
+            lHand.isTargeting = false;
+            rHand.isTargeting = false;
+
             Replaying();
         }
     }
@@ -62,15 +62,17 @@ public class PlayerRecord : MonoBehaviour
     {
         curTime += Time.deltaTime;
 
-        //저장된 리스트의 0번째부터
-        //PlayerInfo info = loadList[i].playerJsonList[loadIndex];
-        //PlayerInfo info = unitList[who].loadInfo.playerJsonList[unitList[who].unitLoadIndex];
-
         //0부터 시작 
         PlayerInfo info = saveList.playerJsonList[loadIndex];
 
         transform.position = Vector3.Lerp(transform.position, info.pos, 1);
         transform.rotation = Quaternion.Lerp(transform.rotation, info.rot, 1);
+
+        lHand.transform.position = info.leftHand.pos;
+        lHand.transform.rotation = info.leftHand.rot;
+
+        rHand.transform.position = info.rightHand.pos;
+        rHand.transform.rotation = info.rightHand.rot;
 
         if (curTime >= info.time) //i == unitList.Count && curTime >= info.time
         {
@@ -78,7 +80,7 @@ public class PlayerRecord : MonoBehaviour
             //각 객체의 인덱스 길이만큼 추가해야 한다.
             loadIndex++;
 
-            Debug.Log($"객체 이름 {info.gameObject},  읽을인덱스 {loadIndex} , list 카운트 수 {saveList.playerJsonList.Count}");
+            Debug.Log($"객체 이름 {info.name},  읽을인덱스 {loadIndex} , list 카운트 수 {saveList.playerJsonList.Count}");
 
             if (loadIndex >= saveList.playerJsonList.Count)
             {
@@ -107,13 +109,27 @@ public class PlayerRecord : MonoBehaviour
     //저장
     private void SavePlayerInfo()
     {
+        LeftHandInfo leftHandInfo = new LeftHandInfo()
+        {
+            pos = lHand.transform.position,
+            rot = lHand.transform.rotation
+        };
+
+        RightHandInfo rightHandInfo = new RightHandInfo()
+        {
+            pos = rHand.transform.position,
+            rot = rHand.transform.rotation
+        };
+
         PlayerInfo info = new PlayerInfo()
         {
+            name = gameObject.name,
             time = totalTime,
             pos = transform.position,
             rot = transform.rotation,
-            leftHand = null,
-            rightHand = null
+
+            leftHand = leftHandInfo,
+            rightHand = rightHandInfo
         };
 
         saveList.playerJsonList.Add(info);
@@ -123,17 +139,30 @@ public class PlayerRecord : MonoBehaviour
     // 녹화 시작
     public void OnRecordStart()
     {
-        print("녹화시작");
+        Debug.Log(gameObject.name + "녹화시작");
         isRecord = true;
 
         //처음부터 녹화
         saveList.playerJsonList.Clear();
+
+        //내 녹화할 때 재생될 플레이어가 있으면 
+        if (ReplaySet.instance.unit.Length > 0)
+        {
+            //나의 게임오브젝트 전달
+            ReplaySet.instance.OnAutoReplayForRecording(this);
+            print("녹화될 재생플레이어가 있다");
+        }
+
+        else
+        {
+            print("녹화될 재생플레이어가 없다");
+        }
     }
 
 
     public void OnRecordEnd()
     {
-        print("녹화종료");
+        Debug.Log(gameObject.name + "녹화종료");
 
         isRecord = false;
 
@@ -151,13 +180,27 @@ public class PlayerRecord : MonoBehaviour
             OnRecordEnd();
         }
 
-        isReplay = true;
+        //저장된 정보가 없을 시는 파일 못읽어옴...!
+        //string json = File.ReadAllText(Application.dataPath + "/save" + gameObject.name + ".txt");
 
-        string json = File.ReadAllText(Application.dataPath + "/save" + gameObject.name + ".txt");
+        string filePath = Application.dataPath + "/save" + gameObject.name + ".txt";
 
-        saveList = JsonUtility.FromJson<PlayerJsonList<PlayerInfo>>(json);
+        //파일이 있다면
+        if (File.Exists(filePath))
+        {
+            //리플레이 가능
+            isReplay = true;
+            isRecord = false;
 
-        loadIndex = 0;
-        curTime = 0;
+            string json = File.ReadAllText(filePath);
+            saveList = JsonUtility.FromJson<PlayerJsonList<PlayerInfo>>(json);
+            loadIndex = 0;
+            curTime = 0;
+        }
+
+        else
+        {
+            Debug.Log($"{gameObject.name} 읽어올 파일이 없습니다.");
+        }
     }
 }
