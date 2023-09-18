@@ -17452,7 +17452,7 @@ MonoBehaviour:
   - {fileID: 185396216}
   - {fileID: 919132147625017950}
   - {fileID: 269475975}
-  isRecMove: 0
+  isRecMove: 1
 --- !u!4 &1779809739
 Transform:
   m_ObjectHideFlags: 0
