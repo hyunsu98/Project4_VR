@@ -61,7 +61,7 @@ public class RecSet : MonoBehaviour
 
             //녹화 정지를 누르면 main 플레이어로 바꿔야 함!
             pm.targetPlayer = mainPlayer;
-            pm.CharChange();
+            //pm.CharChange();
         }
 
         else

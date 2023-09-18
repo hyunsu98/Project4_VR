@@ -7,6 +7,8 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMove : MonoBehaviour
 {
+    public static PlayerMove instance;
+
     // * Player 1 눈 위치
     public Transform trEye;
     // OVR Rig 
@@ -30,6 +32,11 @@ public class PlayerMove : MonoBehaviour
 
     //기준점이 될 위치
     Transform mainPos;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -81,12 +88,13 @@ public class PlayerMove : MonoBehaviour
         // 플레이어 교체 코드
         if (Input.GetKeyDown(KeyCode.G))
         {
-            CharChange();
+            //CharChange();
         }
     }
 
-    public void CharChange()
+    public void CharChange(GameObject target)
     {
+        targetPlayer = target.transform;
         //rigBuilder 를 비활성화 -> 안꺼도 됨.
         //rigBuilder.enabled = false;
 
