@@ -87,6 +87,20 @@ public class Teleport : MonoBehaviour
         }
     }
 
+    public void PlayerDelete(string name)
+    {
+        if (isPlacingPlayer == true) 
+        {
+            print("지워지지못해?");
+            // name을 기반으로 플레이어 오브젝트 찾기
+            GameObject playerObject = GameObject.Find(name);
+            if (playerObject != null) 
+            { 
+                Destroy(playerObject);
+            }
+        }
+    }
+
     private void PlacePlayer()
     {
         if (spawnObject != null)
