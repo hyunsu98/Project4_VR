@@ -19,13 +19,13 @@ public class OutputAudioRecorder : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            clip = Microphone.Start(micList[0], true, 10, 44100);
+            clip = Microphone.Start(micList[0], true, 30, 44100);
             print("녹음시작");
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             Microphone.End(micList[0]);
-            print("녹음중단");
+            print("녹음중단"); // 중단시 바로 파일 저장 되게 해야함 .
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
@@ -36,7 +36,6 @@ public class OutputAudioRecorder : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             SaveMic();
-
         }
     }
 

@@ -3318,6 +3318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1190042190}
   - component: {fileID: 1190042191}
+  - component: {fileID: 1190042193}
   - component: {fileID: 1190042192}
   m_Layer: 0
   m_Name: Mic
@@ -3449,6 +3450,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1190042193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190042189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09a25c3436949d4babc086ea596b4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1275987454
 GameObject:
   m_ObjectHideFlags: 0

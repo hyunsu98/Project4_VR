@@ -25,7 +25,7 @@ public class PlayerChange : MonoBehaviour
 
             // 부딪힌 곳이 있다면
             // 만약 마우스 왼쪽버튼을 눌렀을 때
-            // ※녹화종료가 눌림 이거 수정해야함
+            // ※녹화종료가 눌림 이거 수정해야함 - UI 클릭 안되게 해야 함. 
             if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.Touch))
             {
                 //만약 닿은곳이 Enemy라면
