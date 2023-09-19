@@ -21,7 +21,61 @@ public class Teleport : MonoBehaviour
 
     void Update()
     {
-        if (isPlacingPlayer)
+
+        Ray ray = new Ray(hand.position, hand.forward);
+        //lr.SetPosition(0, ray.origin);
+        lr.SetPosition(0, hand.position);
+        RaycastHit hitInfo;
+        bool isHit = Physics.Raycast(ray, out hitInfo, maxLineDistance);
+
+        if (isHit)
+        {
+            lr.SetPosition(1, hitInfo.point);
+            marker.position = hitInfo.point;
+            marker.up = hitInfo.normal;
+            marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
+        }
+
+        else
+        {
+            lr.enabled = false;
+            lr.SetPosition(1, ray.origin + ray.direction * maxLineDistance);
+            marker.position = ray.origin + ray.direction * maxLineDistance;
+            marker.up = -ray.direction;
+            marker.localScale = Vector3.one * kAdjust * maxLineDistance;
+
+        }
+    }
+
+    public void OnClickSelect(string name)
+    {
+
+        if (!isPlacingPlayer)
+        {
+            lr.enabled = true;
+            isPlacingPlayer = true;
+            placementPosition = hand.position + hand.forward * maxLineDistance;
+
+            /*//가져오는 애
+            if (isHit && hitInfo.collider.CompareTag("Ground"))
+            {
+                GameObject tmp = Resources.Load(name) as GameObject;
+                Vector3 spawnPosition = hitInfo.point;
+
+
+                // 플레이어의 위치를 땅의 표면으로 조정
+                spawnPosition.y = GetGroundHeight(spawnPosition);
+                // spawnPosition.y = 0f; // player가 땅에 박히는 현상이 생김으로 y 값을 0으로 고정
+                GameObject obj = Instantiate(tmp, spawnPosition, Quaternion.identity);
+
+                spawnObject = obj;
+
+                isClickPending = true; // 첫 번째 클릭 이벤트가 발생한 후 두 번째 클릭 대기 상태로 변경
+                print("내려놓고싶음");
+            }*/
+        }
+
+        else
         {
             placementPosition = hand.position + hand.forward * maxLineDistance;
 
@@ -32,71 +86,43 @@ public class Teleport : MonoBehaviour
                 spawnObject.transform.position = placementPosition;
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.Touch))
             {
+                //아에 플레이어가 놓아짐
                 PlacePlayer();
             }
         }
     }
 
-    public void OnClickSelect(string name)
-    {
-        Ray ray = new Ray(hand.position, hand.forward);
-        lr.SetPosition(0, ray.origin);
-        RaycastHit hitInfo;
-        bool isHit = Physics.Raycast(ray, out hitInfo, maxLineDistance);
-
-        
-        if (isHit)
-        {
-            lr.SetPosition(1, hitInfo.point);
-            marker.position = hitInfo.point;
-            marker.up = hitInfo.normal;
-            marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
-
-            if (!isPlacingPlayer)
-            {
-                lr.enabled = true;
-                isPlacingPlayer = true;
-                placementPosition = hand.position + hand.forward * maxLineDistance;
-                if (isHit && hitInfo.collider.CompareTag("Ground"))
-                {
-                    GameObject tmp = Resources.Load(name) as GameObject;
-                    Vector3 spawnPosition = hitInfo.point;
-
-
-                    // 플레이어의 위치를 땅의 표면으로 조정
-                    spawnPosition.y = GetGroundHeight(spawnPosition);
-                    // spawnPosition.y = 0f; // player가 땅에 박히는 현상이 생김으로 y 값을 0으로 고정
-                    GameObject obj = Instantiate(tmp, spawnPosition, Quaternion.identity);
-               
-                    spawnObject = obj;
-
-                    isClickPending = true; // 첫 번째 클릭 이벤트가 발생한 후 두 번째 클릭 대기 상태로 변경
-                    print("내려놓고싶음");
-                }
-            }
-        }
-        else
-        {
-            lr.enabled = false;
-            lr.SetPosition(1, ray.origin + ray.direction * maxLineDistance);
-            marker.position = ray.origin + ray.direction * maxLineDistance;
-            marker.up = -ray.direction;
-            marker.localScale = Vector3.one * kAdjust * maxLineDistance;
-        }
-    }
 
     public void PlayerDelete(string name)
     {
-        if (isPlacingPlayer == true) 
+
+        // 손위치에서 손의 앞방향으로 Ray를 만들고
+        Ray ray = new Ray(hand.position, hand.forward);
+        lr.SetPosition(0, hand.position);
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray, out hitInfo))
         {
-            print("지워지지못해?");
-            // name을 기반으로 플레이어 오브젝트 찾기
-            GameObject playerObject = GameObject.Find(name);
-            if (playerObject != null) 
-            { 
-                Destroy(playerObject);
+            lr.SetPosition(1, hitInfo.point);
+
+            // 부딪힌 곳이 있다면
+            // 만약 마우스 왼쪽버튼을 눌렀을 때
+            // ※녹화종료가 눌림 이거 수정해야함 - UI 클릭 안되게 해야 함. 
+            if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.Touch))/*Input.GetMouseButtonDown(0)*/
+            {
+                //만약 닿은곳이 Enemy라면
+                if (hitInfo.collider.CompareTag("Player"))
+                {
+                    Debug.Log(hitInfo.collider.name);
+
+                    // 삭제하려는 플레이어 오브젝트 찾기
+                    GameObject playerObject = hitInfo.collider.gameObject;
+
+                    // 플레이어 오브젝트 삭제
+                    Destroy(playerObject);
+                }
             }
         }
     }
