@@ -177,11 +177,14 @@ public class MoviePlayerSampleControls : MonoBehaviour
         {
             InputModule.rayTransform = LeftHand.transform;
             GazePointer.rayTransform = LeftHand.transform;
+
         }
         else
         {
             InputModule.rayTransform = RightHand.transform;
             GazePointer.rayTransform = RightHand.transform;
+
+
         }
 
         // if back is pressed, hide controls immediately
