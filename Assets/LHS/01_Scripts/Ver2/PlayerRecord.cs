@@ -53,7 +53,7 @@ public class PlayerRecord : MonoBehaviour
             lHand.isTargeting = false;
             rHand.isTargeting = false;
 
-            Replaying();
+            //Replaying();
         }
     }
 
@@ -150,6 +150,7 @@ public class PlayerRecord : MonoBehaviour
         {
             //나의 게임오브젝트 전달
             ReplaySet.instance.OnAutoReplayForRecording(this);
+
             print("녹화될 재생플레이어가 있다");
         }
 

@@ -19,59 +19,57 @@ public class Mic_LHS : MonoBehaviour
     //샘플 속도
     int recordingHZ = 22050;
 
-    void Start()
+    public void OnStart()
     {
-        
+        print("음성 녹음 중");
+        PointerDown();
     }
 
-    void Update()
+    public void OnEnd()
     {
-        //채팅 칠 때는 할 수 없게 해야함
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            //print("음성 V키 누르는 중");
-            PointerDown();
-        }
-
-        if (Input.GetKeyUp(KeyCode.V))
-        {
-            //print("음성 V키 뗌");
-            PointerUp();
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/Mic.wav"));
-        }
-
-        /*if()*/
+        print("음성 녹음 종료");
+        PointerUp();
     }
 
+    public void OnReplay()
+    {
+        //파일이 있다면!!!
+
+        StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/" + gameObject.name + ".wav"));
+    }
 
     //로드하는 파일을 한번에 불러와서 들리게 해야한다. (액션 or 리스트로 담고 한번에 PlayOneShot)
     IEnumerator GetWav2AudioClip(string path)
     {
         Uri voiceURI = new Uri(path); //저장한 경로로
 
-        UnityWebRequest www =  UnityWebRequestMultimedia.GetAudioClip(voiceURI, AudioType.WAV);
+        UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(voiceURI, AudioType.WAV);
 
         yield return www.SendWebRequest();
 
-        AudioClip clipData = ((DownloadHandlerAudioClip)www.downloadHandler).audioClip;
-
-        AudioSource audio = GetComponent<AudioSource>();
-        if (audio)
+        // 응답 실패!
+        if(www.result == UnityWebRequest.Result.ConnectionError)
         {
-            audio.clip = clipData;
-            audio.Play();
+            print(www.error);
+        }
+
+        else
+        {
+            AudioClip clipData = ((DownloadHandlerAudioClip)www.downloadHandler).audioClip;
+
+            AudioSource audio = GetComponent<AudioSource>();
+
+            if (audio)
+            {
+                audio.clip = clipData;
+                audio.Play();
+            }
         }
     }
 
     public void PointerDown()
     { 
-
         StartRecording();
-
-        //print("음성 확인!");
     }
 
     public void PointerUp()
@@ -131,8 +129,7 @@ public class Mic_LHS : MonoBehaviour
 
             //저장된 파일
             //SavWav_LHS.Save(Application.streamingAssetsPath + "/" + gameObject.name, newClip);
-            SavWav_LHS.Save("D:/Project4_VR/Assets/Resources" + "/" + gameObject.name, newClip);
-
+            SavWav_LHS.Save(Application.streamingAssetsPath + "/" + gameObject.name, newClip);
         }
     }
 
@@ -140,10 +137,6 @@ public class Mic_LHS : MonoBehaviour
     //저장된파일을 그냥 가져오면 되는 거 아닌가?
     public void ReplayVoice()
     {
-        //GameObject tmp = Resources.Load(name) as GameObject;
-
-        //AudioSource clip = Resources.Load(gameObject.name) as AudioClip;
-
         AudioSource audio = GetComponent<AudioSource>();
         if (audio)
         {

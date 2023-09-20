@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //리플레이 기능
+//액션으로 할 수 있다면? 델리게이트
 public class ReplaySet : MonoBehaviour
 {
     public static ReplaySet instance;
@@ -11,6 +12,8 @@ public class ReplaySet : MonoBehaviour
     public GameObject[] unit;
 
     PlayerRecord playerRecored;
+
+    public Mic_LHS mic;
 
     private void Awake()
     {
@@ -29,14 +32,17 @@ public class ReplaySet : MonoBehaviour
     // 담겨져 있는 리플레이를 모두 실행! -> 리플레이 클래스에서 
     public void OnRecordPlay()
     {
+
         if (unit.Length > 0)
         {
             //저장된 객체의 함수를 반복해서 부른다.!
             for (int i = 0; i < unit.Length; i++)
             {
                 var playerRecored = unit[i].GetComponent<PlayerRecord>();
+                var playerMic = unit[i].GetComponent<Mic_LHS>();
 
                 playerRecored.OnRecordPlay();
+                //playerMic.OnReplay();
             }
 
             print(unit.Length);
@@ -58,13 +64,16 @@ public class ReplaySet : MonoBehaviour
             {
                 var playerRecored = unit[i].GetComponent<PlayerRecord>();
 
+                var playerMic = unit[i].GetComponent<Mic_LHS>();
+
                 //나 빼고 반복
-                if (who == playerRecored)
+                if (who == playerRecored && who == playerMic)
                 { 
                     continue;
                 }
 
                 playerRecored.OnRecordPlay();
+                //playerMic.OnReplay();
             }
 
             print(unit.Length);

@@ -25,6 +25,8 @@ public class RecSet : MonoBehaviour
     PlayerMove pm;
     public Transform mainPlayer;
 
+    Mic_LHS mic;
+
     public void Start()
     {
         pm = this.GetComponent<PlayerMove>();
@@ -34,6 +36,7 @@ public class RecSet : MonoBehaviour
     {
         //자식에 붙어있는 플레이어의 녹화컴포넌트를 가져온다.
         recrod = transform.GetComponentInChildren<PlayerRecord>();
+       // mic = transform.GetComponentInChildren<Mic_LHS>();
 
         //recrod가 null이 아닐때만
         if (recrod != null)
@@ -44,6 +47,8 @@ public class RecSet : MonoBehaviour
             Debug.Log("RM" + recrod + "의 녹화시작");
             //녹화 플레이를 재생 시킴!
             recrod.OnRecordStart();
+
+           // mic.OnStart();
         }
 
         else
@@ -62,6 +67,8 @@ public class RecSet : MonoBehaviour
             //녹화 정지를 누르면 main 플레이어로 바꿔야 함!
             //pm.targetPlayer = mainPlayer;
             pm.CharChange(mainPlayer.gameObject);
+
+           // mic.OnEnd();
         }
 
         else
