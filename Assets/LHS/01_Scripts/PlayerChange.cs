@@ -1,12 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerChange : MonoBehaviour
 {
+    public OVRInput.Button button;
+    public OVRInput.Controller controller;
+
+    //오른손에서 그려지는 ray
     public Transform hand;
     LineRenderer lr;
-
+    
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -24,15 +26,13 @@ public class PlayerChange : MonoBehaviour
             lr.SetPosition(1, hitInfo.point);
 
             // 부딪힌 곳이 있다면
-            // 만약 마우스 왼쪽버튼을 눌렀을 때
-            // ※녹화종료가 눌림 이거 수정해야함 - UI 클릭 안되게 해야 함. 
-            if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.Touch))
+            if (OVRInput.GetDown(button, controller))
             {
+                //모드 별로 하면 될 것 같음
                 //만약 닿은곳이 Enemy라면
                 if (hitInfo.collider.CompareTag("Player"))
                 {
                     Debug.Log(hitInfo.collider.name);
-
                     PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
                 }
             }
@@ -43,4 +43,4 @@ public class PlayerChange : MonoBehaviour
             lr.SetPosition(1, ray.origin + ray.direction * 1000);
         }
     }
-    }
+}
