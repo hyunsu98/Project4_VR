@@ -53,7 +53,7 @@ public class PlayerRecord : MonoBehaviour
             lHand.isTargeting = false;
             rHand.isTargeting = false;
 
-            //Replaying();
+            Replaying();
         }
     }
 
