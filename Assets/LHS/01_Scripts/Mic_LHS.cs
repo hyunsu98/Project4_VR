@@ -29,11 +29,11 @@ public class Mic_LHS : MonoBehaviour
         //채팅 칠 때는 할 수 없게 해야함
         if (Input.GetKeyDown(KeyCode.V))
         {
-            //print("음성 V키 누르는 중");
+            print("음성 V키 누르는 중");
             PointerDown();
         }
 
-        if (Input.GetKeyUp(KeyCode.V))
+        if (Input.GetKeyUp(KeyCode.E))
         {
             //print("음성 V키 뗌");
             PointerUp();
@@ -42,8 +42,6 @@ public class Mic_LHS : MonoBehaviour
         {
             StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/Mic.wav"));
         }
-
-        /*if()*/
     }
 
 
@@ -131,7 +129,7 @@ public class Mic_LHS : MonoBehaviour
 
             //저장된 파일
             //SavWav_LHS.Save(Application.streamingAssetsPath + "/" + gameObject.name, newClip);
-            SavWav_LHS.Save("D:/Project4_VR/Assets/Resources" + "/" + gameObject.name, newClip);
+            SavWav_LHS.Save(Application.streamingAssetsPath + " /" + gameObject.name, newClip);
 
         }
     }
