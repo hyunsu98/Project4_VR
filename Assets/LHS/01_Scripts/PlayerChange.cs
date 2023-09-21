@@ -8,7 +8,9 @@ public class PlayerChange : MonoBehaviour
     //오른손에서 그려지는 ray
     public Transform hand;
     LineRenderer lr;
-    
+
+    RaycastHit hitInfo;
+
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -19,7 +21,7 @@ public class PlayerChange : MonoBehaviour
         // 손위치에서 손의 앞방향으로 Ray를 만들고
         Ray ray = new Ray(hand.position, hand.forward);
         lr.SetPosition(0, hand.position);
-        RaycastHit hitInfo;
+
 
         if (Physics.Raycast(ray, out hitInfo))
         {
@@ -28,12 +30,9 @@ public class PlayerChange : MonoBehaviour
             // 부딪힌 곳이 있다면
             if (OVRInput.GetDown(button, controller))
             {
-                //모드 별로 하면 될 것 같음
-                //만약 닿은곳이 Enemy라면
-                if (hitInfo.collider.CompareTag("Player"))
+                if (ModeChange_LHS.instance.isHopln == true)
                 {
-                    Debug.Log(hitInfo.collider.name);
-                    PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
+                    HopIn();
                 }
             }
         }
@@ -41,6 +40,17 @@ public class PlayerChange : MonoBehaviour
         else
         {
             lr.SetPosition(1, ray.origin + ray.direction * 1000);
+        }
+    }
+
+    void HopIn()
+    {
+        //모드 별로 하면 될 것 같음
+        //만약 닿은곳이 Enemy라면
+        if (hitInfo.collider.CompareTag("Player"))
+        {
+            Debug.Log(hitInfo.collider.name);
+            PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
         }
     }
 }
