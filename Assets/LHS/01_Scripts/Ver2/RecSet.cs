@@ -15,15 +15,11 @@ public class RecSet : MonoBehaviour
     [SerializeField]
     PlayerRecord recrod;
 
-    //재생을 눌렀을때 
-    //저장된 플레이가 있다면 재생시키고
-    //저장되지 않았으면 녹화시킨다.
-
-    //녹화 시작
-    //자식 객체의 player
-
     PlayerMove pm;
+
     public Transform mainPlayer;
+
+    Mic_LHS mic;
 
     public void Start()
     {
@@ -35,15 +31,17 @@ public class RecSet : MonoBehaviour
         //자식에 붙어있는 플레이어의 녹화컴포넌트를 가져온다.
         recrod = transform.GetComponentInChildren<PlayerRecord>();
 
+        mic = transform.GetComponentInChildren<Mic_LHS>();
+
         //recrod가 null이 아닐때만
         if (recrod != null)
         {
             //만약 담겨져 있는 리플레이 객체가 있다면 재생시키면서 
             //중요! 리플레이가 될때 녹화가 진행되야함.
-
             Debug.Log("RM" + recrod + "의 녹화시작");
             //녹화 플레이를 재생 시킴!
             recrod.OnRecordStart();
+            mic.OnStart();
         }
 
         else
@@ -62,6 +60,7 @@ public class RecSet : MonoBehaviour
             //녹화 정지를 누르면 main 플레이어로 바꿔야 함!
             //pm.targetPlayer = mainPlayer;
             pm.CharChange(mainPlayer.gameObject);
+            mic.OnEnd();
         }
 
         else
