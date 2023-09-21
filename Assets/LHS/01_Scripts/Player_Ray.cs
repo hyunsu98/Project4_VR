@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerChange : MonoBehaviour
+public class Player_Ray : MonoBehaviour
 {
     public OVRInput.Button button;
     public OVRInput.Controller controller;

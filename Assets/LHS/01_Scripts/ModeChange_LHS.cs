@@ -26,20 +26,20 @@ public class ModeChange_LHS : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
     }
     void Start()
     {
-        
+
     }
 
     void Update()
     {
         //클릭하면 모드 전환하게 해야함
-        if(OVRInput.GetDown(button, controller))
+        if (OVRInput.GetDown(button, controller))
         {
             print("버튼 모드 전환");
             isCenter = !isCenter;
@@ -81,6 +81,4 @@ public class ModeChange_LHS : MonoBehaviour
     {
 
     }
-
-    public void 
 }
