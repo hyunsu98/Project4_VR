@@ -12,8 +12,7 @@ public static class UI
     // UI 버튼에 따른 상태 전환
     public enum PlayerState
     {
-        Player1,
-        Player2,
+        Player,
         Move,
         Delete,
         Teleport,
@@ -85,22 +84,49 @@ public class ModeChange_LHS : MonoBehaviour
         }
     }
 
+    // -----------------------------------소원이 부분---------------------------------------// 
+
+    // 플레이어 1 ,2 배치 모드
+    public void OnPlayer(string name)
+    {
+        print("플레이어1 배치 활성화");
+        UI.Player_State = UI.PlayerState.Player;
+    }
+
+    // 플레이어 Delete 모드
+    public void OnDelete()
+    {
+        print("삭제 모드 활성화");
+        UI.Player_State = UI.PlayerState.Delete;
+    }
+
+    // 플레이어 Move 모드
+    public void OnMove()
+    {
+        print("이동 모드 활성화");
+        UI.Player_State = UI.PlayerState.Move;
+    }
+
+    // Player Teleport 모드
+    public void OnTeleport()
+    {
+        print("텔레포트 모드 활성화");
+        UI.Player_State = UI.PlayerState.Teleport;
+    }
+
+    // -----------------------------------현숙이 부분---------------------------------------// 
     //모드 바뀌게 해야할지도
+    // Player Hopin 모드
     public void OnHopIn()
     {
         print("들어가는 모드 활성화");
         UI.Player_State = UI.PlayerState.Hopin;
     }
 
-    public void OnCam()
+    // Player Camera 모드
+    public void OnCamera()
     {
         print("카메라 모드 활성화");
-    }
-
-    // -----------------------------소원이 부분---------------------------------------
-    // 
-    public void OnMove() // 배치된 후
-    {
-
+        UI.Player_State = UI.PlayerState.Camera;
     }
 }
