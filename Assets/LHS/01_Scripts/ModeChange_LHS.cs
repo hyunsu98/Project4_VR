@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ModeChange_LHS : MonoBehaviour
 {
+    public static ModeChange_LHS instance;
+
     public OVRInput.Button button;
     public OVRInput.Controller controller;
 
@@ -19,6 +22,15 @@ public class ModeChange_LHS : MonoBehaviour
 
     public GameObject modeUI;
 
+    public bool isHopln;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         
@@ -55,10 +67,20 @@ public class ModeChange_LHS : MonoBehaviour
     public void OnHopIn()
     {
         print("들어가는 모드 활성화");
+        isHopln = true;
     }
 
     public void OnCam()
     {
         print("카메라 모드 활성화");
     }
+
+    // -----------------------------소원이 부분---------------------------------------
+    // 
+    public void OnMove() // 배치된 후
+    {
+
+    }
+
+    public void 
 }
