@@ -30,8 +30,46 @@ public class Player_Ray : MonoBehaviour
             // 부딪힌 곳이 있다면
             if (OVRInput.GetDown(button, controller))
             {
-                if (ModeChange_LHS.instance.isHopln == true)
+                // 플레이어 1 배치 모드
+                if (UI.Player_State == UI.PlayerState.Player1)
                 {
+                    Debug.Log("Player1 배치 모드");
+                }
+
+                // 플레이어 2 배치 모드
+                if (UI.Player_State == UI.PlayerState.Player2)
+                {
+                    Debug.Log("Player2 배치 모드");
+                }
+
+                // 플레이어 Move 모드
+                if (UI.Player_State == UI.PlayerState.Move)
+                {
+                    Debug.Log("Player Move 모드");
+                }
+
+                // 플레이어 Delete 모드
+                if (UI.Player_State == UI.PlayerState.Delete)
+                {
+                    Debug.Log("Player Delete 모드");
+                }
+
+                // Player Teleport 모드
+                if (UI.Player_State == UI.PlayerState.Teleport)
+                {
+                    Debug.Log("Player Teleport 모드");
+                }
+
+                // Player Camera 모드
+                if (UI.Player_State == UI.PlayerState.Camera)
+                {
+                    Debug.Log("Player Camera 모드");
+                }
+
+                // Player Hopin 모드
+                if (UI.Player_State == UI.PlayerState.Hopin)
+                {
+                    Debug.Log("Player Hopin 모드");
                     HopIn();
                 }
             }

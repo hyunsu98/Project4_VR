@@ -3,10 +3,40 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.Switch;
 
+public static class UI
+{
+    public static PlayerState playerState;
+
+    // UI 버튼에 따른 상태 전환
+    public enum PlayerState
+    {
+        Player1,
+        Player2,
+        Move,
+        Delete,
+        Teleport,
+        Camera,
+        Hopin
+    }
+
+    public static PlayerState Player_State
+    {
+        get
+        {
+            return playerState;
+        }
+
+        set
+        {
+            playerState = value;
+        }
+    }
+}
 public class ModeChange_LHS : MonoBehaviour
 {
-    public static ModeChange_LHS instance;
+    //public static ModeChange_LHS instance;
 
     public OVRInput.Button button;
     public OVRInput.Controller controller;
@@ -24,13 +54,6 @@ public class ModeChange_LHS : MonoBehaviour
 
     public bool isHopln;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
     void Start()
     {
 
@@ -52,7 +75,6 @@ public class ModeChange_LHS : MonoBehaviour
                 //UI도 꺼지면?
                 modeUI.SetActive(true);
             }
-
             else
             {
                 enentSystem.rayTransform = rightHand;
@@ -67,7 +89,7 @@ public class ModeChange_LHS : MonoBehaviour
     public void OnHopIn()
     {
         print("들어가는 모드 활성화");
-        isHopln = true;
+        UI.Player_State = UI.PlayerState.Hopin;
     }
 
     public void OnCam()
