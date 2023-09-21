@@ -22,7 +22,7 @@ public class Mic_LHS : MonoBehaviour
     void Update()
     {
         //PC 테스트
-        if (Input.GetKeyDown(KeyCode.V))
+        /*if (Input.GetKeyDown(KeyCode.V))
         {
             print("음성 녹음 중");
             PointerDown();
@@ -38,7 +38,7 @@ public class Mic_LHS : MonoBehaviour
         {
             print("음성 리플레이");
             StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/Mic.wav"));
-        }
+        }*/
     }
 
     public void OnStart()
