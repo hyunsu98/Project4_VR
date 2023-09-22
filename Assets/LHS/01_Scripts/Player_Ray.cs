@@ -21,9 +21,10 @@ public class Player_Ray : MonoBehaviour
     Vector3 placementPosition; // Ray로 놓아질 위치
     bool isClickPending = false; // 클릭 대기 상태를 추적
     public float maxLineDistance = 3f; // Ray에 최대 길이
-
-    // 플레이어를 텔레포트 할 때 필요한 요소
     public GameObject cube;
+
+    // 플레이어를 배치 할 때 필요한 요소
+    public GameObject player;
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -74,6 +75,7 @@ public class Player_Ray : MonoBehaviour
                 if (UI.Player_State == UI.PlayerState.Teleport)
                 {
                     Debug.Log("Player Teleport 모드");
+
                     TelePort();
                 }
 
@@ -106,10 +108,12 @@ public class Player_Ray : MonoBehaviour
 
     void TelePort()
     {
-        if (hitInfo.collider.CompareTag("Player"))
+        if (hitInfo.collider.CompareTag("Ground"))
         {
+            print("되고있니?");
             Debug.Log(hitInfo.collider.name);
-            cube.transform.position = hitInfo.collider.transform.position;
+
+            player.transform.position = hitInfo.point;
         }
     }
 
@@ -157,7 +161,6 @@ public class Player_Ray : MonoBehaviour
             }
             //클릭 시 한번 생성 - 생성된 캐릭터 있음
             //생성된 캐릭터가 있으면 클릭해도 또 생성되지 않는다
-
         }  
     }
 

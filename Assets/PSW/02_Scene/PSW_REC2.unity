@@ -12480,7 +12480,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &1238304878
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12517,7 +12517,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1238304877}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -16989,7 +16989,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1721797381
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19276,6 +19276,7 @@ MonoBehaviour:
   hand: {fileID: 1741045028}
   maxLineDistance: 3
   cube: {fileID: 1721797379}
+  player: {fileID: 1779809737}
 --- !u!1 &1952599774
 GameObject:
   m_ObjectHideFlags: 0
@@ -27535,6 +27536,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 2135955033}
+    - target: {fileID: 5700035140663541282, guid: 5f68e7406a44e3046903399af0d9cd6e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5700035140670492746, guid: 5f68e7406a44e3046903399af0d9cd6e, type: 3}
       propertyPath: m_RootOrder
       value: 9
