@@ -10,7 +10,10 @@ namespace RockVR.Video
     /// Place this script to target <c>AudioListener</c> component, this will 
     /// capture audio listener's sample and encode to audio file.
     /// </summary>
+    /// 
+    //오디오 캡처 - 수신기의 샘플을 캡처하고 오디오 파일로 인코딩
     [RequireComponent(typeof(AudioListener))]
+
     public class AudioCapture : MonoBehaviour
     {
         /// <summary>

@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace MYOVRTouchSample
+namespace OVRTouchSample
 {
     public class TouchController : MonoBehaviour
     {

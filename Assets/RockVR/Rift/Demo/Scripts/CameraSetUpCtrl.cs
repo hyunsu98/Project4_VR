@@ -48,11 +48,15 @@ namespace RockVR.Rift.Demo
             else if (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.STARTED)
             {
                 captureText.SetActive(true);
+                
+                //오류
                 captureText.GetComponentInChildren<Text>().text = RecordTime.SetRecordTime();
             }
             else if (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.STOPPED)
             {
                 RecordTime.recordTime = 0;
+
+                //오류
                 captureText.GetComponentInChildren<Text>().text = "Processing";
             }
         }

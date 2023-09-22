@@ -21,7 +21,7 @@
 
 using UnityEngine;
 
-namespace OVRTouchSample
+namespace MYOVRTouchSample
 {
     // Animating controller that updates with the tracked controller.
     public class TouchController : MonoBehaviour
