@@ -11,6 +11,7 @@ public class ReplaySet : MonoBehaviour
     public GameObject[] unit;
 
     PlayerRecord playerRecored;
+    Mic_LHS mic;
 
     private void Awake()
     {
@@ -35,8 +36,10 @@ public class ReplaySet : MonoBehaviour
             for (int i = 0; i < unit.Length; i++)
             {
                 var playerRecored = unit[i].GetComponent<PlayerRecord>();
+                var playerMic = unit[i].GetComponent<Mic_LHS>();
 
                 playerRecored.OnRecordPlay();
+                playerMic.OnReplay();
             }
 
             print(unit.Length);
@@ -57,6 +60,7 @@ public class ReplaySet : MonoBehaviour
             for (int i = 0; i < unit.Length; i++)
             {
                 var playerRecored = unit[i].GetComponent<PlayerRecord>();
+                var playerMic = unit[i].GetComponent<Mic_LHS>();
 
                 //³ª »©°í ¹Ýº¹
                 if (who == playerRecored)
@@ -65,6 +69,7 @@ public class ReplaySet : MonoBehaviour
                 }
 
                 playerRecored.OnRecordPlay();
+                playerMic.OnReplay();
             }
 
             print(unit.Length);
