@@ -55,7 +55,7 @@ public class ModeChange_LHS : MonoBehaviour
 
     void Start()
     {
-
+        print(UI.Player_State);
     }
 
     void Update()

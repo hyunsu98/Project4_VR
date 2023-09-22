@@ -22,6 +22,8 @@ public class Player_Ray : MonoBehaviour
     bool isClickPending = false; // 클릭 대기 상태를 추적
     public float maxLineDistance = 3f; // Ray에 최대 길이
 
+    // 플레이어를 텔레포트 할 때 필요한 요소
+    public GameObject cube;
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -37,14 +39,20 @@ public class Player_Ray : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo))
         {
             lr.SetPosition(1, hitInfo.point);
+            // 큐브의 위치가 레이에 닿은 위치이다.
+            cube.transform.position = hitInfo.point;
 
-            // 부딪힌 곳이 있다면
+
+            // 부딪힌 곳이 있다면 Two 버튼
             if (OVRInput.GetDown(button, controller))
             {
                 // 플레이어 1, 2 배치 모드
                 if (UI.Player_State == UI.PlayerState.Player)
                 {
                     Debug.Log("Player1 배치 모드");
+
+                    print(num);
+                    num += 1;
                     //Player(name);
                 }
 
@@ -98,7 +106,11 @@ public class Player_Ray : MonoBehaviour
 
     void TelePort()
     {
-        
+        if (hitInfo.collider.CompareTag("Player"))
+        {
+            Debug.Log(hitInfo.collider.name);
+            cube.transform.position = hitInfo.collider.transform.position;
+        }
     }
 
     void Delete()
@@ -117,84 +129,36 @@ public class Player_Ray : MonoBehaviour
         
     }
 
+    int num = 0;
+
+    //가지고 있는 플레이어
+    GameObject inPlayer;
+
     public void Player(string name)
     {
         if(UI.Player_State == UI.PlayerState.Player)
         {
             print("캐릭터 생김");
             GameObject tmp = Resources.Load(name) as GameObject;
-
             GameObject obj = Instantiate(tmp);
+
+            inPlayer = obj;
+
+            //print(num);
+
             obj.transform.position = hitInfo.point;
+            obj.transform.SetParent(cube.transform);
 
+            if(num > 1)
+            {
+                obj.transform.SetParent(null);
+                obj.GetComponent<Collider>().enabled = true;
+                num = 0;
+            }
+            //클릭 시 한번 생성 - 생성된 캐릭터 있음
+            //생성된 캐릭터가 있으면 클릭해도 또 생성되지 않는다
 
-            /* print("캐릭터1");
-
-             if (!isPlacingPlayer)
-             {
-                 print("캐릭터2");
-                 GameObject tmp = Resources.Load(name) as GameObject;
-
-                 isPlacingPlayer = true;
-
-                 placementPosition = hand.position + hand.forward * maxLineDistance;
-
-                 Vector3 spawnPosition = hitInfo.point;
-                 //Debug.Log(hitInfo.collider.name);
-                 //hitInfo.collider.gameObject;
-
-                 // 플레이어의 위치를 땅의 표면으로 조정
-                 spawnPosition.y = GetGroundHeight(spawnPosition);
-                 GameObject obj = Instantiate(tmp, spawnPosition, Quaternion.identity);
-                 spawnObject = obj;
-
-                 // 첫번째 클릭이 발생한 후 두번째 클릭을 할 수 있게 설정해주는 것
-                 isClickPending = true;
-             }
-             else
-             {
-                 placementPosition = hand.position + hand.forward * maxLineDistance;
-
-                 if (spawnObject != null)
-                 {
-                     // 플레이어의 위치를 땅의 표면으로 조정해주는 코드
-                     placementPosition.y = GetGroundHeight(placementPosition);
-                     spawnObject.transform.position = placementPosition;
-                 }
-
-                 if (OVRInput.GetDown(button, controller))
-                 {
-                     PlacePlayer();
-                 }
-             }*/
         }  
-    }
-
-    // 특정 위치에서 땅의 높이를 검색하는 역할
-    // void Player(string name) 함수에 쓰일 함수 작성
-    private float GetGroundHeight(Vector3 position)
-    {
-        Ray ray = new Ray(position + Vector3.up * 100f, Vector3.down);
-        RaycastHit hitInfo;
-
-        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity))
-        {
-            return hitInfo.point.y;
-        }
-
-        return 0f; // 땅을 찾지 못한 경우 기본값으로 0을 반환
-    }
-
-    // 두번째 이벤트를 실행해주기 위해 필요한 함수
-    // void Player(string name) 함수에 쓰일 함수 작성
-    private void PlacePlayer()
-    {
-        if (spawnObject != null)
-        {
-            isClickPending = false; // 두 번째 클릭 이벤트가 처리됨
-        }
-        lr.enabled = false;
-        isPlacingPlayer = false;
     }
 
     void HopIn()
