@@ -21,13 +21,17 @@ public class Player_Ray : MonoBehaviour
     Vector3 placementPosition; // Ray로 놓아질 위치
     bool isClickPending = false; // 클릭 대기 상태를 추적
     public float maxLineDistance = 3f; // Ray에 최대 길이
-    public GameObject cube;
+    public GameObject cube; // 플레이어의 부모가 될 게임 오브젝트
 
-    // 플레이어를 배치 할 때 필요한 요소
+    // 플레이어를 Teleport할 때 필요한 요소
     public GameObject player;
+    public Transform marker; // marker
+    // 마커 크기 조절하는 공식 변수(?)
+    public float kAdjust = 0.1f;
     void Start()
     {
         lr = GetComponent<LineRenderer>();
+        marker.localScale = Vector3.one * kAdjust;
     }
 
     void Update()
@@ -36,13 +40,16 @@ public class Player_Ray : MonoBehaviour
         Ray ray = new Ray(hand.position, hand.forward);
         lr.SetPosition(0, hand.position);
 
+        bool isHit = Physics.Raycast(ray, out hitInfo);
 
-        if (Physics.Raycast(ray, out hitInfo))
+        if (isHit)
         {
             lr.SetPosition(1, hitInfo.point);
             // 큐브의 위치가 레이에 닿은 위치이다.
             cube.transform.position = hitInfo.point;
-
+            marker.position = hitInfo.point;
+            marker.up = hitInfo.normal;
+            marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
 
             // 부딪힌 곳이 있다면 Two 버튼
             if (OVRInput.GetDown(button, controller))
@@ -98,6 +105,9 @@ public class Player_Ray : MonoBehaviour
         else
         {
             lr.SetPosition(1, ray.origin + ray.direction * 10);
+            marker.position = ray.origin + ray.direction * 100;
+            marker.up = -ray.direction;
+            marker.localScale = Vector3.one * kAdjust * 100;
         }
     }
 
@@ -112,7 +122,7 @@ public class Player_Ray : MonoBehaviour
         {
             print("되고있니?");
             Debug.Log(hitInfo.collider.name);
-
+            //  Ray 닿는 곳으로 이동하고 싶다.
             player.transform.position = hitInfo.point;
         }
     }
