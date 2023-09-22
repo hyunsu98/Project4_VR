@@ -69,12 +69,13 @@ public class Mic_LHS : MonoBehaviour
         yield return www.SendWebRequest();
 
         // 응답 실패! -> 이거 안됨...
-        if (www.result == UnityWebRequest.Result.ConnectionError)
+        /*if (www.result == UnityWebRequest.Result.ConnectionError)
         {
             print(www.error);
-        }
+        }*/
 
-        else
+        //요청이 성공했는지 확인 -> 오류 해결!!!!
+        if(www.result == UnityWebRequest.Result.Success)
         {
             AudioClip clipData = ((DownloadHandlerAudioClip)www.downloadHandler).audioClip;
 
@@ -85,6 +86,12 @@ public class Mic_LHS : MonoBehaviour
                 audio.clip = clipData;
                 audio.Play();
             }
+        }
+
+        else
+        {
+            //Debug.LogError("오디오 클립을 가져오는데 실패했습니다" + www.error);
+            print("가져올 오디오 없음");
         }
     }
 
