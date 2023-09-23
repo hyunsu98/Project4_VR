@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Player_Ray : MonoBehaviour
@@ -9,85 +10,174 @@ public class Player_Ray : MonoBehaviour
     public OVRInput.Button button;
     public OVRInput.Controller controller;
 
-    //¿À¸¥¼Õ¿¡¼­ ±×·ÁÁö´Â ray
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ ray
     public Transform hand;
     LineRenderer lr;
 
     RaycastHit hitInfo;
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ¹èÄ¡ ÇÏ±â À§ÇØ ÇÊ¿äÇÑ ¿ä¼Ò
-    bool isPlacingPlayer = false; // ÇÃ·¹ÀÌ¾î ³õÀº°ÇÁö ¾Æ´ÑÁö ¹¯±â
-    GameObject spawnObject; // ¶¥ À§Ä¡ ¼³Á¤ÇÏ±â 
-    Vector3 placementPosition; // Ray·Î ³õ¾ÆÁú À§Ä¡
-    bool isClickPending = false; // Å¬¸¯ ´ë±â »óÅÂ¸¦ ÃßÀû
-    public float maxLineDistance = 3f; // Ray¿¡ ÃÖ´ë ±æÀÌ
+    // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½Ä¡ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    bool isPlacingPlayer = false; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    GameObject spawnObject; // ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ 
+    Vector3 placementPosition; // Rayï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+    bool isClickPending = false; // Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float maxLineDistance = 3f; // Rayï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public GameObject cube; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ÅÚ·¹Æ÷Æ® ÇÒ ¶§ ÇÊ¿äÇÑ ¿ä¼Ò
-    public GameObject cube;
+    // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ Teleportï¿½ï¿½ ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    public GameObject player;
+    public Transform marker; // marker
+    // ï¿½ï¿½Ä¿ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(?)
+    public float kAdjust = 0.1f;
+
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½
+    GameObject inPlayer;
+    //ï¿½ï¿½ï¿½ï¿½Ù´Ï°ï¿½ ï¿½Ï´ï¿½ ï¿½Úµï¿½
+    bool isPlayerPut;
+
     void Start()
     {
         lr = GetComponent<LineRenderer>();
+        marker.localScale = Vector3.one * kAdjust;
     }
 
     void Update()
     {
-        // ¼ÕÀ§Ä¡¿¡¼­ ¼ÕÀÇ ¾Õ¹æÇâÀ¸·Î Ray¸¦ ¸¸µé°í
+        // ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Rayï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
         Ray ray = new Ray(hand.position, hand.forward);
         lr.SetPosition(0, hand.position);
 
+        bool isHit = Physics.Raycast(ray, out hitInfo);
 
-        if (Physics.Raycast(ray, out hitInfo))
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
+        if (isHit)
         {
             lr.SetPosition(1, hitInfo.point);
-            // Å¥ºêÀÇ À§Ä¡°¡ ·¹ÀÌ¿¡ ´êÀº À§Ä¡ÀÌ´Ù.
+            // Å¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ì´ï¿½.
+
+            //Å¥ï¿½ê¸¦ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ù´Ï°ï¿½ ï¿½Ï°ï¿½ ï¿½Í´ï¿½.
             cube.transform.position = hitInfo.point;
 
+            marker.position = hitInfo.point;
+            marker.up = hitInfo.normal;
+            marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
 
-            // ºÎµúÈù °÷ÀÌ ÀÖ´Ù¸é Two ¹öÆ°
-            if (OVRInput.GetDown(button, controller))
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ ï¿½Ï¶ï¿½
+            /*if (UI.Player_State == UI.PlayerState.Player)
             {
-                // ÇÃ·¹ÀÌ¾î 1, 2 ¹èÄ¡ ¸ðµå
-                if (UI.Player_State == UI.PlayerState.Player)
+                if (isPlayerPut)
                 {
-                    Debug.Log("Player1 ¹èÄ¡ ¸ðµå");
+                    inPlayer.transform.position = hitInfo.point;
+                    inPlayer.transform.SetParent(cube.transform);
+                }
+            }*/
 
-                    print(num);
-                    num += 1;
-                    //Player(name);
+            if (isPlayerPut)
+            {
+                inPlayer.transform.position = hitInfo.point;
+                inPlayer.transform.SetParent(cube.transform);
+            }
+
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½ -> UI Ã¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
+            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("UI"))
+            {
+                if(inPlayer != null)
+                {
+                    inPlayer.SetActive(false);
+                }
+                #region ï¿½ï¿½Æ° ï¿½ï¿½Å©ï¿½ï¿½Æ® (ï¿½ï¿½ï¿½ï¿½)
+                // ï¿½ï¿½Æ° ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
+                /*Button btn = hitInfo.transform.GetComponent<Button>();
+                // ï¿½ï¿½ï¿½ï¿½ btnï¿½ï¿½ nullï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½
+                if (btn != null)
+                {
+                    print("ï¿½ï¿½Æ° Å¬ï¿½ï¿½");
+                    btn.onClick.Invoke();
+                }*/
+                #endregion
+            }
+
+            else
+            {
+                if (inPlayer != null)
+                {
+                    inPlayer.SetActive(true);
+                }
+            }
+
+            // ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ Two ï¿½ï¿½Æ°
+            if (OVRInput.GetDown(button, controller))
+            { 
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
+                /*if (UI.Player_State == UI.PlayerState.Player)
+                {
+                    Debug.Log("Player ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½");
+
+                    if (isPlayerPut)
+                    {
+                        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½
+                        if(hitInfo.collider.CompareTag("Ground"))
+                        {
+                            inPlayer.transform.SetParent(null);
+                            inPlayer.GetComponent<Collider>().enabled = true;
+
+                            //ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+                            isPlayerPut = false;
+                            inPlayer = null;
+                        }
+                    }
+                }*/
+
+
+                Debug.Log("Player ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½");
+
+                if (isPlayerPut)
+                {
+                    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½
+                    if (hitInfo.collider.CompareTag("Ground"))
+                    {
+                        inPlayer.transform.SetParent(null);
+                        inPlayer.GetComponent<Collider>().enabled = true;
+
+                        //ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+                        isPlayerPut = false;
+                        inPlayer = null;
+                    }
                 }
 
-                // ÇÃ·¹ÀÌ¾î Move ¸ðµå
+
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Move ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Move)
                 {
-                    Debug.Log("Player Move ¸ðµå");
+                    Debug.Log("Player Move ï¿½ï¿½ï¿½");
                     Move();
                 }
 
-                // ÇÃ·¹ÀÌ¾î Delete ¸ðµå
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Delete ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Delete)
                 {
-                    Debug.Log("Player Delete ¸ðµå");
+                    Debug.Log("Player Delete ï¿½ï¿½ï¿½");
                     Delete();
                 }
 
-                // Player Teleport ¸ðµå
+                // Player Teleport ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Teleport)
                 {
-                    Debug.Log("Player Teleport ¸ðµå");
+                    Debug.Log("Player Teleport ï¿½ï¿½ï¿½");
                     TelePort();
                 }
 
-                // Player Camera ¸ðµå
+                // Player Camera ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Camera)
                 {
-                    Debug.Log("Player Camera ¸ðµå");
+                    Debug.Log("Player Camera ï¿½ï¿½ï¿½");
                     Cam();
                 }
 
-                // Player Hopin ¸ðµå
+                // Player Hopin ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Hopin)
                 {
-                    Debug.Log("Player Hopin ¸ðµå");
+                    Debug.Log("Player Hopin ï¿½ï¿½ï¿½");
                     HopIn();
                 }
             }
@@ -96,27 +186,32 @@ public class Player_Ray : MonoBehaviour
         else
         {
             lr.SetPosition(1, ray.origin + ray.direction * 10);
+            marker.position = ray.origin + ray.direction * 100;
+            marker.up = -ray.direction;
+            marker.localScale = Vector3.one * kAdjust * 100;
         }
     }
 
     private void Cam()
     {
-        
+
     }
 
     void TelePort()
     {
-        if (hitInfo.collider.CompareTag("Player"))
+        if (hitInfo.collider.CompareTag("Ground"))
         {
+            print("ï¿½Ç°ï¿½ï¿½Ö´ï¿½?");
             Debug.Log(hitInfo.collider.name);
-            cube.transform.position = hitInfo.collider.transform.position;
+            //  Ray ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï°ï¿½ ï¿½Í´ï¿½.
+            player.transform.position = hitInfo.point;
         }
     }
 
     void Delete()
     {
-        //¸ðµå º°·Î ÇÏ¸é µÉ °Í °°À½
-        //¸¸¾à ´êÀº°÷ÀÌ Enemy¶ó¸é
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enemyï¿½ï¿½ï¿½
         if (hitInfo.collider.CompareTag("Player"))
         {
             Debug.Log(hitInfo.collider.name);
@@ -126,49 +221,56 @@ public class Player_Ray : MonoBehaviour
 
     void Move()
     {
-        
-    }
-
-    int num = 0;
-
-    //°¡Áö°í ÀÖ´Â ÇÃ·¹ÀÌ¾î
-    GameObject inPlayer;
-
-    public void Player(string name)
-    {
-        if(UI.Player_State == UI.PlayerState.Player)
+        if (hitInfo.collider.CompareTag("Player"))
         {
-            print("Ä³¸¯ÅÍ »ý±è");
-            GameObject tmp = Resources.Load(name) as GameObject;
-            GameObject obj = Instantiate(tmp);
+            inPlayer = hitInfo.collider.gameObject;
 
-            inPlayer = obj;
-
-            //print(num);
-
-            obj.transform.position = hitInfo.point;
-            obj.transform.SetParent(cube.transform);
-
-            if(num > 1)
-            {
-                obj.transform.SetParent(null);
-                obj.GetComponent<Collider>().enabled = true;
-                num = 0;
-            }
-            //Å¬¸¯ ½Ã ÇÑ¹ø »ý¼º - »ý¼ºµÈ Ä³¸¯ÅÍ ÀÖÀ½
-            //»ý¼ºµÈ Ä³¸¯ÅÍ°¡ ÀÖÀ¸¸é Å¬¸¯ÇØµµ ¶Ç »ý¼ºµÇÁö ¾Ê´Â´Ù
-
-        }  
+            inPlayer.GetComponent<Collider>().enabled = false;
+            isPlayerPut = true;
+        }
+        
     }
 
     void HopIn()
     {
-        //¸ðµå º°·Î ÇÏ¸é µÉ °Í °°À½
-        //¸¸¾à ´êÀº°÷ÀÌ Enemy¶ó¸é
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enemyï¿½ï¿½ï¿½
         if (hitInfo.collider.CompareTag("Player"))
         {
             Debug.Log(hitInfo.collider.name);
             PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
+        }
+    }
+
+    //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Å¬ï¿½ï¿½ 
+    public void Player(string name)
+    {
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Ü¾ï¿½ ï¿½ï¿½  -> UIï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        /*if(UI.Player_State == UI.PlayerState.Player)
+        {
+            if(inPlayer == null)
+            {
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½!
+                print("Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+                GameObject tmp = Resources.Load(name) as GameObject;
+                GameObject obj = Instantiate(tmp);
+
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+                inPlayer = obj;
+                isPlayerPut = true;
+            }
+        }*/
+
+        if (inPlayer == null)
+        {
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½!
+            print("Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+            GameObject tmp = Resources.Load(name) as GameObject;
+            GameObject obj = Instantiate(tmp);
+
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+            inPlayer = obj;
+            isPlayerPut = true;
         }
     }
 }

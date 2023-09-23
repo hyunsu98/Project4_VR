@@ -9,7 +9,7 @@ public static class UI
 {
     public static PlayerState playerState;
 
-    // UI ¹öÆ°¿¡ µû¸¥ »óÅÂ ÀüÈ¯
+    // UI ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     public enum PlayerState
     {
         Player,
@@ -40,7 +40,7 @@ public class ModeChange_LHS : MonoBehaviour
     public OVRInput.Button button;
     public OVRInput.Controller controller;
 
-    //ÀüÈ¯ÇØÁà¾ßÇÏ´Â °ª.
+    //ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½.
     public OVRInputModule enentSystem;
     public OVRGazePointer ovrGazePointer;
 
@@ -53,17 +53,20 @@ public class ModeChange_LHS : MonoBehaviour
 
     public bool isHopln;
 
+    // UI GameObject array
+    public GameObject[] modeUIImage;
     void Start()
     {
-        print(UI.Player_State);
+        print("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½" + UI.Player_State);
     }
 
     void Update()
     {
-        //Å¬¸¯ÇÏ¸é ¸ğµå ÀüÈ¯ÇÏ°Ô ÇØ¾ßÇÔ
+
+        //Å¬ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï°ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½
         if (OVRInput.GetDown(button, controller))
         {
-            print("¹öÆ° ¸ğµå ÀüÈ¯");
+            print("R + hand Å¬ï¿½ï¿½");
             isCenter = !isCenter;
 
             if (isCenter)
@@ -71,7 +74,7 @@ public class ModeChange_LHS : MonoBehaviour
                 enentSystem.rayTransform = centerEye;
                 ovrGazePointer.rayTransform = centerEye;
 
-                //UIµµ ²¨Áö¸é?
+                //UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
                 modeUI.SetActive(true);
             }
             else
@@ -84,49 +87,72 @@ public class ModeChange_LHS : MonoBehaviour
         }
     }
 
-    // -----------------------------------¼Ò¿øÀÌ ºÎºĞ---------------------------------------// 
+    // -----------------------------------ï¿½Ò¿ï¿½ï¿½ï¿½ ï¿½Îºï¿½---------------------------------------// 
 
-    // ÇÃ·¹ÀÌ¾î 1 ,2 ¹èÄ¡ ¸ğµå
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ 1 ,2 ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
     public void OnPlayer(string name)
     {
-        print("ÇÃ·¹ÀÌ¾î1 ¹èÄ¡ È°¼ºÈ­");
+        print("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½1 ï¿½ï¿½Ä¡ È°ï¿½ï¿½È­");
         UI.Player_State = UI.PlayerState.Player;
     }
 
-    // ÇÃ·¹ÀÌ¾î Delete ¸ğµå
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Delete ï¿½ï¿½ï¿½
     public void OnDelete()
     {
-        print("»èÁ¦ ¸ğµå È°¼ºÈ­");
+        print("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­");
         UI.Player_State = UI.PlayerState.Delete;
+        ModeUI(0);
     }
 
-    // ÇÃ·¹ÀÌ¾î Move ¸ğµå
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Move ï¿½ï¿½ï¿½
     public void OnMove()
     {
-        print("ÀÌµ¿ ¸ğµå È°¼ºÈ­");
+        print("ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­");
         UI.Player_State = UI.PlayerState.Move;
+        ModeUI(3);
     }
 
-    // Player Teleport ¸ğµå
+    // Player Teleport ï¿½ï¿½ï¿½
     public void OnTeleport()
     {
-        print("ÅÚ·¹Æ÷Æ® ¸ğµå È°¼ºÈ­");
+        print("ï¿½Ú·ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­");
         UI.Player_State = UI.PlayerState.Teleport;
+        ModeUI(2);
     }
 
-    // -----------------------------------Çö¼÷ÀÌ ºÎºĞ---------------------------------------// 
-    //¸ğµå ¹Ù²î°Ô ÇØ¾ßÇÒÁöµµ
-    // Player Hopin ¸ğµå
+    // -----------------------------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½---------------------------------------// 
+    //ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // Player Hopin ï¿½ï¿½ï¿½
     public void OnHopIn()
     {
-        print("µé¾î°¡´Â ¸ğµå È°¼ºÈ­");
+        print("ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­");
         UI.Player_State = UI.PlayerState.Hopin;
+        ModeUI(1);
     }
 
-    // Player Camera ¸ğµå
+    // Player Camera ï¿½ï¿½ï¿½
     public void OnCamera()
     {
-        print("Ä«¸Ş¶ó ¸ğµå È°¼ºÈ­");
+        print("Ä«ï¿½Ş¶ï¿½ ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­");
         UI.Player_State = UI.PlayerState.Camera;
+        ModeUI(4);
+    }
+
+    // Input number = true
+    // other number = false
+    public void ModeUI(int num)
+    {
+        print("num í™•ì¸");
+        for (int i = 0; i < modeUIImage.Length; i++)
+        {
+            if (i == num)
+            {
+                modeUIImage[num].SetActive(true);
+            }
+            else 
+            {
+                modeUIImage[i].SetActive(false);
+            }
+        } 
     }
 }

@@ -1440,7 +1440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &170134242
 Transform:
   m_ObjectHideFlags: 0
@@ -23976,6 +23976,11 @@ MonoBehaviour:
   button: 8192
   controller: 2
   hand: {fileID: 1741045028}
+  maxLineDistance: 3
+  cube: {fileID: 0}
+  player: {fileID: 0}
+  marker: {fileID: 0}
+  kAdjust: 0.1
 --- !u!1 &1952599774
 GameObject:
   m_ObjectHideFlags: 0

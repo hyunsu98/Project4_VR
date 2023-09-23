@@ -1196,8 +1196,8 @@ public class OVROverlay : MonoBehaviour
 
         if (OVRManager.loadedXRDevice != constructedOverlayXRDevice)
         {
-            Debug.LogError("Warning-XR Device was switched during runtime with overlays still enabled. " +
-                           "When doing so, all overlays constructed with the previous XR device must first be disabled.");
+            /*Debug.LogError("Warning-XR Device was switched during runtime with overlays still enabled. " +
+                           "When doing so, all overlays constructed with the previous XR device must first be disabled.");*/
             return;
         }
 
