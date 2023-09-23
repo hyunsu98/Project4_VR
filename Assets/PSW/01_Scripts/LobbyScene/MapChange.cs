@@ -12,6 +12,6 @@ public class MapChange : MonoBehaviour
     public void OnClickMap()
     {
         // Scene PSW_REC2 로 변경할 것
-        SceneManager.LoadScene("PSW_REC2");
+        SceneManager.LoadScene("LHS_Main");
     }
 }
