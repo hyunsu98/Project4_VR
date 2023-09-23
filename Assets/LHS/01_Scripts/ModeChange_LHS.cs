@@ -55,15 +55,16 @@ public class ModeChange_LHS : MonoBehaviour
 
     void Start()
     {
-        print(UI.Player_State);
+        print("현재 모드" + UI.Player_State);
     }
 
     void Update()
     {
+
         //클릭하면 모드 전환하게 해야함
         if (OVRInput.GetDown(button, controller))
         {
-            print("버튼 모드 전환");
+            print("R + hand 클릭");
             isCenter = !isCenter;
 
             if (isCenter)

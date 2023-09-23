@@ -99,7 +99,7 @@ public class OVRNetwork
             try
             {
                 tcpListener.Start();
-                Debug.LogFormat("TcpListener started. Local endpoint: {0}", tcpListener.LocalEndpoint.ToString());
+                //Debug.LogFormat("TcpListener started. Local endpoint: {0}", tcpListener.LocalEndpoint.ToString());
             }
             catch (SocketException e)
             {
@@ -114,7 +114,7 @@ public class OVRNetwork
 
             if (tcpListener != null)
             {
-                Debug.LogFormat("[OVRNetworkTcpServer] Start Listening on port {0}", listeningPort);
+                //Debug.LogFormat("[OVRNetworkTcpServer] Start Listening on port {0}", listeningPort);
 
                 try
                 {

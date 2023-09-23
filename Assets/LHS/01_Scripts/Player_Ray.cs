@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Player_Ray : MonoBehaviour
@@ -28,6 +29,12 @@ public class Player_Ray : MonoBehaviour
     public Transform marker; // marker
     // 마커 크기 조절하는 공식 변수(?)
     public float kAdjust = 0.1f;
+
+    //가지고 있는 플레이어
+    GameObject inPlayer;
+    //따라다니게 하는 코드
+    bool isPlayerPut;
+
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -42,27 +49,102 @@ public class Player_Ray : MonoBehaviour
 
         bool isHit = Physics.Raycast(ray, out hitInfo);
 
+        //닿은 곳이 있다면
         if (isHit)
         {
             lr.SetPosition(1, hitInfo.point);
             // 큐브의 위치가 레이에 닿은 위치이다.
+
+            //큐브를 계속 따라다니게 하고 싶다.
             cube.transform.position = hitInfo.point;
+
             marker.position = hitInfo.point;
             marker.up = hitInfo.normal;
             marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
 
+            // 플레이어 배치 모드 일때
+            /*if (UI.Player_State == UI.PlayerState.Player)
+            {
+                if (isPlayerPut)
+                {
+                    inPlayer.transform.position = hitInfo.point;
+                    inPlayer.transform.SetParent(cube.transform);
+                }
+            }*/
+
+            if (isPlayerPut)
+            {
+                inPlayer.transform.position = hitInfo.point;
+                inPlayer.transform.SetParent(cube.transform);
+            }
+
+            //현숙추가 -> UI 창에서는 플레이어가 보이지 않게 하기 위해
+            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("UI"))
+            {
+                if(inPlayer != null)
+                {
+                    inPlayer.SetActive(false);
+                }
+                #region 버튼 스크립트 (보류)
+                // 버튼 스크립트를 가져온다
+                /*Button btn = hitInfo.transform.GetComponent<Button>();
+                // 만약 btn이 null이 아니라면
+                if (btn != null)
+                {
+                    print("버튼 클릭");
+                    btn.onClick.Invoke();
+                }*/
+                #endregion
+            }
+
+            else
+            {
+                if (inPlayer != null)
+                {
+                    inPlayer.SetActive(true);
+                }
+            }
+
             // 부딪힌 곳이 있다면 Two 버튼
             if (OVRInput.GetDown(button, controller))
-            {
-                // 플레이어 1, 2 배치 모드
-                if (UI.Player_State == UI.PlayerState.Player)
+            { 
+                // 플레이어 배치 모드
+                /*if (UI.Player_State == UI.PlayerState.Player)
                 {
-                    Debug.Log("Player1 배치 모드");
+                    Debug.Log("Player 배치 모드");
 
-                    print(num);
-                    num += 1;
-                    //Player(name);
+                    if (isPlayerPut)
+                    {
+                        //땅일 때만 놓을 수 있게
+                        if(hitInfo.collider.CompareTag("Ground"))
+                        {
+                            inPlayer.transform.SetParent(null);
+                            inPlayer.GetComponent<Collider>().enabled = true;
+
+                            //초기화 셋팅
+                            isPlayerPut = false;
+                            inPlayer = null;
+                        }
+                    }
+                }*/
+
+
+                Debug.Log("Player 배치 모드");
+
+                if (isPlayerPut)
+                {
+                    //땅일 때만 놓을 수 있게
+                    if (hitInfo.collider.CompareTag("Ground"))
+                    {
+                        inPlayer.transform.SetParent(null);
+                        inPlayer.GetComponent<Collider>().enabled = true;
+
+                        //초기화 셋팅
+                        isPlayerPut = false;
+                        inPlayer = null;
+                    }
                 }
+
 
                 // 플레이어 Move 모드
                 if (UI.Player_State == UI.PlayerState.Move)
@@ -113,7 +195,6 @@ public class Player_Ray : MonoBehaviour
 
     private void Cam()
     {
-        
     }
 
     void TelePort()
@@ -143,37 +224,6 @@ public class Player_Ray : MonoBehaviour
         
     }
 
-    int num = 0;
-
-    //가지고 있는 플레이어
-    GameObject inPlayer;
-
-    public void Player(string name)
-    {
-        if(UI.Player_State == UI.PlayerState.Player)
-        {
-            print("캐릭터 생김");
-            GameObject tmp = Resources.Load(name) as GameObject;
-            GameObject obj = Instantiate(tmp);
-
-            inPlayer = obj;
-
-            //print(num);
-
-            obj.transform.position = hitInfo.point;
-            obj.transform.SetParent(cube.transform);
-
-            if(num > 1)
-            {
-                obj.transform.SetParent(null);
-                obj.GetComponent<Collider>().enabled = true;
-                num = 0;
-            }
-            //클릭 시 한번 생성 - 생성된 캐릭터 있음
-            //생성된 캐릭터가 있으면 클릭해도 또 생성되지 않는다
-        }  
-    }
-
     void HopIn()
     {
         //모드 별로 하면 될 것 같음
@@ -182,6 +232,38 @@ public class Player_Ray : MonoBehaviour
         {
             Debug.Log(hitInfo.collider.name);
             PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
+        }
+    }
+
+    //플레이어 클릭 
+    public void Player(string name)
+    {
+        // 플레이어 모드일때만 클릭하면 생겨야 함  -> UI모드로 바꿔야 할 거 같음
+        /*if(UI.Player_State == UI.PlayerState.Player)
+        {
+            if(inPlayer == null)
+            {
+                // 플레이어 활성화 모드!
+                print("캐릭터 생김");
+                GameObject tmp = Resources.Load(name) as GameObject;
+                GameObject obj = Instantiate(tmp);
+
+                // 플레이어 셋팅
+                inPlayer = obj;
+                isPlayerPut = true;
+            }
+        }*/
+
+        if (inPlayer == null)
+        {
+            // 플레이어 활성화 모드!
+            print("캐릭터 생김");
+            GameObject tmp = Resources.Load(name) as GameObject;
+            GameObject obj = Instantiate(tmp);
+
+            // 플레이어 셋팅
+            inPlayer = obj;
+            isPlayerPut = true;
         }
     }
 }

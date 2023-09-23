@@ -11,7 +11,9 @@ public class RHandTarget : MonoBehaviour
 
     void Start()
     {
-        if(idle != null)
+        target = GameObject.FindGameObjectWithTag("RHand").transform;
+
+        if (idle != null)
         {
             transform.position = idle.transform.position;
             transform.rotation = idle.transform.rotation;
