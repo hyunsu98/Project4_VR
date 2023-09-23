@@ -14992,7 +14992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &723719502
 Transform:
   m_ObjectHideFlags: 0
@@ -34933,7 +34933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1570164869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -50940,7 +50940,7 @@ GameObject:
   - component: {fileID: 7520686426378429266}
   - component: {fileID: 7520686426378429265}
   m_Layer: 0
-  m_Name: Jammo_LowPoly
+  m_Name: MainPlayer
   m_TagString: MainPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51532,7 +51532,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6774963797446988099}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
   m_Name: 
