@@ -223,7 +223,9 @@ public class Player_Ray : MonoBehaviour
     {
         if (hitInfo.collider.CompareTag("Player"))
         {
-            inPlayer = GameObject.FindGameObjectWithTag("Player");
+            inPlayer = hitInfo.collider.gameObject;
+
+            inPlayer.GetComponent<Collider>().enabled = false;
             isPlayerPut = true;
         }
         

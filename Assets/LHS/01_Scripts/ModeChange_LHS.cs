@@ -142,6 +142,7 @@ public class ModeChange_LHS : MonoBehaviour
     // other number = false
     public void ModeUI(int num)
     {
+        print("num 확인");
         for (int i = 0; i < modeUIImage.Length; i++)
         {
             if (i == num)
