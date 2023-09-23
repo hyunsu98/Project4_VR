@@ -10,8 +10,12 @@ public class LHandTarget : MonoBehaviour
 
     public bool isTargeting;
 
+    //타겟 동적으로 찾아야 함.
     void Start()
     {
+        //생성될때 타겟 팔을 찾아서 셋팅 해야함
+        target = GameObject.FindGameObjectWithTag("LHand").transform;
+
         //시작할때 손 셋팅
         if(idle != null)
         {
