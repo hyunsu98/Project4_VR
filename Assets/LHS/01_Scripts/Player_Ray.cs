@@ -10,29 +10,29 @@ public class Player_Ray : MonoBehaviour
     public OVRInput.Button button;
     public OVRInput.Controller controller;
 
-    //¿À¸¥¼Õ¿¡¼­ ±×·ÁÁö´Â ray
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ ray
     public Transform hand;
     LineRenderer lr;
 
     RaycastHit hitInfo;
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ¹èÄ¡ ÇÏ±â À§ÇØ ÇÊ¿äÇÑ ¿ä¼Ò
-    bool isPlacingPlayer = false; // ÇÃ·¹ÀÌ¾î ³õÀº°ÇÁö ¾Æ´ÑÁö ¹¯±â
-    GameObject spawnObject; // ¶¥ À§Ä¡ ¼³Á¤ÇÏ±â 
-    Vector3 placementPosition; // Ray·Î ³õ¾ÆÁú À§Ä¡
-    bool isClickPending = false; // Å¬¸¯ ´ë±â »óÅÂ¸¦ ÃßÀû
-    public float maxLineDistance = 3f; // Ray¿¡ ÃÖ´ë ±æÀÌ
-    public GameObject cube; // ÇÃ·¹ÀÌ¾îÀÇ ºÎ¸ð°¡ µÉ °ÔÀÓ ¿ÀºêÁ§Æ®
+    // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½Ä¡ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    bool isPlacingPlayer = false; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    GameObject spawnObject; // ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ 
+    Vector3 placementPosition; // Rayï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
+    bool isClickPending = false; // Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float maxLineDistance = 3f; // Rayï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public GameObject cube; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
-    // ÇÃ·¹ÀÌ¾î¸¦ TeleportÇÒ ¶§ ÇÊ¿äÇÑ ¿ä¼Ò
+    // ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ Teleportï¿½ï¿½ ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     public GameObject player;
     public Transform marker; // marker
-    // ¸¶Ä¿ Å©±â Á¶ÀýÇÏ´Â °ø½Ä º¯¼ö(?)
+    // ï¿½ï¿½Ä¿ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(?)
     public float kAdjust = 0.1f;
 
-    //°¡Áö°í ÀÖ´Â ÇÃ·¹ÀÌ¾î
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½
     GameObject inPlayer;
-    //µû¶ó´Ù´Ï°Ô ÇÏ´Â ÄÚµå
+    //ï¿½ï¿½ï¿½ï¿½Ù´Ï°ï¿½ ï¿½Ï´ï¿½ ï¿½Úµï¿½
     bool isPlayerPut;
 
     void Start()
@@ -43,26 +43,26 @@ public class Player_Ray : MonoBehaviour
 
     void Update()
     {
-        // ¼ÕÀ§Ä¡¿¡¼­ ¼ÕÀÇ ¾Õ¹æÇâÀ¸·Î Ray¸¦ ¸¸µé°í
+        // ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Rayï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
         Ray ray = new Ray(hand.position, hand.forward);
         lr.SetPosition(0, hand.position);
 
         bool isHit = Physics.Raycast(ray, out hitInfo);
 
-        //´êÀº °÷ÀÌ ÀÖ´Ù¸é
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½
         if (isHit)
         {
             lr.SetPosition(1, hitInfo.point);
-            // Å¥ºêÀÇ À§Ä¡°¡ ·¹ÀÌ¿¡ ´êÀº À§Ä¡ÀÌ´Ù.
+            // Å¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ì´ï¿½.
 
-            //Å¥ºê¸¦ °è¼Ó µû¶ó´Ù´Ï°Ô ÇÏ°í ½Í´Ù.
+            //Å¥ï¿½ê¸¦ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ù´Ï°ï¿½ ï¿½Ï°ï¿½ ï¿½Í´ï¿½.
             cube.transform.position = hitInfo.point;
 
             marker.position = hitInfo.point;
             marker.up = hitInfo.normal;
             marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
 
-            // ÇÃ·¹ÀÌ¾î ¹èÄ¡ ¸ðµå ÀÏ¶§
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ ï¿½Ï¶ï¿½
             /*if (UI.Player_State == UI.PlayerState.Player)
             {
                 if (isPlayerPut)
@@ -78,20 +78,20 @@ public class Player_Ray : MonoBehaviour
                 inPlayer.transform.SetParent(cube.transform);
             }
 
-            //Çö¼÷Ãß°¡ -> UI Ã¢¿¡¼­´Â ÇÃ·¹ÀÌ¾î°¡ º¸ÀÌÁö ¾Ê°Ô ÇÏ±â À§ÇØ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½ -> UI Ã¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("UI"))
             {
                 if(inPlayer != null)
                 {
                     inPlayer.SetActive(false);
                 }
-                #region ¹öÆ° ½ºÅ©¸³Æ® (º¸·ù)
-                // ¹öÆ° ½ºÅ©¸³Æ®¸¦ °¡Á®¿Â´Ù
+                #region ï¿½ï¿½Æ° ï¿½ï¿½Å©ï¿½ï¿½Æ® (ï¿½ï¿½ï¿½ï¿½)
+                // ï¿½ï¿½Æ° ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
                 /*Button btn = hitInfo.transform.GetComponent<Button>();
-                // ¸¸¾à btnÀÌ nullÀÌ ¾Æ´Ï¶ó¸é
+                // ï¿½ï¿½ï¿½ï¿½ btnï¿½ï¿½ nullï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½
                 if (btn != null)
                 {
-                    print("¹öÆ° Å¬¸¯");
+                    print("ï¿½ï¿½Æ° Å¬ï¿½ï¿½");
                     btn.onClick.Invoke();
                 }*/
                 #endregion
@@ -105,23 +105,23 @@ public class Player_Ray : MonoBehaviour
                 }
             }
 
-            // ºÎµúÈù °÷ÀÌ ÀÖ´Ù¸é Two ¹öÆ°
+            // ï¿½Îµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ Two ï¿½ï¿½Æ°
             if (OVRInput.GetDown(button, controller))
             { 
-                // ÇÃ·¹ÀÌ¾î ¹èÄ¡ ¸ðµå
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
                 /*if (UI.Player_State == UI.PlayerState.Player)
                 {
-                    Debug.Log("Player ¹èÄ¡ ¸ðµå");
+                    Debug.Log("Player ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½");
 
                     if (isPlayerPut)
                     {
-                        //¶¥ÀÏ ¶§¸¸ ³õÀ» ¼ö ÀÖ°Ô
+                        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½
                         if(hitInfo.collider.CompareTag("Ground"))
                         {
                             inPlayer.transform.SetParent(null);
                             inPlayer.GetComponent<Collider>().enabled = true;
 
-                            //ÃÊ±âÈ­ ¼ÂÆÃ
+                            //ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
                             isPlayerPut = false;
                             inPlayer = null;
                         }
@@ -129,56 +129,55 @@ public class Player_Ray : MonoBehaviour
                 }*/
 
 
-                Debug.Log("Player ¹èÄ¡ ¸ðµå");
+                Debug.Log("Player ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½");
 
                 if (isPlayerPut)
                 {
-                    //¶¥ÀÏ ¶§¸¸ ³õÀ» ¼ö ÀÖ°Ô
+                    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½
                     if (hitInfo.collider.CompareTag("Ground"))
                     {
                         inPlayer.transform.SetParent(null);
                         inPlayer.GetComponent<Collider>().enabled = true;
 
-                        //ÃÊ±âÈ­ ¼ÂÆÃ
+                        //ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½
                         isPlayerPut = false;
                         inPlayer = null;
                     }
                 }
 
 
-                // ÇÃ·¹ÀÌ¾î Move ¸ðµå
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Move ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Move)
                 {
-                    Debug.Log("Player Move ¸ðµå");
+                    Debug.Log("Player Move ï¿½ï¿½ï¿½");
                     Move();
                 }
 
-                // ÇÃ·¹ÀÌ¾î Delete ¸ðµå
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Delete ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Delete)
                 {
-                    Debug.Log("Player Delete ¸ðµå");
+                    Debug.Log("Player Delete ï¿½ï¿½ï¿½");
                     Delete();
                 }
 
-                // Player Teleport ¸ðµå
+                // Player Teleport ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Teleport)
                 {
-                    Debug.Log("Player Teleport ¸ðµå");
-
+                    Debug.Log("Player Teleport ï¿½ï¿½ï¿½");
                     TelePort();
                 }
 
-                // Player Camera ¸ðµå
+                // Player Camera ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Camera)
                 {
-                    Debug.Log("Player Camera ¸ðµå");
+                    Debug.Log("Player Camera ï¿½ï¿½ï¿½");
                     Cam();
                 }
 
-                // Player Hopin ¸ðµå
+                // Player Hopin ï¿½ï¿½ï¿½
                 if (UI.Player_State == UI.PlayerState.Hopin)
                 {
-                    Debug.Log("Player Hopin ¸ðµå");
+                    Debug.Log("Player Hopin ï¿½ï¿½ï¿½");
                     HopIn();
                 }
             }
@@ -195,23 +194,24 @@ public class Player_Ray : MonoBehaviour
 
     private void Cam()
     {
+
     }
 
     void TelePort()
     {
         if (hitInfo.collider.CompareTag("Ground"))
         {
-            print("µÇ°íÀÖ´Ï?");
+            print("ï¿½Ç°ï¿½ï¿½Ö´ï¿½?");
             Debug.Log(hitInfo.collider.name);
-            //  Ray ´ê´Â °÷À¸·Î ÀÌµ¿ÇÏ°í ½Í´Ù.
+            //  Ray ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï°ï¿½ ï¿½Í´ï¿½.
             player.transform.position = hitInfo.point;
         }
     }
 
     void Delete()
     {
-        //¸ðµå º°·Î ÇÏ¸é µÉ °Í °°À½
-        //¸¸¾à ´êÀº°÷ÀÌ Enemy¶ó¸é
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enemyï¿½ï¿½ï¿½
         if (hitInfo.collider.CompareTag("Player"))
         {
             Debug.Log(hitInfo.collider.name);
@@ -221,13 +221,18 @@ public class Player_Ray : MonoBehaviour
 
     void Move()
     {
+        if (hitInfo.collider.CompareTag("Player"))
+        {
+            inPlayer = GameObject.FindGameObjectWithTag("Player");
+            isPlayerPut = true;
+        }
         
     }
 
     void HopIn()
     {
-        //¸ðµå º°·Î ÇÏ¸é µÉ °Í °°À½
-        //¸¸¾à ´êÀº°÷ÀÌ Enemy¶ó¸é
+        //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enemyï¿½ï¿½ï¿½
         if (hitInfo.collider.CompareTag("Player"))
         {
             Debug.Log(hitInfo.collider.name);
@@ -235,20 +240,20 @@ public class Player_Ray : MonoBehaviour
         }
     }
 
-    //ÇÃ·¹ÀÌ¾î Å¬¸¯ 
+    //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Å¬ï¿½ï¿½ 
     public void Player(string name)
     {
-        // ÇÃ·¹ÀÌ¾î ¸ðµåÀÏ¶§¸¸ Å¬¸¯ÇÏ¸é »ý°Ü¾ß ÇÔ  -> UI¸ðµå·Î ¹Ù²ã¾ß ÇÒ °Å °°À½
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Ü¾ï¿½ ï¿½ï¿½  -> UIï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         /*if(UI.Player_State == UI.PlayerState.Player)
         {
             if(inPlayer == null)
             {
-                // ÇÃ·¹ÀÌ¾î È°¼ºÈ­ ¸ðµå!
-                print("Ä³¸¯ÅÍ »ý±è");
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½!
+                print("Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
                 GameObject tmp = Resources.Load(name) as GameObject;
                 GameObject obj = Instantiate(tmp);
 
-                // ÇÃ·¹ÀÌ¾î ¼ÂÆÃ
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
                 inPlayer = obj;
                 isPlayerPut = true;
             }
@@ -256,12 +261,12 @@ public class Player_Ray : MonoBehaviour
 
         if (inPlayer == null)
         {
-            // ÇÃ·¹ÀÌ¾î È°¼ºÈ­ ¸ðµå!
-            print("Ä³¸¯ÅÍ »ý±è");
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½!
+            print("Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             GameObject tmp = Resources.Load(name) as GameObject;
             GameObject obj = Instantiate(tmp);
 
-            // ÇÃ·¹ÀÌ¾î ¼ÂÆÃ
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
             inPlayer = obj;
             isPlayerPut = true;
         }
