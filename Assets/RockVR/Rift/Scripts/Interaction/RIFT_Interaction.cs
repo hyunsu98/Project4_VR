@@ -60,7 +60,8 @@ namespace RockVR.Rift
 
         private void Awake()
         {
-            riftController = this.GetComponent<RIFT_EventCtrl>().riftController;
+            //우리는 툴킷 이용을 안하고 싶음
+            //riftController = this.GetComponent<RIFT_EventCtrl>().riftController;
         }
 
         void Start()

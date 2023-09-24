@@ -22308,6 +22308,7 @@ MonoBehaviour:
   isCenter: 1
   modeUI: {fileID: 563406352}
   isHopln: 0
+  modeUIImage: []
 --- !u!1 &1787035119
 GameObject:
   m_ObjectHideFlags: 0

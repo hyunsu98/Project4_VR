@@ -9,9 +9,12 @@ namespace RockVR.Rift.Demo
         Touched,
         Picked
     }
+
     public class CameraSampleCtrl : MonoBehaviour
     {
         public ControllerState controllerState = ControllerState.Normal;
+
+        //여러 카메라를 사용해서 가능
         public CameraSetUpCtrl cameraSetUpCtrl;
         public RIFT_FollowCamera[] followCameras;
         public GameObject oneButtonTooltip;
@@ -29,40 +32,56 @@ namespace RockVR.Rift.Demo
         private RIFT_Teleport teleport;
         protected RIFT_RadialMenu radiaMenu;
 
+        //카메라 활성화 하는 기능
         void Awake()
         {
-            vrIteraction = this.transform.GetComponent<RIFT_Interaction>();
-            eventCtrl = this.GetComponent<RIFT_EventCtrl>();
-            radiaMenu = this.transform.GetComponentInChildren<RIFT_RadialMenu>();
-            tooltipController = this.GetComponentInChildren<RIFT_TooltipManager>();
-            teleport = this.GetComponent<RIFT_Teleport>();
+            //인터렉션 
+            //vrIteraction = this.transform.GetComponent<RIFT_Interaction>();
+            
+            //이벤트 발생
+            //eventCtrl = this.GetComponent<RIFT_EventCtrl>();
+            
+            //메뉴 읽기? ray camera에 있음
+            //radiaMenu = this.transform.GetComponentInChildren<RIFT_RadialMenu>();
+
+            //툴킷 매니저
+            //tooltipController = this.GetComponentInChildren<RIFT_TooltipManager>();
+            
+            //텔레포트
+            //teleport = this.GetComponent<RIFT_Teleport>();
         }
 
         private void Start()
         {
-            if (controllerState == ControllerState.Ray)
+            //툴킷 UI 나타나게 하는 것.
+            /*if (controllerState == ControllerState.Ray)
             {
                 tooltipController.handTriggerText = "Show Ray";
                 tooltipController.indexTriggerText = "Pick Camera";
                 tooltipController.thumbstickText = "Swicth Camera";
                 tooltipController.buttonOneText = "Start/Stop Capture";
             }
+
             else if (controllerState == ControllerState.Touch)
             {
                 tooltipController.indexTriggerText = "Grab Camera";
                 tooltipController.thumbstickText = "Teleport";
                 tooltipController.buttonOneText = "Start/Stop Capture";
                 hangTriggerTooltip.SetActive(false);
-            }
-            startButtonTooltip.SetActive(false);
-            twoButtonTooltip.SetActive(false);
+            }*/
+
+            //UI 구성을 위한
+            //startButtonTooltip.SetActive(false);
+            //twoButtonTooltip.SetActive(false);
         }
 
+        //활성화 될때 호출되는 함수
         void OnEnable()
         {
+            print("델리게이트 활성화");
             if (eventCtrl != null)
             {
-                eventCtrl.eventDelegate.OnPressButtonPrimaryHandTrigger += OnPressButtonPrimaryHandTrigger;
+                /*eventCtrl.eventDelegate.OnPressButtonPrimaryHandTrigger += OnPressButtonPrimaryHandTrigger;
                 eventCtrl.eventDelegate.OnPressButtonPrimaryHandTriggerUp += OnPressButtonPrimaryHandTriggerUp;
                 eventCtrl.eventDelegate.OnPressButtonOneDown += OnPressButtonOneDown;
                 eventCtrl.eventDelegate.OnPressButtonPrimaryIndexTrigger += OnPressButtonPrimaryIndexTrigger;
@@ -71,15 +90,17 @@ namespace RockVR.Rift.Demo
                 eventCtrl.eventDelegate.OnTouchPrimaryThumbstickUp += OnTouchPrimaryThumbstickUp;
                 eventCtrl.eventDelegate.OnPressPrimaryThumbstick += OnPressPrimaryThumbstick;
                 eventCtrl.eventDelegate.OnPressPrimaryThumbstickDown += OnPressPrimaryThumbstickDown;
-                eventCtrl.eventDelegate.OnPressPrimaryThumbstickUp += OnPressPrimaryThumbstickUp;
+                eventCtrl.eventDelegate.OnPressPrimaryThumbstickUp += OnPressPrimaryThumbstickUp;*/
             }
         }
 
+        //비활성화 될때 호출되는 함수
         void OnDisable()
         {
+            print("델리게이트 비활성화");
             if (eventCtrl != null)
             {
-                eventCtrl.eventDelegate.OnPressButtonPrimaryHandTrigger -= OnPressButtonPrimaryHandTrigger;
+                /*eventCtrl.eventDelegate.OnPressButtonPrimaryHandTrigger -= OnPressButtonPrimaryHandTrigger;
                 eventCtrl.eventDelegate.OnPressButtonPrimaryHandTriggerUp -= OnPressButtonPrimaryHandTriggerUp;
                 eventCtrl.eventDelegate.OnPressButtonOneDown -= OnPressButtonOneDown;
                 eventCtrl.eventDelegate.OnPressButtonPrimaryIndexTrigger -= OnPressButtonPrimaryIndexTrigger;
@@ -88,10 +109,11 @@ namespace RockVR.Rift.Demo
                 eventCtrl.eventDelegate.OnTouchPrimaryThumbstickUp -= OnTouchPrimaryThumbstickUp;
                 eventCtrl.eventDelegate.OnPressPrimaryThumbstick -= OnPressPrimaryThumbstick;
                 eventCtrl.eventDelegate.OnPressPrimaryThumbstickDown -= OnPressPrimaryThumbstickDown;
-                eventCtrl.eventDelegate.OnPressPrimaryThumbstickUp -= OnPressPrimaryThumbstickUp;
+                eventCtrl.eventDelegate.OnPressPrimaryThumbstickUp -= OnPressPrimaryThumbstickUp;*/
             }
         }
 
+        #region Ray모드 일때
         private void OnPressButtonPrimaryHandTriggerUp()
         {
             if (controllerState == ControllerState.Ray)
@@ -108,7 +130,10 @@ namespace RockVR.Rift.Demo
                 vrIteraction.show = true;
             }
         }
+        #endregion
 
+        //조이스틱 
+        //텔레포트
         private void OnPressPrimaryThumbstick()
         {
             if (controllerState == ControllerState.Touch)
@@ -140,6 +165,7 @@ namespace RockVR.Rift.Demo
                 radiaMenu.StopTouching();
                 radiaMenu.DisableMenu(false);
             }
+
             else if (controllerState == ControllerState.Touch)
             {
                 if (teleport != null)
@@ -177,6 +203,9 @@ namespace RockVR.Rift.Demo
             }
         }
 
+        //------------------------------------ 카메라 -----------------------------//
+        //카메라 녹화 기능 우리가 필요한 것!
+        //녹화
         private void OnPressButtonOneDown()
         {
             if (cameraState == CameraState.Picked || controllerState == ControllerState.Touch)
@@ -198,6 +227,8 @@ namespace RockVR.Rift.Demo
             }
         }
 
+        //카메라 잡기
+        //카메라 켜기
         private void OnPressButtonPrimaryIndexTrigger()
         {
             if (vrIteraction.selectedObject != null)
@@ -205,7 +236,8 @@ namespace RockVR.Rift.Demo
                 if (vrIteraction.selectedObject.GetComponent<CameraSetUpCtrl>() != null)
                 {
                     cameraSetUpCtrl.EnableCamera();
-                    if (controllerState == ControllerState.Ray)
+
+                    /*if (controllerState == ControllerState.Ray)
                     {
                         foreach (var followCamera in followCameras)
                         {
@@ -215,22 +247,28 @@ namespace RockVR.Rift.Demo
                         cameraSetUpCtrl.SetCameraScreen();
                         cameraState = CameraState.Picked;
                         enableRadialMenu = true;
-                    }
-                    else if (controllerState == ControllerState.Touch)
+                    }*/
+
+                    if (controllerState == ControllerState.Touch)
                     {
                         cameraObject = vrIteraction.selectedObject;
                         cameraObject.transform.parent = this.transform;
+
                         cameraState = CameraState.Touched;
                     }
+
                     indexTriggerTooltip.SetActive(false);
                 }
             }
         }
 
+        //카메라 놨을때
+        //카메라 끄기
         private void OnPressButtonPrimaryIndexTriggerUp()
         {
             if (controllerState == ControllerState.Touch)
             {
+                // 카메라 오브젝트가 Null이 아니라면 부모에서 나가게 -> 우리는 껐다 켰다 할 것임
                 if (cameraObject != null)
                 {
                     cameraObject.transform.parent = null;
