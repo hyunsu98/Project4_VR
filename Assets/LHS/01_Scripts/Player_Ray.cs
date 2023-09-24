@@ -25,7 +25,7 @@ public class Player_Ray : MonoBehaviour
     public float kAdjust = 0.1f;
 
     //카메라
-    public CameraSetUpCtrl cameraSetUpCtrl;
+    //public CameraSetUpCtrl cameraSetUpCtrl;
     public GameObject cameraObj;
     public GameObject leftUI;
 
@@ -44,7 +44,7 @@ public class Player_Ray : MonoBehaviour
     void Update()
     {
         //카메라 , 녹화모드 일때 Ray 안그리고 싶음!
-        if (UI.Player_State == UI.PlayerState.Camera || UI.Player_State == UI.PlayerState.Rec)
+        if (UI.Player_State == UI.PlayerState.Camera)
         {
             print("Ray 그리지 않을 것임");
 
@@ -54,13 +54,16 @@ public class Player_Ray : MonoBehaviour
 
             cameraObj.SetActive(true);
             leftUI.SetActive(false);
-
-            if (OVRInput.GetDown(button, controller))
-            {
-                Cam();
-            }
         }
 
+        else if(UI.Player_State == UI.PlayerState.Rec)
+        {
+            //라인렌더러 . 마커 끄기
+            lr.enabled = false;
+            marker.gameObject.SetActive(false);
+        }
+
+        //나머지 State
         else
         {
             cameraObj.SetActive(false);
@@ -86,47 +89,8 @@ public class Player_Ray : MonoBehaviour
                 marker.up = hitInfo.normal;
                 marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
 
-                //플레이어 배치 시
-                if (isPlayerPut)
-                {
-                    inPlayer.transform.position = hitInfo.point;
-                    inPlayer.transform.SetParent(cube.transform);
-                }
-
-                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
-                {
-                    if (inPlayer != null)
-                    {
-                        inPlayer.SetActive(false);
-                    }
-
-                    #region UI 색변경 하기 위해
-                    /*if (hitInfo.transform.GetComponent<Button>())
-                    {
-                        print("누를 수 있는 버튼이다");
-                        btn = hitInfo.transform.GetComponent<Button>();
-                        originalColors = btn.colors;
-                        ColorBlock col = btn.colors;
-                        col.normalColor = new Color32(191, 192, 192, 255);
-                        btn.colors = col;
-                    }*/
-                    #endregion
-                }
-
-                else
-                {
-                    if (inPlayer != null)
-                    {
-                        inPlayer.SetActive(true);
-                    }
-                }
-
-                // 오른손 one
-                /*if (OVRInput.GetDown(uIButton, controller))
-                {
-                    //현숙추가 -> UI 창에서는 플레이어가 보이지 않게 하기 위해
-
-                }*/
+                //플레이어 배치
+                PlayerPlace();
 
                 // 부딪힌 곳이 있다면 클릭 //인덱스 트리거
                 if (OVRInput.GetDown(button, controller))
@@ -183,12 +147,6 @@ public class Player_Ray : MonoBehaviour
                         Debug.Log("Player Hopin 모드");
                         HopIn();
                     }
-
-                    /*if (UI.Player_State == UI.PlayerState.Camera)
-                    {
-                        Debug.Log("Player Camera 모드");
-                        Cam();
-                    }*/
                 }
             }
 
@@ -202,41 +160,40 @@ public class Player_Ray : MonoBehaviour
         }
     }
 
-    private CameraState cameraState = CameraState.Normal;
-    public ControllerState controllerState = ControllerState.Normal;
-
-    private void Cam()
+    void PlayerPlace()
     {
-        print("카메라 활성화");
-        //UI 끄고
-        cameraSetUpCtrl.EnableCamera();
-
-        //cameraState = CameraState.Touched;
-        controllerState = ControllerState.Touch;
-
-        CamRec();
-    }
-
-    private void CamRec()
-    {
-        if (cameraState == CameraState.Picked || controllerState == ControllerState.Touch)
+        //플레이어 배치 시
+        if (isPlayerPut)
         {
-            if (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.NOT_START ||
-                VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.FINISH)
+            inPlayer.transform.position = hitInfo.point;
+            inPlayer.transform.SetParent(cube.transform);
+        }
+
+        if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+        {
+            if (inPlayer != null)
             {
-                print("카메라 녹화시작");
-                VideoCaptureCtrl.instance.StartCapture();
-                //oneButtonTooltip.SetActive(false);
+                inPlayer.SetActive(false);
             }
-            else if (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.STARTED)
+
+            #region UI 색변경 하기 위해
+            /*if (hitInfo.transform.GetComponent<Button>())
             {
-                VideoCaptureCtrl.instance.StopCapture();
-                print("카메라 녹화종료");
-            }
-            else if (VideoCaptureCtrl.instance.status == VideoCaptureCtrl.StatusType.STOPPED)
+                print("누를 수 있는 버튼이다");
+                btn = hitInfo.transform.GetComponent<Button>();
+                originalColors = btn.colors;
+                ColorBlock col = btn.colors;
+                col.normalColor = new Color32(191, 192, 192, 255);
+                btn.colors = col;
+            }*/
+            #endregion
+        }
+
+        else
+        {
+            if (inPlayer != null)
             {
-                print("다시 반복");
-                return;
+                inPlayer.SetActive(true);
             }
         }
     }

@@ -19,10 +19,10 @@ namespace RockVR.Rift.Demo
             {
                 throw new MissingComponentException("CameraScreen not attached!");
             }
-            if (cameraSphere == null)
+           /* if (cameraSphere == null)
             {
                 throw new MissingComponentException("CameraSphere not attached!");
-            }
+            }*/
             if (captureText == null)
             {
                 throw new MissingComponentException("CaptureText not attached!");
@@ -32,7 +32,7 @@ namespace RockVR.Rift.Demo
         public void EnableCamera()
         {
             cameraScreen.SetActive(true);
-            cameraSphere.SetActive(false);
+            //cameraSphere.SetActive(false);
             captureText.SetActive(false);
             enableCamera = true;
         }

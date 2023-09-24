@@ -29,7 +29,6 @@ public class PlayerMove : MonoBehaviour
 
     //기준점이 될 위치
     Transform mainPos;
-    CharacterModel myPlayer;
 
     public GameObject[] uiSetting;
 
@@ -56,7 +55,7 @@ public class PlayerMove : MonoBehaviour
 */
         // Vr 카메라의 위치와 회전을 플레이어에 적용
         //나의 자식으로 있는 플레이어로 계속 바뀌어야 함.
-        myPlayer = transform.GetComponentInChildren<CharacterModel>();
+        CharacterModel myPlayer = transform.GetComponentInChildren<CharacterModel>();
 
         Quaternion newRotation = Quaternion.Euler(0, trCenterEye.rotation.eulerAngles.y, 0);
         myPlayer.transform.rotation = newRotation;
@@ -81,9 +80,9 @@ public class PlayerMove : MonoBehaviour
         rt.isTargeting = true;
     }
 
+    CharacterModel cm;
     public void CharChange(GameObject target)
     {
-        UISetting();
 
         targetPlayer = target.transform;
         //rigBuilder 를 비활성화 -> 안꺼도 됨.
@@ -102,7 +101,9 @@ public class PlayerMove : MonoBehaviour
         //나의 각도를 targetPlayer 의 각도로 하자
         transform.rotation = targetPlayer.rotation;
         //targetPlayer 에서 CharacterModel 를 가져오자.
-        CharacterModel cm = targetPlayer.GetComponent<CharacterModel>();
+        cm = targetPlayer.GetComponent<CharacterModel>();
+
+        UISetting();
 
         //trEye 에 가져온 컴포넌트의 trEye 를 셋팅
         trEye = cm.trEye;
@@ -124,7 +125,7 @@ public class PlayerMove : MonoBehaviour
     public void UISetting()
     {
         //UI
-        if (myPlayer.CompareTag("Player"))
+        if (cm.CompareTag("Player"))
         {
             UI.Player_State = UI.PlayerState.Rec;
 
@@ -134,7 +135,7 @@ public class PlayerMove : MonoBehaviour
             uiSetting[1].SetActive(false);
             uiSetting[2].SetActive(false);
         }
-        else if (myPlayer.CompareTag("MainPlayer"))
+        else if (cm.CompareTag("MainPlayer"))
         {
             //UI.Player_State = UI.PlayerState.Normal;
             print("메인플레이어");
