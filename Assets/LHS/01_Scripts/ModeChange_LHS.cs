@@ -12,7 +12,7 @@ public static class UI
     // UI 버튼에 따른 상태 전환
     public enum PlayerState
     {
-        Player,
+        Normal,
         Move,
         Delete,
         Teleport,
@@ -33,16 +33,19 @@ public static class UI
         }
     }
 }
+
 public class ModeChange_LHS : MonoBehaviour
 {
     //public static ModeChange_LHS instance;
 
-    public OVRInput.Button button;
-    public OVRInput.Controller controller;
+   /* public OVRInput.Button plusButton;
+    public OVRInput.Button minusButton;
+
+    public OVRInput.Controller controller;*/
 
     //전환해줘야하는 값.
-    public OVRInputModule enentSystem;
-    public OVRGazePointer ovrGazePointer;
+    /*public OVRInputModule enentSystem;
+    public OVRGazePointer ovrGazePointer;*/
 
     public Transform centerEye;
     public Transform rightHand;
@@ -59,13 +62,14 @@ public class ModeChange_LHS : MonoBehaviour
     void Start()
     {
         print("현재 모드" + UI.Player_State);
+        UI.Player_State = UI.PlayerState.Normal;
     }
 
     void Update()
     {
 
         //클릭하면 모드 전환하게 해야함
-        if (OVRInput.GetDown(button, controller))
+        /*if (OVRInput.GetDown(button, controller))
         {
             print("R + hand 클릭");
             isCenter = !isCenter;
@@ -85,6 +89,37 @@ public class ModeChange_LHS : MonoBehaviour
 
                 modeUI.SetActive(false);
             }
+        }*/
+
+        if(UI.Player_State == UI.PlayerState.Normal)
+        {
+            //초기화 값
+            ModeUI(5);
+        }
+
+        else if(UI.Player_State == UI.PlayerState.Delete)
+        {
+            ModeUI(0);
+        }
+
+        else if (UI.Player_State == UI.PlayerState.Move)
+        {
+            ModeUI(3);
+        }
+
+        else if (UI.Player_State == UI.PlayerState.Teleport)
+        {
+            ModeUI(2);
+        }
+
+        else if (UI.Player_State == UI.PlayerState.Hopin)
+        {
+            ModeUI(1);
+        }
+
+        else if (UI.Player_State == UI.PlayerState.Camera)
+        {
+            ModeUI(4);
         }
     }
 
@@ -92,10 +127,10 @@ public class ModeChange_LHS : MonoBehaviour
 
 
     // 플레이어 1 ,2 배치 모드
-    public void OnPlayer(string name)
+    public void OnNormal()
     {
-        print("플레이어1 배치 활성화");
-        UI.Player_State = UI.PlayerState.Player;
+        print("기본 모드");
+        UI.Player_State = UI.PlayerState.Normal;
     }
 
     // 플레이어 Delete 모드
@@ -103,7 +138,7 @@ public class ModeChange_LHS : MonoBehaviour
     {
         print("삭제 모드 활성화");
         UI.Player_State = UI.PlayerState.Delete;
-        ModeUI(0);
+        //ModeUI(0);
     }
 
     // 플레이어 Move 모드
@@ -111,7 +146,7 @@ public class ModeChange_LHS : MonoBehaviour
     {
         print("이동 모드 활성화");
         UI.Player_State = UI.PlayerState.Move;
-        ModeUI(3);
+        //ModeUI(3);
     }
 
     // Player Teleport 모드
@@ -119,7 +154,7 @@ public class ModeChange_LHS : MonoBehaviour
     {
         print("텔레포트 모드 활성화");
         UI.Player_State = UI.PlayerState.Teleport;
-        ModeUI(2);
+        //ModeUI(2);
     }
 
     // -----------------------------------현숙이 부분---------------------------------------// 
@@ -129,7 +164,7 @@ public class ModeChange_LHS : MonoBehaviour
     {
         print("들어가는 모드 활성화");
         UI.Player_State = UI.PlayerState.Hopin;
-        ModeUI(1);
+        //ModeUI(1);
     }
 
 
@@ -138,7 +173,7 @@ public class ModeChange_LHS : MonoBehaviour
     {
         print("카메라 모드 활성화");
         UI.Player_State = UI.PlayerState.Camera;
-        ModeUI(4);
+        //ModeUI(4);
     }
 
     // Input number = true
@@ -158,6 +193,4 @@ public class ModeChange_LHS : MonoBehaviour
             }
         } 
     }
-
-
 }

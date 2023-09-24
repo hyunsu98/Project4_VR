@@ -21,6 +21,7 @@ public class RecSet : MonoBehaviour
 
     Mic_LHS mic;
 
+    public bool isRec = false;
     public void Start()
     {
         pm = this.GetComponent<PlayerMove>();
@@ -66,6 +67,22 @@ public class RecSet : MonoBehaviour
         else
         {
             print("녹화종료할게 없음");
+        }
+    }
+
+    public void OnRecording()
+    {
+        isRec = !isRec;
+
+        //녹화중
+        if(isRec)
+        {
+            OnRecordStart();
+        }
+
+        else
+        {
+            OnRecordEnd();
         }
     }
 }

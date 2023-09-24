@@ -20,10 +20,6 @@ public class Player_Ray : MonoBehaviour
     RaycastHit hitInfo;
 
     // 플레이어를 배치 하기 위해 필요한 요소
-    bool isPlacingPlayer = false; // 플레이어 놓은건지 아닌지 묻기
-    GameObject spawnObject; // 땅 위치 설정하기 
-    Vector3 placementPosition; // Ray로 놓아질 위치
-    bool isClickPending = false; // 클릭 대기 상태를 추적
     public float maxLineDistance = 3f; // Ray에 최대 길이
     public GameObject cube; // 플레이어의 부모가 될 게임 오브젝트
 
@@ -100,6 +96,19 @@ public class Player_Ray : MonoBehaviour
                 }
             }
 
+            //UI 색변경 하기 위해
+            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+            {
+               if(hitInfo.transform.GetComponent<Button>())
+                {
+                    print("누를 수 있는 버튼이다");
+                    Button btn = hitInfo.transform.GetComponent<Button>();
+
+                    ColorBlock col = btn.colors;
+                    col.normalColor = new Color32(191, 192, 192, 255);
+                    btn.colors = col;
+                }
+            }
 
             // 부딪힌 곳이 있다면 Two 버튼
             if (OVRInput.GetDown(button, controller))
