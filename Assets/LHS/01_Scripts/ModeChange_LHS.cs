@@ -9,7 +9,7 @@ public static class UI
 {
     public static PlayerState playerState;
 
-    // UI ��ư�� ���� ���� ��ȯ
+    // UI 버튼에 따른 상태 전환
     public enum PlayerState
     {
         Player,
@@ -40,7 +40,7 @@ public class ModeChange_LHS : MonoBehaviour
     public OVRInput.Button button;
     public OVRInput.Controller controller;
 
-    //��ȯ������ϴ� ��.
+    //전환해줘야하는 값.
     public OVRInputModule enentSystem;
     public OVRGazePointer ovrGazePointer;
 
@@ -57,16 +57,16 @@ public class ModeChange_LHS : MonoBehaviour
     public GameObject[] modeUIImage;
     void Start()
     {
-        print("���� ���" + UI.Player_State);
+        print("현재 모드" + UI.Player_State);
     }
 
     void Update()
     {
 
-        //Ŭ���ϸ� ��� ��ȯ�ϰ� �ؾ���
+        //클릭하면 모드 전환하게 해야함
         if (OVRInput.GetDown(button, controller))
         {
-            print("R + hand Ŭ��");
+            print("R + hand 클릭");
             isCenter = !isCenter;
 
             if (isCenter)
@@ -74,7 +74,7 @@ public class ModeChange_LHS : MonoBehaviour
                 enentSystem.rayTransform = centerEye;
                 ovrGazePointer.rayTransform = centerEye;
 
-                //UI�� ������?
+                //UI도 꺼지면?
                 modeUI.SetActive(true);
             }
             else
@@ -87,53 +87,55 @@ public class ModeChange_LHS : MonoBehaviour
         }
     }
 
-    // -----------------------------------�ҿ��� �κ�---------------------------------------// 
+    // -----------------------------------소원이 부분---------------------------------------// 
 
-    // �÷��̾� 1 ,2 ��ġ ���
+
+    // 플레이어 1 ,2 배치 모드
     public void OnPlayer(string name)
     {
-        print("�÷��̾�1 ��ġ Ȱ��ȭ");
+        print("플레이어1 배치 활성화");
         UI.Player_State = UI.PlayerState.Player;
     }
 
-    // �÷��̾� Delete ���
+    // 플레이어 Delete 모드
     public void OnDelete()
     {
-        print("���� ��� Ȱ��ȭ");
+        print("삭제 모드 활성화");
         UI.Player_State = UI.PlayerState.Delete;
         ModeUI(0);
     }
 
-    // �÷��̾� Move ���
+    // 플레이어 Move 모드
     public void OnMove()
     {
-        print("�̵� ��� Ȱ��ȭ");
+        print("이동 모드 활성화");
         UI.Player_State = UI.PlayerState.Move;
         ModeUI(3);
     }
 
-    // Player Teleport ���
+    // Player Teleport 모드
     public void OnTeleport()
     {
-        print("�ڷ���Ʈ ��� Ȱ��ȭ");
+        print("텔레포트 모드 활성화");
         UI.Player_State = UI.PlayerState.Teleport;
         ModeUI(2);
     }
 
-    // -----------------------------------������ �κ�---------------------------------------// 
-    //��� �ٲ�� �ؾ�������
-    // Player Hopin ���
+    // -----------------------------------현숙이 부분---------------------------------------// 
+    //모드 바뀌게 해야할지도
+    // Player Hopin 모드
     public void OnHopIn()
     {
-        print("���� ��� Ȱ��ȭ");
+        print("들어가는 모드 활성화");
         UI.Player_State = UI.PlayerState.Hopin;
         ModeUI(1);
     }
 
-    // Player Camera ���
+
+    // Player Camera 모드
     public void OnCamera()
     {
-        print("ī�޶� ��� Ȱ��ȭ");
+        print("카메라 모드 활성화");
         UI.Player_State = UI.PlayerState.Camera;
         ModeUI(4);
     }
