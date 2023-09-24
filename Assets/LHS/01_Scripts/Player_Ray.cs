@@ -1,23 +1,18 @@
 using RockVR.Rift;
 using RockVR.Rift.Demo;
 using RockVR.Video;
-using System;
-using System.Data;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Player_Ray : MonoBehaviour
 {
     public OVRInput.Button button;
+    //public OVRInput.Button uIButton;
     public OVRInput.Controller controller;
 
     //오른손에서 그려지는 ray
     public Transform hand;
     LineRenderer lr;
-
-    RaycastHit hitInfo;
 
     // 플레이어를 배치 하기 위해 필요한 요소
     public float maxLineDistance = 3f; // Ray에 최대 길이
@@ -29,13 +24,16 @@ public class Player_Ray : MonoBehaviour
     // 마커 크기 조절하는 공식 변수(?)
     public float kAdjust = 0.1f;
 
+    //카메라
+    public CameraSetUpCtrl cameraSetUpCtrl;
+    public GameObject cameraObj;
+    public GameObject leftUI;
+
+    RaycastHit hitInfo;
     //가지고 있는 플레이어
     GameObject inPlayer;
     //따라다니게 하는 코드
     bool isPlayerPut;
-
-    //카메라
-    public CameraSetUpCtrl cameraSetUpCtrl;
 
     void Start()
     {
@@ -45,149 +43,162 @@ public class Player_Ray : MonoBehaviour
 
     void Update()
     {
-        // 손위치에서 손의 앞방향으로 Ray를 만들고
-        Ray ray = new Ray(hand.position, hand.forward);
-        lr.SetPosition(0, hand.position);
-
-        bool isHit = Physics.Raycast(ray, out hitInfo);
-
-        //닿은 곳이 있다면
-        if (isHit)
+        //카메라 , 녹화모드 일때 Ray 안그리고 싶음!
+        if (UI.Player_State == UI.PlayerState.Camera || UI.Player_State == UI.PlayerState.Rec)
         {
-            lr.SetPosition(1, hitInfo.point);
-            // 큐브의 위치가 레이에 닿은 위치이다.
-            //큐브를 계속 따라다니게 하고 싶다.
-            cube.transform.position = hitInfo.point;
+            print("Ray 그리지 않을 것임");
 
-            marker.position = hitInfo.point;
-            marker.up = hitInfo.normal;
-            marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
+            //라인렌더러 . 마커 끄기
+            lr.enabled = false;
+            marker.gameObject.SetActive(false);
 
-            // 플레이어 배치 모드 일때
-            /*if (UI.Player_State == UI.PlayerState.Player)
-            {
-                if (isPlayerPut)
-                {
-                    inPlayer.transform.position = hitInfo.point;
-                    inPlayer.transform.SetParent(cube.transform);
-                }
-            }*/
+            cameraObj.SetActive(true);
+            leftUI.SetActive(false);
 
-            if (isPlayerPut)
-            {
-                inPlayer.transform.position = hitInfo.point;
-                inPlayer.transform.SetParent(cube.transform);
-            }
-
-            //현숙추가 -> UI 창에서는 플레이어가 보이지 않게 하기 위해
-            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
-            {
-                if(inPlayer != null)
-                {
-                    inPlayer.SetActive(false);
-                }
-            }
-
-            else
-            {
-                if (inPlayer != null)
-                {
-                    inPlayer.SetActive(true);
-                }
-            }
-
-            //UI 색변경 하기 위해
-            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
-            {
-               if(hitInfo.transform.GetComponent<Button>())
-                {
-                    print("누를 수 있는 버튼이다");
-                    Button btn = hitInfo.transform.GetComponent<Button>();
-
-                    ColorBlock col = btn.colors;
-                    col.normalColor = new Color32(191, 192, 192, 255);
-                    btn.colors = col;
-                }
-            }
-
-            // 부딪힌 곳이 있다면 Two 버튼
             if (OVRInput.GetDown(button, controller))
             {
-                Debug.Log("Player 배치 모드");
-
-                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
-                {
-                    #region 버튼 스크립트 (보류)
-                    print("RayUI");
-                    // 버튼 스크립트를 가져온다
-                    Button btn = hitInfo.transform.GetComponent<Button>();
-                    // 만약 btn이 null이 아니라면
-                    if (btn != null)
-                    {
-                        print("버튼 클릭");
-                        btn.onClick.Invoke();
-                    }
-                    #endregion
-                }
-
-                if (isPlayerPut)
-                {
-                    //땅일 때만 놓을 수 있게
-                    if (hitInfo.collider.CompareTag("Ground"))
-                    {
-                        inPlayer.transform.SetParent(null);
-                        inPlayer.GetComponent<Collider>().enabled = true;
-
-                        //초기화 셋팅
-                        isPlayerPut = false;
-                        inPlayer = null;
-                    }
-                }
-
-                // 플레이어 Move 모드
-                if (UI.Player_State == UI.PlayerState.Move)
-                {
-                    Debug.Log("Player Move 모드");
-                    Move();
-                }
-
-                // 플레이어 Delete 모드
-                if (UI.Player_State == UI.PlayerState.Delete)
-                {
-                    Debug.Log("Player Delete 모드");
-                    Delete();
-                }
-
-                // Player Teleport 모드
-                if (UI.Player_State == UI.PlayerState.Teleport)
-                {
-                    Debug.Log("Player Teleport 모드");
-
-                    TelePort();
-                }
-
-                // Player Camera 모드
-                if (UI.Player_State == UI.PlayerState.Camera)
-                {
-                    Debug.Log("Player Camera 모드");
-                    Cam();
-                }
-
-                // Player Hopin 모드
-                if (UI.Player_State == UI.PlayerState.Hopin)
-                {
-                    Debug.Log("Player Hopin 모드");
-                    HopIn();
-                }
+                Cam();
             }
         }
 
         else
         {
-            lr.SetPosition(1, ray.origin + ray.direction * 10);
-            marker.position = ray.origin + ray.direction * 100;
-            marker.up = -ray.direction;
-            marker.localScale = Vector3.one * kAdjust * 100;
+            cameraObj.SetActive(false);
+            leftUI.SetActive(true);
+
+            // 손위치에서 손의 앞방향으로 Ray를 만들고
+            Ray ray = new Ray(hand.position, hand.forward);
+            bool isHit = Physics.Raycast(ray, out hitInfo);
+
+            //라인렌더러, 마커 켜기
+            lr.enabled = true;
+            lr.SetPosition(0, hand.position);
+            marker.gameObject.SetActive(true);
+
+            //닿는 곳이 있다면
+            if (isHit)
+            {
+                lr.SetPosition(1, hitInfo.point);
+                // 큐브의 위치가 레이에 닿은 위치이다.(큐브를 계속 따라다니게 하고 싶다.)
+                cube.transform.position = hitInfo.point;
+
+                marker.position = hitInfo.point;
+                marker.up = hitInfo.normal;
+                marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
+
+                //플레이어 배치 시
+                if (isPlayerPut)
+                {
+                    inPlayer.transform.position = hitInfo.point;
+                    inPlayer.transform.SetParent(cube.transform);
+                }
+
+                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+                {
+                    if (inPlayer != null)
+                    {
+                        inPlayer.SetActive(false);
+                    }
+
+                    #region UI 색변경 하기 위해
+                    /*if (hitInfo.transform.GetComponent<Button>())
+                    {
+                        print("누를 수 있는 버튼이다");
+                        btn = hitInfo.transform.GetComponent<Button>();
+                        originalColors = btn.colors;
+                        ColorBlock col = btn.colors;
+                        col.normalColor = new Color32(191, 192, 192, 255);
+                        btn.colors = col;
+                    }*/
+                    #endregion
+                }
+
+                else
+                {
+                    if (inPlayer != null)
+                    {
+                        inPlayer.SetActive(true);
+                    }
+                }
+
+                // 오른손 one
+                /*if (OVRInput.GetDown(uIButton, controller))
+                {
+                    //현숙추가 -> UI 창에서는 플레이어가 보이지 않게 하기 위해
+
+                }*/
+
+                // 부딪힌 곳이 있다면 클릭 //인덱스 트리거
+                if (OVRInput.GetDown(button, controller))
+                {
+                    if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+                    {
+                        print("RayUI");
+
+                        // 버튼 스크립트를 가져온다
+                        Button btn = hitInfo.transform.GetComponent<Button>();
+                        // 만약 btn이 null이 아니라면
+                        if (btn != null)
+                        {
+                            btn.onClick.Invoke();
+                        }
+                    }
+
+                    if (isPlayerPut)
+                    {
+                        //땅일 때만 놓을 수 있게
+                        if (hitInfo.collider.CompareTag("Ground"))
+                        {
+                            inPlayer.transform.SetParent(null);
+                            inPlayer.GetComponent<Collider>().enabled = true;
+
+                            //초기화 셋팅
+                            isPlayerPut = false;
+                            inPlayer = null;
+                        }
+                    }
+
+                    //---------- 모드 ---------//
+                    if (UI.Player_State == UI.PlayerState.Move)
+                    {
+                        Debug.Log("Player Move 모드");
+                        Move();
+                    }
+
+                    if (UI.Player_State == UI.PlayerState.Delete)
+                    {
+                        Debug.Log("Player Delete 모드");
+                        Delete();
+                    }
+
+                    if (UI.Player_State == UI.PlayerState.Teleport)
+                    {
+                        Debug.Log("Player Teleport 모드");
+                        TelePort();
+                    }
+
+                    // Player Hopin 모드
+                    if (UI.Player_State == UI.PlayerState.Hopin)
+                    {
+                        Debug.Log("Player Hopin 모드");
+                        HopIn();
+                    }
+
+                    /*if (UI.Player_State == UI.PlayerState.Camera)
+                    {
+                        Debug.Log("Player Camera 모드");
+                        Cam();
+                    }*/
+                }
+            }
+
+            else
+            {
+                lr.SetPosition(1, ray.origin + ray.direction * 10);
+                marker.position = ray.origin + ray.direction * 100;
+                marker.up = -ray.direction;
+                marker.localScale = Vector3.one * kAdjust * 100;
+            }
         }
     }
 
@@ -196,12 +207,12 @@ public class Player_Ray : MonoBehaviour
 
     private void Cam()
     {
+        print("카메라 활성화");
         //UI 끄고
         cameraSetUpCtrl.EnableCamera();
 
         //cameraState = CameraState.Touched;
         controllerState = ControllerState.Touch;
-        print("카메라 활성화");
 
         CamRec();
     }
@@ -261,24 +272,21 @@ public class Player_Ray : MonoBehaviour
             inPlayer.GetComponent<Collider>().enabled = false;
             isPlayerPut = true;
         }
-        
     }
 
     void HopIn()
     {
-        //모드 별로 하면 될 것 같음
-        //만약 닿은곳이 Enemy라면
         if (hitInfo.collider.CompareTag("Player"))
         {
             Debug.Log(hitInfo.collider.name);
             PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
         }
     }
+
     //플레이어 클릭 
     public void Player(string name)
     {
         // 플레이어 모드일때만 클릭하면 생겨야 함  -> UI모드로 바꿔야 할 거 같음
-
         if (inPlayer == null)
         {
             // 플레이어 활성화 모드!
