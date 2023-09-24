@@ -11414,8 +11414,8 @@ GameObject:
   - component: {fileID: 612178691}
   - component: {fileID: 612178696}
   - component: {fileID: 612178695}
-  - component: {fileID: 612178694}
   - component: {fileID: 612178693}
+  - component: {fileID: 612178694}
   - component: {fileID: 612178692}
   - component: {fileID: 612178697}
   m_Layer: 0
@@ -11513,7 +11513,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 612178690}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d00e4d540f89a34ea28413d90d3c351, type: 3}
   m_Name: 
@@ -11531,7 +11531,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 612178690}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eda4e150881a9484294fd711f153eec2, type: 3}
   m_Name: 
@@ -23449,6 +23449,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 612178691}
     m_Modifications:
+    - target: {fileID: 1000010781101470, guid: 72bd34ac8ff9366489cb1ebee237bedb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1000011231165768, guid: 72bd34ac8ff9366489cb1ebee237bedb, type: 3}
       propertyPath: m_Name
       value: ghtControllerTooltips
