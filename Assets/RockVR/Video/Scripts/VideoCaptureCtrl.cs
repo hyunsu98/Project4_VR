@@ -147,6 +147,8 @@ namespace RockVR.Video
             garbageCollectionThread.IsBackground = true;
             garbageCollectionThread.Start();
             // Update current status.
+
+            print("녹화종료");
             status = StatusType.STARTED;
         }
         /// <summary>

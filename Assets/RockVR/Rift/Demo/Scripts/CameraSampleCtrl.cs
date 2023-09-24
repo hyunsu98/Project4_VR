@@ -205,6 +205,7 @@ namespace RockVR.Rift.Demo
 
         //------------------------------------ 카메라 -----------------------------//
         //카메라 녹화 기능 우리가 필요한 것!
+        //녹화
         private void OnPressButtonOneDown()
         {
             if (cameraState == CameraState.Picked || controllerState == ControllerState.Touch)
@@ -227,6 +228,7 @@ namespace RockVR.Rift.Demo
         }
 
         //카메라 잡기
+        //카메라 켜기
         private void OnPressButtonPrimaryIndexTrigger()
         {
             if (vrIteraction.selectedObject != null)
@@ -235,7 +237,7 @@ namespace RockVR.Rift.Demo
                 {
                     cameraSetUpCtrl.EnableCamera();
 
-                    if (controllerState == ControllerState.Ray)
+                    /*if (controllerState == ControllerState.Ray)
                     {
                         foreach (var followCamera in followCameras)
                         {
@@ -245,23 +247,28 @@ namespace RockVR.Rift.Demo
                         cameraSetUpCtrl.SetCameraScreen();
                         cameraState = CameraState.Picked;
                         enableRadialMenu = true;
-                    }
+                    }*/
 
-                    else if (controllerState == ControllerState.Touch)
+                    if (controllerState == ControllerState.Touch)
                     {
                         cameraObject = vrIteraction.selectedObject;
                         cameraObject.transform.parent = this.transform;
+
                         cameraState = CameraState.Touched;
                     }
+
                     indexTriggerTooltip.SetActive(false);
                 }
             }
         }
 
+        //카메라 놨을때
+        //카메라 끄기
         private void OnPressButtonPrimaryIndexTriggerUp()
         {
             if (controllerState == ControllerState.Touch)
             {
+                // 카메라 오브젝트가 Null이 아니라면 부모에서 나가게 -> 우리는 껐다 켰다 할 것임
                 if (cameraObject != null)
                 {
                     cameraObject.transform.parent = null;

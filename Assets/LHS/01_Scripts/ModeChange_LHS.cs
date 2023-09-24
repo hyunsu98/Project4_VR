@@ -55,6 +55,7 @@ public class ModeChange_LHS : MonoBehaviour
 
     // UI GameObject array
     public GameObject[] modeUIImage;
+
     void Start()
     {
         print("현재 모드" + UI.Player_State);
