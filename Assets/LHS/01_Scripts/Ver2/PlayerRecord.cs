@@ -139,11 +139,11 @@ public class PlayerRecord : MonoBehaviour
     // 녹화 시작
     public void OnRecordStart()
     {
-        Debug.Log(gameObject.name + "녹화시작");
-        isRecord = true;
-
         //처음부터 녹화
         saveList.playerJsonList.Clear();
+
+        Debug.Log(gameObject.name + "녹화시작");
+        isRecord = true;
 
         //내 녹화할 때 재생될 플레이어가 있으면 
         if (ReplaySet.instance.unit.Length > 0)
@@ -196,6 +196,7 @@ public class PlayerRecord : MonoBehaviour
             saveList = JsonUtility.FromJson<PlayerJsonList<PlayerInfo>>(json);
             loadIndex = 0;
             curTime = 0;
+            totalTime = 0;
         }
 
         else
