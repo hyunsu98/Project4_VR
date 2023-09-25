@@ -1,9 +1,6 @@
-using Oculus.Platform;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -32,6 +29,8 @@ public class PlayerMove : MonoBehaviour
 
     //기준점이 될 위치
     Transform mainPos;
+
+    public GameObject[] uiSetting;
 
     private void Awake()
     {
@@ -64,7 +63,7 @@ public class PlayerMove : MonoBehaviour
         //※현숙추가부분(위치추가) -> 녹화 시작할때만!
         // 카메라는 내 눈 앞에 있고 싶다. 하지만 카메라의 이동의 따라 이동하고 싶다.
         // 플레이어는 카메라의 x z축을 따라가지만 카메라는 trEye의 y축을 따라간다.
-        if(isRecMove)
+        if (isRecMove)
         {
             //켰을때 내 위치가 달라지기 때문에 -> 자꾸 앞으로 가는 오류 발생
             //현재 내 위치와 trCenterEye의 위치의 차이 만큼만 이동시키면 내 위치에서 움직이지 않을까?
@@ -79,21 +78,12 @@ public class PlayerMove : MonoBehaviour
         //player에 있을때는 따라할 수 있게
         lt.isTargeting = true;
         rt.isTargeting = true;
-
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            PlayerChange();
-        }
-
-        // 플레이어 교체 코드
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            //CharChange();
-        }
     }
 
+    CharacterModel cm;
     public void CharChange(GameObject target)
     {
+
         targetPlayer = target.transform;
         //rigBuilder 를 비활성화 -> 안꺼도 됨.
         //rigBuilder.enabled = false;
@@ -111,7 +101,9 @@ public class PlayerMove : MonoBehaviour
         //나의 각도를 targetPlayer 의 각도로 하자
         transform.rotation = targetPlayer.rotation;
         //targetPlayer 에서 CharacterModel 를 가져오자.
-        CharacterModel cm = targetPlayer.GetComponent<CharacterModel>();
+        cm = targetPlayer.GetComponent<CharacterModel>();
+
+        UISetting();
 
         //trEye 에 가져온 컴포넌트의 trEye 를 셋팅
         trEye = cm.trEye;
@@ -130,6 +122,31 @@ public class PlayerMove : MonoBehaviour
         rigBuilder = rb;
     }
 
+    public void UISetting()
+    {
+        //UI
+        if (cm.CompareTag("Player"))
+        {
+            UI.Player_State = UI.PlayerState.Rec;
+
+            print("녹화플레이어");
+            //녹화 오브젝트활성화
+            uiSetting[0].SetActive(true);
+            uiSetting[1].SetActive(false);
+            uiSetting[2].SetActive(false);
+        }
+        else if (cm.CompareTag("MainPlayer"))
+        {
+            //UI.Player_State = UI.PlayerState.Normal;
+            print("메인플레이어");
+            //오른쪽 UI 왼쪽 UI 둘다 활성화
+            uiSetting[0].SetActive(false);
+            uiSetting[1].SetActive(true);
+            uiSetting[2].SetActive(true);
+        }
+    }
+
+    //플레이어 변경 (보류)
     public void PlayerChange()
     {
         player_index = (player_index + 1) % playerList.Count;
