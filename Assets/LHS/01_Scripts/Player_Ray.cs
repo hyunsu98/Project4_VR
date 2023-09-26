@@ -113,6 +113,15 @@ public class Player_Ray : MonoBehaviour
                         //땅일 때만 놓을 수 있게
                         if (hitInfo.collider.CompareTag("Ground"))
                         {
+                            //생성될 때 추가 되어야 함.
+                            GameManager.instance.gamePlayerList.Add(inPlayer);
+                            GameManager.instance.playerNum++;
+
+                            //플레이어의 번호를 추가해서 만난다.
+                            PlayerRecord pr = inPlayer.GetComponent<PlayerRecord>();
+                            pr.myNum = GameManager.instance.playerNum;
+
+                            //플레이어 번호를 추가
                             inPlayer.transform.SetParent(null);
                             inPlayer.GetComponent<Collider>().enabled = true;
 
@@ -259,12 +268,6 @@ public class Player_Ray : MonoBehaviour
             // 플레이어 셋팅
             inPlayer = obj;
             isPlayerPut = true;
-
-            //생성될 때 추가 되어야 함.
-            GameManager.instance.gamePlayerList.Add(inPlayer);
-            GameManager.instance.playerNum++;
-            
-            //플레이어 번호를 추가
 
         }
     }
