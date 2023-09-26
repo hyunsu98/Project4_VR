@@ -24,6 +24,9 @@ public class PlayerRecord : MonoBehaviour
     LHandTarget lHand;
     RHandTarget rHand;
 
+    //¾êÇÑÅ× ¹øÈ£¸¦ ÁÜ!
+    public int myNum;
+
     private void Start()
     {
         // ½ÃÀÛÇÒ ¶§ ³ìÈ­Áß ¾Æ´Ô

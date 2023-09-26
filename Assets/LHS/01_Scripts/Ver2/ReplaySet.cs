@@ -79,6 +79,7 @@ public class ReplaySet : MonoBehaviour
         else
         {
             print("재생할 게 없어.");
+
         }
     }
 }

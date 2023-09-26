@@ -216,6 +216,9 @@ public class Player_Ray : MonoBehaviour
         if (hitInfo.collider.CompareTag("Player"))
         {
             Debug.Log(hitInfo.collider.name);
+
+            //게임삭제
+            GameManager.instance.gamePlayerList.Remove(hitInfo.collider.gameObject);
             Destroy(hitInfo.collider.gameObject);
         }
     }
@@ -256,6 +259,13 @@ public class Player_Ray : MonoBehaviour
             // 플레이어 셋팅
             inPlayer = obj;
             isPlayerPut = true;
+
+            //생성될 때 추가 되어야 함.
+            GameManager.instance.gamePlayerList.Add(inPlayer);
+            GameManager.instance.playerNum++;
+            
+            //플레이어 번호를 추가
+
         }
     }
 }

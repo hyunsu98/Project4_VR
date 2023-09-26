@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> gamePlayerList;
 
+    public int playerNum;
+
     private void Awake()
     {
         if(instance == null)
