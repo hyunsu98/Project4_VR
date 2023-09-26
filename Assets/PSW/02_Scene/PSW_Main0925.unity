@@ -36450,6 +36450,7 @@ GameObject:
   - component: {fileID: 1409545325}
   - component: {fileID: 1409545324}
   - component: {fileID: 1409545323}
+  - component: {fileID: 1409545326}
   m_Layer: 6
   m_Name: Player5
   m_TagString: Untagged
@@ -36465,7 +36466,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409545321}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 0.20588642, y: 0.35089234, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36571,6 +36572,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409545321}
   m_CullTransparentMesh: 1
+--- !u!65 &1409545326
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409545321}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 100.74965, y: 100.16431, z: 1}
+  m_Center: {x: 0.47345003, y: -0.12948833, z: 0}
 --- !u!1001 &1413420452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38928,6 +38942,7 @@ GameObject:
   - component: {fileID: 1481682036}
   - component: {fileID: 1481682035}
   - component: {fileID: 1481682034}
+  - component: {fileID: 1481682037}
   m_Layer: 6
   m_Name: Player3
   m_TagString: Untagged
@@ -38943,7 +38958,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481682032}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00009428929}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 0.22486098, y: 0.35899898, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39049,6 +39064,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481682032}
   m_CullTransparentMesh: 1
+--- !u!65 &1481682037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481682032}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 100.74965, y: 100.16431, z: 1}
+  m_Center: {x: 0.47345003, y: -0.12948833, z: 0}
 --- !u!1 &1481688155
 GameObject:
   m_ObjectHideFlags: 0
@@ -48440,6 +48468,7 @@ GameObject:
   - component: {fileID: 1853985694}
   - component: {fileID: 1853985693}
   - component: {fileID: 1853985692}
+  - component: {fileID: 1853985695}
   m_Layer: 6
   m_Name: Player4
   m_TagString: Untagged
@@ -48455,7 +48484,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853985690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 0.20588642, y: 0.35089234, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48561,6 +48590,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853985690}
   m_CullTransparentMesh: 1
+--- !u!65 &1853985695
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853985690}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 100.74965, y: 100.16431, z: 1}
+  m_Center: {x: 0.47345003, y: -0.12948833, z: 0}
 --- !u!1 &1857843386
 GameObject:
   m_ObjectHideFlags: 0
