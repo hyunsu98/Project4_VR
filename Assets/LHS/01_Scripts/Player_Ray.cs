@@ -249,6 +249,7 @@ public class Player_Ray : MonoBehaviour
             // 플레이어 활성화 모드!
             print("캐릭터 생김");
 
+            //플레이어를 불러올때 이름을 
             GameObject tmp = Resources.Load(name) as GameObject;
             GameObject obj = Instantiate(tmp);
 

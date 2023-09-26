@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //저장되야할 정보 : 오브젝트이름, 시간, 위치, 회전, 팔 위치, ++ 음성파일 , 이벤트 발생시점
+//캐릭터 번호
 [Serializable]
 public class PlayerInfo
 {
