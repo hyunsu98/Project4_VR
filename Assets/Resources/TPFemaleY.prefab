@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 777308264625179851}
   m_Layer: 0
   m_Name: TargetHand
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2897,7 +2897,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 68fb243abfb70044584f98e2b687ed17, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -3238,6 +3238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcab01a8a7bb8644a53839057220067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myNum: 0
 --- !u!136 &2036445808053174728
 CapsuleCollider:
   m_ObjectHideFlags: 0

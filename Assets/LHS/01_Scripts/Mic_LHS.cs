@@ -19,6 +19,8 @@ public class Mic_LHS : MonoBehaviour
     //샘플 속도
     int recordingHZ = 22050;
 
+    PlayerRecord playerNum;
+
     void Update()
     {
         //PC 테스트
@@ -39,6 +41,8 @@ public class Mic_LHS : MonoBehaviour
             print("음성 리플레이");
             StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/Mic.wav"));
         }*/
+
+        playerNum = this.GetComponent<PlayerRecord>();
     }
 
     public void OnStart()
@@ -56,7 +60,7 @@ public class Mic_LHS : MonoBehaviour
     public void OnReplay()
     {
         print("음성 리플레이");
-        StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/" + gameObject.name + ".wav"));
+        StartCoroutine(GetWav2AudioClip(Application.dataPath + "/StreamingAssets/" + gameObject.name + playerNum.myNum + ".wav"));
     }
 
     //로드하는 파일을 한번에 불러와서 들리게 해야한다. (액션 or 리스트로 담고 한번에 PlayOneShot ?)
@@ -155,7 +159,7 @@ public class Mic_LHS : MonoBehaviour
 
             //저장된 파일
             //SavWav_LHS.Save(Application.streamingAssetsPath + "/" + gameObject.name, newClip);
-            SavWav_LHS.Save(Application.streamingAssetsPath + "/" + gameObject.name, newClip);
+            SavWav_LHS.Save(Application.streamingAssetsPath + "/" + gameObject.name + playerNum.myNum, newClip);
         }
     }
 }

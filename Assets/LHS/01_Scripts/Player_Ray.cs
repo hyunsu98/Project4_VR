@@ -117,7 +117,7 @@ public class Player_Ray : MonoBehaviour
                             GameManager.instance.gamePlayerList.Add(inPlayer);
                             GameManager.instance.playerNum++;
 
-                            //플레이어의 번호를 추가해서 만난다.
+                            //플레이어의 번호를 추가해서 만난다.mm,
                             PlayerRecord pr = inPlayer.GetComponent<PlayerRecord>();
                             pr.myNum = GameManager.instance.playerNum;
 

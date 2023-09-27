@@ -171,7 +171,7 @@ public class PlayerRecord : MonoBehaviour
 
         //파일 쓰기
         string json = JsonUtility.ToJson(saveList, true);
-        File.WriteAllText(Application.dataPath + "/save" + gameObject.name + ".txt", json);
+        File.WriteAllText(Application.dataPath + gameObject.name + myNum + ".txt", json);
     }
 
     public void OnRecordPlay()
@@ -186,7 +186,7 @@ public class PlayerRecord : MonoBehaviour
         //저장된 정보가 없을 시는 파일 못읽어옴...!
         //string json = File.ReadAllText(Application.dataPath + "/save" + gameObject.name + ".txt");
 
-        string filePath = Application.dataPath + "/save" + gameObject.name + ".txt";
+        string filePath = Application.dataPath + gameObject.name + myNum + ".txt";
 
         //파일이 있다면
         if (File.Exists(filePath))
