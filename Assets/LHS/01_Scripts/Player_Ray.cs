@@ -1,8 +1,4 @@
-using RockVR.Rift;
-using RockVR.Rift.Demo;
-using RockVR.Video;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player_Ray : MonoBehaviour
 {
@@ -35,6 +31,10 @@ public class Player_Ray : MonoBehaviour
     //따라다니게 하는 코드
     bool isPlayerPut;
 
+    // 커지게 될 UI
+    public float uiScale = 2f;
+    Transform objHit;
+
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -56,7 +56,7 @@ public class Player_Ray : MonoBehaviour
             leftUI.SetActive(false);
         }
 
-        else if(UI.Player_State == UI.PlayerState.Rec)
+        else if (UI.Player_State == UI.PlayerState.Rec)
         {
             //라인렌더러 . 마커 끄기
             lr.enabled = false;
@@ -92,6 +92,25 @@ public class Player_Ray : MonoBehaviour
                 //플레이어 배치
                 PlayerPlace();
 
+                //--------------------------------------- UI -----------------------------------------//
+
+                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+                {
+                    objHit = hitInfo.transform;
+                    objHit.localScale = new Vector3(uiScale, uiScale, uiScale);
+                }
+
+                else
+                {
+                    if (objHit != null)
+                    {
+                        objHit.localScale = Vector3.one;
+                        objHit = null;
+                        print("닿지 않는다.");
+                    }
+                }
+
+                //--------------------------------------- 버튼 -----------------------------------------//
                 // 부딪힌 곳이 있다면 클릭 //인덱스 트리거
                 if (OVRInput.GetDown(button, controller))
                 {
@@ -100,7 +119,7 @@ public class Player_Ray : MonoBehaviour
                         print("RayUI");
 
                         // 버튼 스크립트를 가져온다
-                        Button btn = hitInfo.transform.GetComponent<Button>();
+                        CustomButton btn = hitInfo.transform.GetComponent<CustomButton>();
                         // 만약 btn이 null이 아니라면
                         if (btn != null)
                         {
