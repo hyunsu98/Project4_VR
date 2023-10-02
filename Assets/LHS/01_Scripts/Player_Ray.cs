@@ -94,7 +94,7 @@ public class Player_Ray : MonoBehaviour
 
                 //--------------------------------------- UI -----------------------------------------//
 
-                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+                /*if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
                 {
                     objHit = hitInfo.transform;
                     objHit.localScale = new Vector3(uiScale, uiScale, uiScale);
@@ -106,9 +106,9 @@ public class Player_Ray : MonoBehaviour
                     {
                         objHit.localScale = Vector3.one;
                         objHit = null;
-                        print("닿지 않는다.");
+                        print("닿지 않는다." + objHit);
                     }
-                }
+                }*/
 
                 //--------------------------------------- 버튼 -----------------------------------------//
                 // 부딪힌 곳이 있다면 클릭 //인덱스 트리거

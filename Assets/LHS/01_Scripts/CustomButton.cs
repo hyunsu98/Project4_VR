@@ -31,7 +31,7 @@ public class CustomButton : Button
         base.OnPointerEnter(eventData);
         print("OnPointerEnter");
 
-        transform.localScale = Vector3.one * 2;
+        transform.localScale = Vector3.one * 1.25f;
     }
 
     public override void OnPointerExit(PointerEventData eventData)

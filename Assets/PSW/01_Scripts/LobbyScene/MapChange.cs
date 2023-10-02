@@ -8,12 +8,16 @@ public class MapChange : MonoBehaviour
 {
     /*public OVRInput.Button button;
     public OVRInput.Controller controller;*/
-
-    public void OnClickMap()
+    
+    public void OnClickMap(string name)
     {
         // Scene PSW_REC2 로 변경할 것
-        SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_BUTTON);
-        //SceneManager.LoadScene("PSW_Main0925");
-        print("맵변경효과음");
+        //SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_BUTTON);
+
+        if(name != null)
+        {
+            SceneManager.LoadScene(name);
+            print("맵변경효과음");
+        }
     }
 }
