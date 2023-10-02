@@ -7,6 +7,18 @@ public class SoundManager : MonoBehaviour
     // 싱글톤
     public static SoundManager instance;
 
+    // SFX
+    public enum ESfx
+    {
+        SFX_BUTTON,
+    }
+
+    // 효과음 배열
+    public AudioClip[] sfxs;
+
+    // 오디오소스
+    public AudioSource audioSfx;
+
     private void Awake()
     {
         if (instance == null)
@@ -20,17 +32,6 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // SFX
-    public enum ESfx
-    {
-        SFX_BUTTON,
-    }
-
-    // 효과음 배열
-    public AudioClip[] sfxs;
-
-    // 오디오소스
-    public AudioSource audioSfx;
 
     //SFX Play 마우스 클릭 할 곳에서 쓸 코드
     public void PlaySFX(ESfx sfxIdx)
