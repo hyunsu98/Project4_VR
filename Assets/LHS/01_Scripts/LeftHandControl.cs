@@ -18,6 +18,9 @@ public class LeftHandControl : MonoBehaviour
     public ReplaySet replaySet;
     RecSet recSet;
 
+    public GameObject uiTutorial;
+    public GameObject uiRec;
+
     void Start()
     {
         recSet = gameObject.GetComponentInParent<RecSet>();    
@@ -35,9 +38,11 @@ public class LeftHandControl : MonoBehaviour
             }
 
             else if (UI.Player_State == UI.PlayerState.Rec)
-            {
-                if(recSet != null)
+            { 
+                if (recSet != null)
                 {
+                    Destroy(uiTutorial);
+                    uiRec.SetActive(false);
                     print("플레이어녹화모드 - 버튼 클릭");
                     recSet.OnRecording();
                 }
