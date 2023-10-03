@@ -82,10 +82,18 @@ public class Player_Ray : MonoBehaviour
             lr.SetPosition(0, hand.position);
             marker.gameObject.SetActive(true);
 
+
+            /*if (hitInfo.collider != null)
+            {
+                hitInfo.collider.GetComponent<Highlight>()?.ToggleHighlight(false);
+            }*/
+
+
             //닿는 곳이 있다면
             if (isHit)
             {
-            
+                //hitInfo.collider.GetComponent<Highlight>()?.ToggleHighlight(true);
+
                 lr.SetPosition(1, hitInfo.point);
                 // 큐브의 위치가 레이에 닿은 위치이다.(큐브를 계속 따라다니게 하고 싶다.)
                 cube.transform.position = hitInfo.point;
@@ -105,19 +113,30 @@ public class Player_Ray : MonoBehaviour
                     marker.gameObject.SetActive(false);
                 }
 
-
-                if (playerHight == null)
-                {
-                    playerHight = hitInfo.collider.GetComponent<Highlight>();
-
-                    if (playerHight)
-                    {
-                        playerHight.ToggleHighlight(true);
-                    }
-                }
-
                 //플레이어 배치
                 PlayerPlace();
+
+
+                /*if (playerHight == null)
+                {
+                    Collider collider = hitInfo.collider;
+                    if (collider != null)
+                    {
+                        playerHight = collider.GetComponent<Highlight>();
+                        if (playerHight != null)
+                        {
+                            playerHight.ToggleHighlight(true);
+                        }
+                    }
+
+                }
+
+               else
+               {
+                    //hitInfo.collider.GetComponent<Highlight>()?.ToggleHighlight(false);
+                    playerHight.ToggleHighlight(false);
+                    //playerHight = null;
+               }*/
 
                 //--------------------------------------- UI -----------------------------------------//
 
@@ -219,9 +238,6 @@ public class Player_Ray : MonoBehaviour
                 /*marker.position = ray.origin + ray.direction * 100;
                 marker.up = -ray.direction;
                 marker.localScale = Vector3.one * kAdjust * 100;*/
-
-                //hitInfo.collider.GetComponent<Highlight>()?.ToggleHighlight(false);
-
             }
         }
     }
