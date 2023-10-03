@@ -13,5 +13,15 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        ZoomProcess();
+    }
+
+    private void ZoomProcess()
+    {
+        // 컨트롤러의 Thumbstick을 밀면 축소, 당기면 확대하고싶다.(CameraScope의 FOV를 건드리겠다)
+
+        Vector2 axis = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+
+        print(axis.y);
     }
 }

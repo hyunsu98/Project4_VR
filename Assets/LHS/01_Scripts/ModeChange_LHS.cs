@@ -39,6 +39,14 @@ public class ModeChange_LHS : MonoBehaviour
 {
     // UI GameObject array
     public GameObject[] modeUIImage;
+    public OVRInput.Button buttonPlus;
+    public OVRInput.Button buttonMinus;
+    public OVRInput.Controller controller;
+
+    public int mode_index = 0;
+    public int modeListCount = 5;
+
+    public List<GameObject> modeList;
 
     void Start()
     { 
@@ -80,7 +88,7 @@ public class ModeChange_LHS : MonoBehaviour
         }
 
         //클릭하면 모드 전환하게 해야함
-        /*if (OVRInput.GetDown(button, controller))
+        /*if (OVRInput.GetDown(buttonPlus, controller))
         {
             print("R + hand 클릭");
             isCenter = !isCenter;
@@ -101,11 +109,54 @@ public class ModeChange_LHS : MonoBehaviour
                 modeUI.SetActive(false);
             }
         }*/
+
+        if (OVRInput.GetDown(buttonPlus, controller))
+        {
+            mode_index = (mode_index + 1) % modeListCount;
+        }
+        
+        //One 버튼을 누르면 왜 다시 실행되는지 해결 ... 하고 싶다...
+        else if (OVRInput.GetDown(buttonMinus, controller))
+        {
+            mode_index = (mode_index - 1 + modeListCount) % modeListCount;
+        }
+
+        ModeSetting(mode_index);
+        print("모드 변경 " + mode_index);
+    }
+
+    public void ModeSetting(int num)
+    {
+        if(num == 0)
+        {
+            UI.Player_State = UI.PlayerState.Move;
+        }
+
+        else if(num == 1)
+        {
+            UI.Player_State = UI.PlayerState.Teleport;
+        }
+
+        else if( num == 2)
+        {
+            UI.Player_State = UI.PlayerState.Delete;
+        }
+
+        else if (num == 3)
+        {
+            UI.Player_State = UI.PlayerState.Hopin;
+        }
+
+        else if (num == 4)
+        {
+            UI.Player_State = UI.PlayerState.Camera;
+        }
     }
 
     // -----------------------------------소원이 부분---------------------------------------// 
-
     // 기본 셋팅 값
+
+    #region 모드 변경 버튼으로
     public void OnNormal()
     {
         print("기본 모드");
@@ -149,6 +200,7 @@ public class ModeChange_LHS : MonoBehaviour
         print("카메라 모드 활성화");
         UI.Player_State = UI.PlayerState.Camera;
     }
+    #endregion
 
     // Input number = true
     // other number = false
