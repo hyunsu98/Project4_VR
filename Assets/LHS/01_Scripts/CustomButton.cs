@@ -6,9 +6,14 @@ using UnityEngine.UI;
 
 public class CustomButton : Button
 {
+    [SerializeField] float scaleFactor = 1.15f;
+    private Vector3 originalScale;
+
     protected override void Start()
     {
         base.Start();
+
+        originalScale = transform.localScale;
     }
 
     void Update()
@@ -31,14 +36,14 @@ public class CustomButton : Button
         base.OnPointerEnter(eventData);
         print("OnPointerEnter");
 
-        transform.localScale = Vector3.one * 1.25f;
+        transform.localScale = originalScale * scaleFactor;
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
         print("OnPointerExit");
-        transform.localScale = Vector3.one;
+        transform.localScale = originalScale;
     }
     public override void OnPointerUp(PointerEventData eventData)
     {
@@ -51,16 +56,4 @@ public class CustomButton : Button
         print("OnSelect");
         SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_BUTTON);
     }
-
-    /*private void OnTriggerEnter(Collider other)
-    {
-        print("´ê¾Òµû´Ù¾Ó¤¡");
-        transform.localScale = Vector3.one;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        transform.localScale = Vector3.one;
-        print("³ª°«´Ù");
-    }*/
 }
