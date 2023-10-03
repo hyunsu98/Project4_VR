@@ -35,6 +35,8 @@ public class Player_Ray : MonoBehaviour
     public float uiScale = 2f;
     Transform objHit;
 
+    public GameObject uiTutorial;
+
     void Start()
     {
         lr = GetComponent<LineRenderer>();
@@ -126,6 +128,11 @@ public class Player_Ray : MonoBehaviour
                 // 부딪힌 곳이 있다면 클릭 //인덱스 트리거
                 if (OVRInput.GetDown(button, controller))
                 {
+                    if(uiTutorial)
+                    {
+                        uiTutorial.GetComponent<FadeOutImage>().FadeOutStart();
+                    }
+
                     if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
                     {
                         print("RayUI");
@@ -144,6 +151,8 @@ public class Player_Ray : MonoBehaviour
                         //땅일 때만 놓을 수 있게
                         if (hitInfo.collider.CompareTag("Ground"))
                         {
+                            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_BUTTON3);
+
                             //생성될 때 추가 되어야 함.
                             GameManager.instance.gamePlayerList.Add(inPlayer);
                             GameManager.instance.playerNum++;
@@ -244,6 +253,7 @@ public class Player_Ray : MonoBehaviour
         if (hitInfo.collider.CompareTag("Ground"))
         {
             print("되고있니?");
+            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_Teleport);
             Debug.Log(hitInfo.collider.name);
             //  Ray 닿는 곳으로 이동하고 싶다.
             player.transform.position = hitInfo.point;
@@ -256,6 +266,7 @@ public class Player_Ray : MonoBehaviour
         //만약 닿은곳이 Enemy라면
         if (hitInfo.collider.CompareTag("Player"))
         {
+            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_Delete);
             Debug.Log(hitInfo.collider.name);
 
             //게임삭제
@@ -268,6 +279,7 @@ public class Player_Ray : MonoBehaviour
     {
         if (hitInfo.collider.CompareTag("Player"))
         {
+            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_Delete);
             inPlayer = hitInfo.collider.gameObject;
 
             inPlayer.GetComponent<Collider>().enabled = false;
@@ -279,6 +291,7 @@ public class Player_Ray : MonoBehaviour
     {
         if (hitInfo.collider.CompareTag("Player"))
         {
+            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_HopIn);
             Debug.Log(hitInfo.collider.name);
             PlayerMove.instance.CharChange(hitInfo.collider.gameObject);
         }

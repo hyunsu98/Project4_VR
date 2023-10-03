@@ -11,6 +11,11 @@ public class SoundManager : MonoBehaviour
     public enum ESfx
     {
         SFX_BUTTON,
+        SFX_BUTTON2,
+        SFX_BUTTON3,
+        SFX_HopIn,
+        SFX_Delete,
+        SFX_Teleport
     }
 
     // 효과음 배열

@@ -46,7 +46,7 @@ public class ModeChange_LHS : MonoBehaviour
     public int mode_index = 0;
     public int modeListCount = 5;
 
-    public List<GameObject> modeList;
+    public GameObject uiTutorial;
 
     void Start()
     { 
@@ -112,17 +112,39 @@ public class ModeChange_LHS : MonoBehaviour
 
         if (OVRInput.GetDown(buttonPlus, controller))
         {
+            plus = true;
+            FadeOut();
+
             mode_index = (mode_index + 1) % modeListCount;
+            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_BUTTON2);
         }
         
         //One 버튼을 누르면 왜 다시 실행되는지 해결 ... 하고 싶다...
         else if (OVRInput.GetDown(buttonMinus, controller))
         {
+            minus = true;
+            FadeOut();
+
             mode_index = (mode_index - 1 + modeListCount) % modeListCount;
+            SoundManager.instance.PlaySFX(SoundManager.ESfx.SFX_BUTTON2);
         }
 
         ModeSetting(mode_index);
         print("모드 변경 " + mode_index);
+    }
+
+    bool plus;
+    bool minus;
+
+    public void FadeOut()
+    {
+        if (uiTutorial)
+        {
+            if(plus == true && minus == true)
+            {
+                uiTutorial.GetComponent<FadeOutImage>().FadeOutStart();
+            }
+        }
     }
 
     public void ModeSetting(int num)
