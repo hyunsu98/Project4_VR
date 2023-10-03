@@ -1879,6 +1879,7 @@ GameObject:
   - component: {fileID: 5298970295508895189}
   - component: {fileID: 5298970295508895191}
   - component: {fileID: 5298970295508895188}
+  - component: {fileID: -5508435031093046941}
   m_Layer: 0
   m_Name: TKBoyA
   m_TagString: Player
@@ -1958,6 +1959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcab01a8a7bb8644a53839057220067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myNum: 0
 --- !u!114 &5298970295508895194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2093,6 +2095,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-5508435031093046941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5298970295518295972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4448408c27cedb46b2f162bc62fb55d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 5298970295513021212}
+  - {fileID: 5298970295513021296}
+  - {fileID: 5298970295513021194}
+  - {fileID: 5298970295513021184}
+  - {fileID: 5298970295513021214}
+  color: {r: 0.7396226, g: 0.8471407, b: 1, a: 1}
 --- !u!1 &5298970295518295982
 GameObject:
   m_ObjectHideFlags: 0

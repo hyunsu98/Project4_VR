@@ -5209,6 +5209,7 @@ GameObject:
   - component: {fileID: 2400123946629637366}
   - component: {fileID: 4074900663548026820}
   - component: {fileID: 1361907685265985385}
+  - component: {fileID: 8293727910732646490}
   m_Layer: 0
   m_Name: TPMaleC
   m_TagString: Player
@@ -5707,3 +5708,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8293727910732646490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5442685409862055423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4448408c27cedb46b2f162bc62fb55d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 5442685409875720515}
+  - {fileID: 5442685409875720523}
+  - {fileID: 5442685409875720487}
+  - {fileID: 5442685409875720485}
+  - {fileID: 5442685409875720511}
+  color: {r: 0.7396226, g: 0.8471407, b: 1, a: 1}
