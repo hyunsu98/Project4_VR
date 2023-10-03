@@ -3588,7 +3588,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: LHS_Main0926
           m_BoolArgument: 0
         m_CallState: 2
   scaleFactor: 1.2
@@ -6575,7 +6575,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: LHS_Main0926
           m_BoolArgument: 0
         m_CallState: 2
   scaleFactor: 1.2
@@ -17000,7 +17000,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: LHS_Main0926
           m_BoolArgument: 0
         m_CallState: 2
   scaleFactor: 1.2
@@ -19436,7 +19436,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: LHS_Main0926
           m_BoolArgument: 0
         m_CallState: 2
   scaleFactor: 1.2
@@ -35742,7 +35742,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: LHS_Main0926
           m_BoolArgument: 0
         m_CallState: 2
   scaleFactor: 1.2
@@ -41448,7 +41448,7 @@ MonoBehaviour:
   m_SendPointerHoverToParent: 1
   rayTransform: {fileID: 612178691}
   m_Cursor: {fileID: 1832823814}
-  joyPadClickButton: 1
+  joyPadClickButton: 2
   gazeClickKey: 32
   performSphereCastForGazepointer: 0
   useRightStickScroll: 1
@@ -51093,7 +51093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &6790363268611089702
 GameObject:
   m_ObjectHideFlags: 0

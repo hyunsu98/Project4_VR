@@ -89,6 +89,17 @@ public class Player_Ray : MonoBehaviour
                 marker.up = hitInfo.normal;
                 marker.localScale = Vector3.one * kAdjust * hitInfo.distance;
 
+                if (hitInfo.collider.CompareTag("Ground"))
+                {
+                    //땅일때만 보이게
+                    marker.gameObject.SetActive(true);
+                }
+
+                else
+                {
+                    marker.gameObject.SetActive(false);
+                }
+
                 //플레이어 배치
                 PlayerPlace();
 
@@ -111,6 +122,7 @@ public class Player_Ray : MonoBehaviour
                 }*/
 
                 //--------------------------------------- 버튼 -----------------------------------------//
+
                 // 부딪힌 곳이 있다면 클릭 //인덱스 트리거
                 if (OVRInput.GetDown(button, controller))
                 {
@@ -181,9 +193,9 @@ public class Player_Ray : MonoBehaviour
             else
             {
                 lr.SetPosition(1, ray.origin + ray.direction * 10);
-                marker.position = ray.origin + ray.direction * 100;
+                /*marker.position = ray.origin + ray.direction * 100;
                 marker.up = -ray.direction;
-                marker.localScale = Vector3.one * kAdjust * 100;
+                marker.localScale = Vector3.one * kAdjust * 100;*/
             }
         }
     }
@@ -197,7 +209,8 @@ public class Player_Ray : MonoBehaviour
             inPlayer.transform.SetParent(cube.transform);
         }
 
-        if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("RayUI"))
+        //안보이게 하기 위해
+        if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("UI"))
         {
             if (inPlayer != null)
             {
