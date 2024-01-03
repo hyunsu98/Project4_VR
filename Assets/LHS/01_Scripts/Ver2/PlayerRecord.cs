@@ -162,7 +162,6 @@ public class PlayerRecord : MonoBehaviour
         }
     }
 
-
     public void OnRecordEnd()
     {
         Debug.Log(gameObject.name + "≥Ï»≠¡æ∑·");
